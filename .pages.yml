@@ -1,0 +1,71 @@
+# Pages CMS configuration (https://pagescms.org). Defines the forms for the two databases.
+content:
+  - name: flowlaws
+    label: Flow laws
+    type: file
+    path: data/flowlaws.json
+    fields:
+      - name: laws
+        label: Flow laws
+        type: object
+        list: true
+        fields:
+          - { name: id, label: "ID (short, unique, no spaces)", type: string, required: true }
+          - { name: name, label: "Rock name", type: string, required: true }
+          - { name: ref, label: "Source (author and year)", type: string }
+          - name: status
+            label: "Verification status"
+            type: select
+            options:
+              values: [checked, partial, memory]
+          - { name: note, label: "Note", type: text }
+          - { name: water_label, label: "Water term label, e.g. fH2O (MPa). Leave empty if none", type: string }
+          - { name: water_default, label: "Water term default value", type: number }
+          - name: disl
+            label: "Dislocation creep"
+            type: object
+            fields:
+              - { name: enabled, label: "This law has dislocation creep", type: boolean }
+              - { name: A, label: "A (MPa^-n um^p s^-1)", type: number }
+              - { name: n, label: "Stress exponent n", type: number }
+              - { name: p, label: "Grain-size exponent p", type: number }
+              - { name: r, label: "Water exponent r", type: number }
+              - { name: E, label: "Activation energy E (kJ/mol)", type: number }
+              - { name: V, label: "Activation volume V (cm3/mol)", type: number }
+          - name: diff
+            label: "Diffusion creep"
+            type: object
+            fields:
+              - { name: enabled, label: "This law has diffusion creep", type: boolean }
+              - { name: A, label: "A (MPa^-n um^p s^-1)", type: number }
+              - { name: n, label: "Stress exponent n", type: number }
+              - { name: p, label: "Grain-size exponent p", type: number }
+              - { name: r, label: "Water exponent r", type: number }
+              - { name: E, label: "Activation energy E (kJ/mol)", type: number }
+              - { name: V, label: "Activation volume V (cm3/mol)", type: number }
+  - name: materials
+    label: Lab materials
+    type: file
+    path: data/materials.json
+    fields:
+      - name: materials
+        label: Lab materials
+        type: object
+        list: true
+        fields:
+          - { name: id, label: "ID (short, unique, no spaces)", type: string, required: true }
+          - { name: name, label: "Material name", type: string, required: true }
+          - name: kind
+            label: "Kind"
+            type: select
+            options:
+              values: [viscous, granular]
+          - { name: rho, label: "Density (kg/m3)", type: number }
+          - { name: eta0, label: "Viscosity eta0 (Pa s) at the reference strain rate and temperature", type: number }
+          - { name: n, label: "Stress exponent n (1 Newtonian, >1 shear-thinning, <1 shear-thickening)", type: number }
+          - { name: e0, label: "Reference strain rate (1/s)", type: number }
+          - { name: Ea, label: "Activation energy Ea (kJ/mol), 0 if not temperature dependent", type: number }
+          - { name: T0, label: "Reference temperature (deg C)", type: number }
+          - { name: phi, label: "Friction angle (deg), granular only", type: number }
+          - { name: C, label: "Cohesion (Pa), granular only", type: number }
+          - { name: note, label: "Note", type: text }

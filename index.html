@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ScaleLAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: lab-instrument panel. Inputs left (nature, layers, lab), results right; stacks to one column on a phone. */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --sunk:#f7f9fa; --ink:#10202e; --ink2:#465664; --muted:#74828e; --line:#d9e0e6;
+  --accent:#0d5c8c; --accent-ink:#ffffff; --accent-soft:#e3eef5;
+  --good:#1b7a3b; --good-bg:#e2f3e7; --warn:#9a5b00; --warn-bg:#fbefd6; --crit:#b3312a; --crit-bg:#fae3e1;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300;
+  --font:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1418; --surface:#161e24; --sunk:#111920; --ink:#e7ecf0; --ink2:#b4bfc9; --muted:#8492a0; --line:#28333c;
+    --accent:#5cb2e2; --accent-ink:#06202e; --accent-soft:#17303f;
+    --good:#58c97c; --good-bg:#15301f; --warn:#e3a93c; --warn-bg:#33270f; --crit:#f08079; --crit-bg:#3a1917;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#0ca30c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1418; --surface:#161e24; --sunk:#111920; --ink:#e7ecf0; --ink2:#b4bfc9; --muted:#8492a0; --line:#28333c;
+  --accent:#5cb2e2; --accent-ink:#06202e; --accent-soft:#17303f;
+  --good:#58c97c; --good-bg:#15301f; --warn:#e3a93c; --warn-bg:#33270f; --crit:#f08079; --crit-bg:#3a1917;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#0ca30c;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--font);-webkit-text-size-adjust:100%}
+h1,h2,h3{margin:0;font-weight:600;text-wrap:balance}
+h1{font-size:20px;letter-spacing:.01em}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink2)}
+h3{font-size:14px}
+p{margin:0}
+.num,td.n,input.n,.tile b{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--surface)}
+header .brand{display:flex;flex-direction:column;gap:2px}
+header .brand span{color:var(--muted);font-size:12.5px}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font:500 13px var(--font);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:7px 11px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button.ghost{border-color:transparent;color:var(--accent);padding:4px 6px}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+main{display:grid;grid-template-columns:minmax(340px,440px) minmax(0,1fr);gap:20px;padding:20px;max-width:1500px;margin:0 auto}
+@media (max-width:980px){main{grid-template-columns:minmax(0,1fr);padding:16px}}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel>.head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px}
+.grid.w{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+label{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--ink2);min-width:0}
+input,select,textarea{font:13px var(--font);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:6px 8px;width:100%;min-width:0}
+input.n{font-size:12.5px}
+canvas{width:100%;display:block;touch-action:pan-y}
+#cv3{cursor:grab}
+.views{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:640px){.views{grid-template-columns:minmax(0,1fr)}}
+#expTxt{height:220px;font:12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
+.tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
+.tri input:nth-child(2){border-color:var(--accent);background:var(--surface)}
+.hint{font-size:11.5px;color:var(--muted)}
+.layer{border:1px solid var(--line);border-left:4px solid var(--c);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
+.layer .top{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.layer .tools{display:flex;gap:2px}
+.sub{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+details{border-top:1px dashed var(--line);padding-top:8px}
+summary{cursor:pointer;font-size:12.5px;color:var(--accent);font-weight:500}
+details .body{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.mech{display:grid;grid-template-columns:auto repeat(6,minmax(0,1fr));gap:4px;align-items:end}
+.mech .on{display:flex;flex-direction:row;align-items:center;gap:4px;font-size:12px;color:var(--ink);min-width:66px;padding-bottom:6px}
+.mech .on input{width:auto}
+.pill{display:inline-block;font-size:11px;font-weight:500;border-radius:99px;padding:1px 8px;white-space:nowrap;border:1px solid transparent}
+.pill.good{color:var(--good);background:var(--good-bg)}
+.pill.warn{color:var(--warn);background:var(--warn-bg)}
+.pill.crit{color:var(--crit);background:var(--crit-bg)}
+.pill.info{color:var(--accent);background:var(--accent-soft)}
+.pill.plain{color:var(--ink2);border-color:var(--line)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.tile span{font-size:11.5px;color:var(--ink2)}
+.tile b{font-size:17px;font-weight:500;overflow-wrap:anywhere}
+.tile small{color:var(--muted);font-size:11.5px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;white-space:nowrap}
+td.wrap{white-space:normal;min-width:180px}
+th{font-size:11px;font-weight:500;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;white-space:normal;vertical-align:bottom}
+td.n{font-size:12px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--c);margin-right:6px;vertical-align:baseline}
+.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px}
+@media (max-width:640px){.charts{grid-template-columns:minmax(0,1fr)}}
+.chart .tag{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);font-weight:600}
+.chart .blank{border:1px dashed var(--line);border-radius:8px;padding:28px 14px;color:var(--muted);font-size:12.5px;text-align:center}
+.key{display:inline-block;width:18px;border-top:2px solid var(--ink);vertical-align:middle;margin-right:5px}
+.key.d{border-top-style:dashed}.key.g{border-top-color:var(--muted);border-top-width:1px}
+.chart{display:flex;flex-direction:column;gap:4px;min-width:0;position:relative}
+.chart h3{font-size:13px}
+.chart svg{width:100%;height:auto;display:block;touch-action:pan-y}
+.chart text{font:10.5px var(--font);fill:var(--ink2)}
+.chart .tt{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:11.5px;box-shadow:0 4px 14px rgba(0,0,0,.12);display:none;z-index:2;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink2)}
+.notes{font-size:12.5px;color:var(--ink2);display:flex;flex-direction:column;gap:6px;max-width:75ch}
+.notes code{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.checks{display:flex;flex-direction:column;gap:6px;font-size:12.5px}
+.checks div{display:flex;gap:8px;align-items:baseline}
+dialog{border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:16px;width:min(560px,92vw)}
+dialog::backdrop{background:rgba(0,0,0,.4)}
+dialog textarea{height:200px;font:12px var(--mono)}
+dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:12.5px;display:none;z-index:9}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><h1>ScaleLAB</h1><span>Flow-law viscosity of a planetary lithosphere, scaled to an analogue experiment</span></div>
+  <div class="actions">
+    <button id="bExample">Load Venus example</button>
+    <button id="bCsv">Copy results (CSV)</button>
+    <button id="bSave">Copy setup</button>
+    <button id="bLoad">Paste setup</button>
+  </div>
+</header>
+<main>
+  <div class="col" id="inputs">
+    <section class="panel">
+      <div class="head"><h2>1 · Prototype (nature)</h2></div>
+      <div class="grid">
+        <label>Body<select id="planet"></select></label>
+        <label>Gravity (m/s²)<input class="n" data-k="nat.g"></label>
+        <label>Surface T (K)<input class="n" data-k="nat.Ts"></label>
+        <label>Mantle potential T (K)<input class="n" data-k="nat.Tp"></label>
+        <label>Adiabat (K/km)<input class="n" data-k="nat.Ga"></label>
+      </div>
+      <label>Thermal gradient (K/km) · min / reference / max
+        <span class="tri"><input class="n" data-k="nat.Gmin"><input class="n" data-k="nat.G"><input class="n" data-k="nat.Gmax"></span></label>
+      <label>Strain rate (1/s) · min / reference / max
+        <span class="tri"><input class="n" data-k="nat.emin"><input class="n" data-k="nat.e"><input class="n" data-k="nat.emax"></span></label>
+      <div class="grid w">
+        <label>Brittle strength<select data-k="nat.regime">
+          <option value="off">Off (viscous only)</option><option value="3">Compression (β = 3.0)</option>
+          <option value="1.2">Strike-slip (β = 1.2)</option><option value="0.75">Extension (β = 0.75)</option></select></label>
+        <label>Pore-fluid factor λ<input class="n" data-k="nat.lam"></label>
+        <label>Cohesion (MPa)<input class="n" data-k="nat.C0"></label>
+        <label>Viscosity cut-off (Pa s)<input class="n" data-k="nat.cap"></label>
+        <label>Layer average<select data-k="nat.avg">
+          <option value="geo">Geometric (log-mean)</option><option value="harm">Harmonic (weakest controls)</option>
+          <option value="arith">Arithmetic (strength-weighted)</option></select></label>
+        <label>Lab-data conversion<select data-k="nat.geom">
+          <option value="axial">Axial compression → invariants</option><option value="shear">Simple shear → invariants</option>
+          <option value="none">None (η = σ / 2ε̇)</option></select></label>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>2 · Layers, top to bottom</h2><button id="bAdd">Add layer</button></div>
+      <p class="hint">Thickness takes the literature range: min / reference / max. The reference value has the highlighted border.</p>
+      <div id="layers" class="col" style="gap:10px"></div>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>3 · Model (lab)</h2></div>
+      <div class="grid w">
+        <label>1 cm in the model = (km)<input class="n" data-k="model.kmPerCm"></label>
+        <label>Model gravity (m/s²)<input class="n" data-k="model.g"></label>
+        <label>Lab temperature (°C)<input class="n" data-k="model.Tlab"></label>
+        <label>Time scale from<select data-k="model.mode">
+          <option value="anchor">An anchor material</option><option value="time">A chosen run time</option></select></label>
+        <label id="lAnchor">Anchor layer<select data-k="model.anchor" id="anchorSel"></select></label>
+        <label id="lTime">1 hour in the model = (Myr)<input class="n" data-k="model.myrPerHour"></label>
+      </div>
+      <p class="hint">Model material, density and viscosity are entered per layer above. The anchor layer's viscosity fixes the time scale; every other layer then gets a required viscosity.</p>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>4 · Box and bodies</h2><button id="bAddBody">Add body</button></div>
+      <div class="grid">
+        <label>Container<select data-k="box.shape"><option value="rect">Rectangular box</option><option value="cyl">Cylindrical tank</option></select></label>
+        <span id="gRect" style="display:contents"><label>Length x (cm)<input class="n" data-k="box.x"></label><label>Width y (cm)<input class="n" data-k="box.y"></label></span>
+        <label id="gCyl">Diameter (cm)<input class="n" data-k="box.d"></label>
+        <label>Height z (cm)<input class="n" data-k="box.z"></label>
+      </div>
+      <p class="hint">Coordinates are in cm from the centre of the floor, z upward. Layers are stacked from the floor with the model thicknesses from the scaling. Bodies are saved with the setup.</p>
+      <div id="bodies" class="col" style="gap:10px"></div>
+    </section>
+  </div>
+
+  <div class="col" id="results">
+    <div class="tiles" id="tiles"></div>
+    <section class="panel">
+      <div class="head"><h2>Model design</h2></div>
+      <div class="scroll"><table id="tModel"></table></div>
+      <div class="checks" id="checks"></div>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>Model geometry</h2></div>
+      <div class="views"><canvas id="cv3" aria-label="3D view of the model"></canvas><canvas id="cvS" aria-label="Vertical section of the model"></canvas></div>
+      <div class="checks" id="gChecks"></div>
+      <h3>Material recipe</h3>
+      <div class="scroll"><table id="tRecipe"></table></div>
+      <p class="hint">Volumes use the reference thicknesses and the container footprint, minus the parts of bodies inside each layer. Add your own margin for losses.</p>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>Bodies and behaviour over time</h2></div>
+      <div class="scroll"><table id="tDrip"></table></div>
+      <div class="checks" id="rt"></div>
+      <div class="charts">
+        <div class="chart" id="cDrip"><span class="tag">Lab</span><h3>Body height over time</h3></div>
+        <div class="chart" id="cFlow"><span class="tag">Lab</span><h3>Material flow curves</h3></div>
+      </div>
+      <p class="hint">First-order estimates. Body motion is Stokes flow of a viscous drop of equal volume in an unbounded fluid, layer by layer, using your material's viscosity where one is chosen and the required viscosity otherwise; walls, the free surface, neighbouring layers and shape change are ignored. In the flow-curve panel the dashed line is the model strain rate and each black tick is that layer's required viscosity: a rising curve thickens, a falling one thins.</p>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>Prototype viscosity</h2></div>
+      <div class="scroll"><table id="tNat"></table></div>
+      <p class="hint">Envelope = spread of the layer value over the 8 end-member cases (all thicknesses min or max × gradient min or max × strain rate min or max).</p>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>Profiles</h2></div>
+      <div class="legend" id="legend"></div>
+      <div class="legend"><span><span class="key"></span>layer value used for scaling</span><span><span class="key d"></span>your material</span><label style="flex-direction:row;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="uiCases" data-k="ui.cases" style="width:auto"><span class="key g" style="margin:0"></span>show the 8 end-member cases</label><span><span class="sw" style="--c:var(--muted);opacity:.45"></span>brittle</span></div>
+      <div class="charts">
+        <div class="chart" id="cEta"><span class="tag">Nature</span><h3>Viscosity with depth</h3></div>
+        <div class="chart" id="cEtaM"><span class="tag">Lab</span><h3>Required viscosity with model depth</h3></div>
+        <div class="chart" id="cStr"><span class="tag">Nature</span><h3>Strength with depth</h3></div>
+        <div class="chart" id="cStrM"><span class="tag">Lab</span><h3>Scaled strength with model depth</h3></div>
+        <div class="chart" id="cTz"><span class="tag">Nature</span><h3>Temperature with depth</h3></div>
+        <div class="chart" id="cT"><span class="tag">Flow laws</span><h3>Viscosity against temperature</h3></div>
+      </div>
+      <p class="hint">Nature and lab panels share the same vertical geometry: lab depth is natural depth times the length ratio. In strength panels the solid line is viscous stress and the dashed line brittle strength; the weaker one holds. In the last panel the thick part of each curve is the temperature range that layer spans. Every panel redraws as you type.</p>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>Export to numerical codes</h2><div class="actions"><button id="bExpCopy">Copy</button><button id="bExpDl">Download</button></div></div>
+      <label>Format<select id="expSel"><option value="lamem">LaMEM.jl script, lab scale</option><option value="aspect">ASPECT parameter file, natural scale</option><option value="generic">Neutral JSON, both scales (MILET, MILEVA, other codes)</option></select></label>
+      <textarea id="expTxt" readonly spellcheck="false" wrap="off"></textarea>
+      <p class="hint">The LaMEM and ASPECT files are templates that have not been run. MILET and MILEVA have no dedicated exporter yet: the neutral JSON carries every number they need, in SI units.</p>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>Flow-law library</h2><div class="actions"><span id="dbState"></span><button id="bAddLaw">Add flow law</button><button id="bLibJson">Copy library JSON</button></div></div>
+      <div class="scroll"><table id="tLib"></table></div>
+      <p class="hint">On the published site this table is read from <code>data/flowlaws.json</code>, which the CMS edits. A in MPa⁻ⁿ µmᵖ s⁻¹ (with the water term in its listed unit), E in kJ/mol, V in cm³/mol. "Parameters confirmed" means A, n and Q (and p, r, V where the law has them) were matched to the source's table or abstract, or to a published compilation that quotes it. "A to verify" and "verify against source" mark values entered from memory of standard compilations: check them against the original table before they go into a paper. Any law can be overridden per layer.</p>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>Lab materials library</h2></div>
+      <div class="scroll"><table id="tMat"></table></div>
+      <p class="hint">Indicative values to start from: measure your own batches. Viscosity follows η = η₀ (ε̇/ε̇₀)^(1/n − 1) exp[Eₐ/R (1/T − 1/T₀)], so n above 1 is shear-thinning and n below 1 shear-thickening. Picking a material in a layer copies these values there, where they can be changed.</p>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>Validation</h2><span id="vSum"></span></div>
+      <div class="scroll"><table id="tValSum"></table></div>
+      <details><summary>Every test</summary><div class="body"><div class="scroll"><table id="tVal"></table></div></div></details>
+      <p class="hint">Runs each time the page opens. "Published value" reproduces numbers printed in the source. "Lab window" asks whether a law predicts a believable laboratory stress at laboratory temperature and strain rate: it catches unit errors, not a factor-of-few error in A. The remaining groups test the code against closed-form results.</p>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>Method</h2></div>
+      <div class="notes">
+        <p><b>Flow law.</b> <code>ε̇ = A σⁿ d⁻ᵖ Wʳ exp(−(E + PV)/RT)</code> for each mechanism. Dislocation and diffusion creep act in parallel: at each depth the stress is solved so that <code>ε̇_disl + ε̇_diff</code> equals the imposed strain rate, and <code>η = σ_II / 2ε̇_II</code>.</p>
+        <p><b>Lab-data conversion.</b> Axial-compression laws are converted to second invariants with <code>ε̇_II = (3^((n+1)/2) / 2) A σ_IIⁿ</code>; simple-shear laws with <code>ε̇_II = 2^(n−1) A σ_IIⁿ</code>.</p>
+        <p><b>Geotherm.</b> <code>T(z) = min(T_s + G z, T_p + G_a z)</code>. Pressure is lithostatic from the layer densities.</p>
+        <p><b>Brittle strength.</b> <code>Δσ = C₀ + β ρ g z (1 − λ)</code>, compared with the viscous differential stress taken as <code>2σ_II</code>. Where brittle is weaker, the layer is counted as brittle and left out of the viscosity average.</p>
+        <p><b>Scaling.</b> With starred ratios model/nature: <code>σ* = ρ* g* L*</code>, <code>η* = σ* t*</code>, <code>v* = L*/t*</code>, <code>ε̇* = 1/t*</code>. Required model viscosity is <code>η_nature · η*</code>; a model cohesion scales with <code>σ*</code>.</p>
+        <p><b>Limits.</b> A Newtonian analogue matches a power-law layer only at the reference strain rate. Low-temperature (Peierls) plasticity, grain-boundary sliding, melt and grain-size evolution are not included; the viscosity cut-off stands in for the cold, strong part of each layer.</p>
+      </div>
+    </section>
+  </div>
+</main>
+<dialog id="dlg"><h3>Paste a setup</h3><p class="hint" style="margin:6px 0">Paste the text you got from "Copy setup".</p><textarea id="dlgTxt"></textarea><div class="row"><button id="dlgCancel">Cancel</button><button class="primary" id="dlgOk">Load</button></div></dialog>
+<dialog id="dlgLaw"><h3>Add a flow law</h3><p class="hint" style="margin:6px 0">A in MPa⁻ⁿ µmᵖ s⁻¹, E in kJ/mol, V in cm³/mol. Saved with this setup in your browser. To share it with everyone, use "Copy library JSON" or the CMS.</p>
+ <div class="col" style="gap:8px"><div class="grid w"><label>Rock name<input id="lawName"></label><label>Source<input id="lawRef"></label></div>
+ <div class="mech"><label class="on"><input type="checkbox" id="ldon" checked>Disloc.</label><label>A<input class="n" id="ldA"></label><label>n<input class="n" id="ldn" value="3.5"></label><label>p<input class="n" id="ldp" value="0"></label><label>r<input class="n" id="ldr" value="0"></label><label>E<input class="n" id="ldE"></label><label>V<input class="n" id="ldV" value="0"></label></div>
+ <div class="mech"><label class="on"><input type="checkbox" id="lfon">Diffus.</label><label>A<input class="n" id="lfA"></label><label>n<input class="n" id="lfn" value="1"></label><label>p<input class="n" id="lfp" value="3"></label><label>r<input class="n" id="lfr" value="0"></label><label>E<input class="n" id="lfE"></label><label>V<input class="n" id="lfV" value="0"></label></div>
+ <div class="grid w"><label>Water term label (optional)<input id="lawW" placeholder="fH₂O (MPa)"></label><label>Water term default<input class="n" id="lawWv" value="1"></label></div>
+ <p class="hint" id="lawErr" style="color:var(--crit)"></p></div>
+ <div class="row"><button id="lawCancel">Cancel</button><button class="primary" id="lawOk">Add</button></div></dialog>
+<div id="toast"></div>
+
+<script>
+/*CORE-START*/
+const R=8.314462, MYR=3.15576e13, YR=3.15576e7;
+// A: MPa^-n µm^p s^-1 ; E kJ/mol ; V cm³/mol ; r exponent on water term W
+const ROCKS=[
+ {id:'ol_dry',name:'Olivine, dry',ref:'Hirth & Kohlstedt 2003',st:'checked',note:'Source gives a range for V: see its Table 2 (disl.) and 2–10 cm³/mol (diff.)',
+  disl:{A:1.1e5,n:3.5,p:0,r:0,E:530,V:15},diff:{A:1.5e9,n:1,p:3,r:0,E:375,V:6}},
+ {id:'ol_wet',name:'Olivine, wet (constant C_OH)',ref:'Hirth & Kohlstedt 2003',st:'checked',w:{label:'C_OH (H/10⁶ Si)',val:1000},
+  disl:{A:90,n:3.5,p:0,r:1.2,E:480,V:11},diff:{A:1.0e6,n:1,p:3,r:1,E:335,V:4}},
+ {id:'dun_dry',name:'Dunite, dry (Åheim)',ref:'Chopra & Paterson 1984',st:'memory',
+  disl:{A:2.5e4,n:3.6,p:0,r:0,E:535,V:0},diff:null},
+ {id:'gran_maf',name:'Mafic granulite',ref:'Wilks & Carter 1990',st:'checked',note:'Confirmed through a later compilation table, not the original paper',
+  disl:{A:1.4e4,n:4.2,p:0,r:0,E:445,V:0},diff:null},
+ {id:'gran_fel',name:'Felsic granulite',ref:'Wen et al. 2021',st:'checked',
+  disl:{A:Math.pow(10,-4.4),n:4.2,p:0,r:0,E:260,V:0},diff:null},
+ {id:'diab_col',name:'Diabase, dry (Columbia)',ref:'Mackwell et al. 1998',st:'partial',
+  disl:{A:190,n:4.7,p:0,r:0,E:485,V:0},diff:null},
+ {id:'diab_mar',name:'Diabase, dry (Maryland)',ref:'Mackwell et al. 1998',st:'partial',
+  disl:{A:8,n:4.7,p:0,r:0,E:485,V:0},diff:null},
+ {id:'diab_wet',name:'Diabase, as-received (wet)',ref:'Shelton & Tullis 1981',st:'memory',
+  disl:{A:2.0e-4,n:3.4,p:0,r:0,E:260,V:0},diff:null},
+ {id:'an_dry',name:'Anorthite, dry',ref:'Rybacki & Dresen 2000',st:'checked',note:'Rybacki et al. 2006 add V ≈ 24 cm³/mol',
+  disl:{A:Math.pow(10,12.7),n:3,p:0,r:0,E:648,V:0},diff:{A:Math.pow(10,12.1),n:1,p:3,r:0,E:467,V:0}},
+ {id:'an_wet',name:'Anorthite, wet',ref:'Rybacki & Dresen 2000',st:'checked',note:'Rybacki et al. 2006 add V ≈ 38 cm³/mol and fH₂O¹',
+  disl:{A:Math.pow(10,2.6),n:3,p:0,r:0,E:356,V:0},diff:{A:Math.pow(10,1.7),n:1,p:3,r:0,E:170,V:0}},
+ {id:'cpx_dry',name:'Clinopyroxenite, dry',ref:'Bystricky & Mackwell 2001',st:'partial',
+  disl:{A:Math.pow(10,9.8),n:4.7,p:0,r:0,E:760,V:0},diff:{A:Math.pow(10,15.1),n:1,p:3,r:0,E:560,V:0}},
+ {id:'ecl',name:'Eclogite',ref:'Jin et al. 2001',st:'memory',
+  disl:{A:Math.pow(10,3.3),n:3.4,p:0,r:0,E:480,V:0},diff:null},
+ {id:'qtz_wet',name:'Quartzite, wet',ref:'Hirth et al. 2001',st:'checked',w:{label:'fH₂O (MPa)',val:100},
+  disl:{A:Math.pow(10,-11.2),n:4,p:0,r:1,E:135,V:0},diff:null},
+ {id:'qtz_gt',name:'Quartzite, wet (no fugacity term)',ref:'Gleason & Tullis 1995',st:'partial',
+  disl:{A:1.1e-4,n:4,p:0,r:0,E:223,V:0},diff:null},
+ {id:'custom',name:'Custom law',ref:'your values',st:'user',
+  disl:{A:1,n:3,p:0,r:0,E:400,V:0},diff:{A:1,n:1,p:3,r:0,E:300,V:0}}
+];
+let EXTRA=[];
+const rockById=id=>ROCKS.find(r=>r.id===id)||EXTRA.find(r=>r.id===id)||ROCKS.find(r=>r.id==='custom')||ROCKS[ROCKS.length-1];
+function geomF(n,geom){return geom==='axial'?Math.pow(3,(n+1)/2)/2:geom==='shear'?Math.pow(2,n-1):1;}
+// ln C so that strain rate (invariant, 1/s) = C * sigma_II^n, sigma in MPa
+function lnC(m,T,P,dum,W,geom){
+  return Math.log(m.A)+Math.log(geomF(m.n,geom))-m.p*Math.log(dum)+(m.r?m.r*Math.log(W):0)-(m.E*1e3+P*m.V*1e-6)/(R*T);
+}
+function activeMechs(L){const a=[];if(L.laws.disl&&L.laws.disl.on)a.push(L.laws.disl);if(L.laws.diff&&L.laws.diff.on)a.push(L.laws.diff);return a;}
+// Solve composite flow at fixed total strain rate. Returns stress (MPa), viscosity (Pa s), n_eff, share of first mechanism.
+function solveVisc(mechs,T,P,dum,W,geom,edot){
+  if(!mechs.length)return{sig:Infinity,eta:Infinity,neff:1,f0:1};
+  const c=mechs.map(m=>lnC(m,T,P,dum,W,geom)),le=Math.log(edot);
+  const f=ls=>{let mx=-Infinity;const v=mechs.map((m,i)=>{const x=c[i]+m.n*ls;if(x>mx)mx=x;return x;});
+    let s=0;for(const x of v)s+=Math.exp(x-mx);return{tot:mx+Math.log(s),v,mx};};
+  let lo=-80,hi=60;
+  for(let i=0;i<70;i++){const mid=(lo+hi)/2;if(f(mid).tot>le)hi=mid;else lo=mid;}
+  const ls=(lo+hi)/2,r=f(ls);let s=0,sn=0;const w=r.v.map(x=>Math.exp(x-r.mx));
+  w.forEach((x,i)=>{s+=x;sn+=x*mechs[i].n;});
+  const sig=Math.exp(ls);
+  return{sig,eta:sig*1e6/(2*edot),neff:sn/s,f0:w[0]/s};
+}
+const K=80;
+// One case: thickness key ('h','hMin','hMax'), gradient (K/km), strain rate (1/s)
+function runCase(S,hk,G,edot){
+  const N=S.nat,beta=N.regime==='off'?0:+N.regime;let z0=0,P0=0;const pts=[],layers=[];
+  S.layers.forEach((L,li)=>{
+    const h=L[hk]*1e3,dz=h/K,mechs=activeMechs(L),firstIsDisl=!!(L.laws.disl&&L.laws.disl.on);
+    let sl=0,sh=0,sa=0,nd=0,mn=Infinity,mx=0,sneff=0,sf=0,nb=0,all=[];
+    for(let k=0;k<K;k++){
+      const z=z0+(k+.5)*dz,P=P0+L.rho*N.g*(k+.5)*dz;
+      const T=Math.min(N.Ts+G*z/1e3,N.Tp+N.Ga*z/1e3);
+      const r=solveVisc(mechs,T,P,L.d*1e3,L.w||1,N.geom,edot);
+      const sv=2*r.sig,sb=beta?N.C0+beta*P*(1-N.lam)/1e6:Infinity,br=sb<sv;
+      const eta=Math.min(r.eta,N.cap);
+      const p={z,T,P,eta,sv,sb,br,li,neff:r.neff,fd:firstIsDisl?r.f0:1-r.f0};
+      pts.push(p);all.push(p);if(br)nb++;
+    }
+    const use=all.filter(p=>!p.br),set=use.length?use:all;
+    for(const p of set){sl+=Math.log(p.eta);sh+=1/p.eta;sa+=p.eta;nd++;if(p.eta<mn)mn=p.eta;if(p.eta>mx)mx=p.eta;sneff+=p.neff;sf+=p.fd;}
+    const geo=Math.exp(sl/nd),harm=nd/sh,arith=sa/nd;
+    layers.push({h,brittle:nb*dz,ductile:h-nb*dz,allBrittle:!use.length,geo,harm,arith,rep:S.nat.avg==='harm'?harm:S.nat.avg==='arith'?arith:geo,
+      min:mn,max:mx,neff:sneff/nd,fd:sf/nd,Ttop:all[0].T,Tbot:all[K-1].T,Pmid:all[K>>1].P,ztop:z0,zbot:z0+h});
+    z0+=h;P0+=L.rho*N.g*h;
+  });
+  return{pts,layers,H:z0,G,edot,hk};
+}
+function runAll(S){
+  const N=S.nat,ref=runCase(S,'h',N.G,N.e),cases=[];
+  for(const hk of['hMin','hMax'])for(const G of[N.Gmin,N.Gmax])for(const e of[N.emin,N.emax])cases.push(runCase(S,hk,G,e));
+  const env=S.layers.map((L,i)=>{let lo=ref.layers[i].rep,hi=lo;for(const c of cases){const v=c.layers[i].rep;if(v<lo)lo=v;if(v>hi)hi=v;}return{lo,hi};});
+  return{ref,cases,env};
+}
+function scaleModel(S,res){
+  const M=S.model,Tk=(M.Tlab==null?20:M.Tlab)+273.15,Ls=0.01/(M.kmPerCm*1e3),ai=Math.min(Math.max(0,M.anchor|0),S.layers.length-1),a=S.layers[ai];
+  const rhoS=a.rhoM/a.rho,gS=M.g/S.nat.g,sigS=rhoS*gS*Ls;let etaS,tS,em;
+  if(M.mode==='anchor'){const n=a.nM>0?a.nM:1,sig=S.nat.e*sigS*res.ref.layers[ai].rep;em=Math.pow(sig/matEta(a,1,Tk),n);tS=S.nat.e/em;etaS=tS*sigS;}
+  else{tS=3600/(M.myrPerHour*MYR);etaS=tS*sigS;em=S.nat.e/tS;}
+  const layers=S.layers.map((L,i)=>{const r=res.ref.layers[i],yours=matEta(L,em,Tk);return{
+    hMin:L.hMin*1e3*Ls,h:L.h*1e3*Ls,hMax:L.hMax*1e3*Ls,brittle:r.brittle*Ls,
+    req:r.rep*etaS,reqLo:res.env[i].lo*etaS,reqHi:res.env[i].hi*etaS,
+    rhoReq:L.rho*rhoS,yours,ratio:yours/(r.rep*etaS)};});
+  const Hm=res.ref.H*Ls,etaMin=Math.min(...layers.map(l=>l.req)),rhoMax=Math.max(...S.layers.map(l=>l.rhoM));
+  return{Ls,rhoS,gS,sigS,etaS,tS,ai,layers,Hm,em,Tk,
+    natPerHour:3600/tS,vmm_h:(0.01/YR)*(Ls/tS)*1e3*3600,Re:rhoMax*(em*Hm)*Hm/etaMin,C0m:S.nat.C0*1e6*sigS};
+}
+const EXAMPLE={
+ nat:{planet:'Venus',g:8.87,Ts:737,Tp:1650,Ga:0.4,Gmin:8,G:12,Gmax:20,emin:1e-16,e:1e-15,emax:1e-14,regime:'3',lam:0,C0:0,cap:1e25,avg:'geo',geom:'axial'},
+ layers:[
+  {name:'Upper crust',rock:'diab_mar',hMin:5,h:10,hMax:15,rho:2900,d:1,mat:'custom',rhoM:960,etaM:0},
+  {name:'Lower crust',rock:'gran_maf',hMin:10,h:20,hMax:30,rho:3000,d:1,mat:'custom',rhoM:1000,etaM:5e4},
+  {name:'Lithospheric mantle',rock:'ol_dry',hMin:40,h:70,hMax:120,rho:3300,d:3,mat:'custom',rhoM:1100,etaM:0},
+  {name:'Asthenosphere',rock:'ol_dry',hMin:100,h:150,hMax:200,rho:3250,d:3,mat:'custom',rhoM:1080,etaM:0}],
+ model:{kmPerCm:20,g:9.81,mode:'anchor',anchor:1,myrPerHour:1,Tlab:20},
+ box:{shape:'rect',x:40,y:40,z:16,d:40},
+ bodies:[{name:'Drip',shape:'sphere',x:0,y:0,z:9.2,r:1.5,h:3,lx:3,ly:3,lz:3,rhoM:1250,etaM:1e4}],
+ userLaws:[],ui:{cases:false}
+};
+function hydrate(S){S=JSON.parse(JSON.stringify(S));if(!S.ui)S.ui={cases:false};if(!S.box)S.box={shape:'rect',x:40,y:40,z:16,d:40};if(!S.bodies)S.bodies=[];if(!S.userLaws)S.userLaws=[];if(S.model.Tlab==null)S.model.Tlab=20;
+  EXTRA=S.userLaws;
+  S.bodies.forEach(b=>{for(const[k,v]of Object.entries({shape:'sphere',x:0,y:0,z:5,r:1,h:2,lx:2,ly:2,lz:2,rhoM:1200,etaM:1e4}))if(b[k]==null)b[k]=v;});
+  S.layers.forEach(L=>{if(!L.mat)L.mat='custom';if(L.nM==null)L.nM=1;if(L.e0M==null)L.e0M=1e-3;if(L.EaM==null)L.EaM=0;if(L.T0M==null)L.T0M=20;
+    if(!L.laws){const r=rockById(L.rock);L.laws={disl:r.disl?{on:true,...r.disl}:null,diff:r.diff?{on:true,...r.diff}:null};if(L.w==null)L.w=r.w?r.w.val:1;}});return S;}
+// ---------- lab materials, geometry, drip, exports ----------
+const MATERIALS=[
+ {id:'pdms',name:'PDMS silicone (SGM-36 type)',kind:'viscous',rho:965,eta0:5e4,n:1,e0:1e-3,Ea:0,T0:20,phi:0,C:0,note:'Newtonian at low strain rate'},
+ {id:'pdms_fill',name:'PDMS + dense filler (example mix)',kind:'viscous',rho:1100,eta0:1e5,n:1.1,e0:1e-3,Ea:0,T0:20,phi:0,C:0,note:'Depends on filler fraction'},
+ {id:'putty',name:'Silicone putty (Rhodorsil type)',kind:'viscous',rho:1200,eta0:3e4,n:1,e0:1e-3,Ea:0,T0:20,phi:0,C:0,note:''},
+ {id:'plast',name:'Plasticine–oil mix (shear-thinning)',kind:'viscous',rho:1700,eta0:1e7,n:5,e0:1e-3,Ea:0,T0:20,phi:0,C:0,note:'Strongly shear-thinning'},
+ {id:'glucose',name:'Glucose syrup',kind:'viscous',rho:1400,eta0:100,n:1,e0:1e-3,Ea:100,T0:20,phi:0,C:0,note:'Strongly temperature dependent; Ea is a placeholder'},
+ {id:'oil1000',name:'Silicone oil, 1000 cSt',kind:'viscous',rho:970,eta0:0.97,n:1,e0:1e-3,Ea:0,T0:25,phi:0,C:0,note:''},
+ {id:'starch',name:'Cornstarch suspension (shear-thickening)',kind:'viscous',rho:1200,eta0:10,n:0.6,e0:1,Ea:0,T0:20,phi:0,C:0,note:'Illustrative shear-thickening entry'},
+ {id:'sand',name:'Quartz sand',kind:'granular',rho:1500,eta0:0,n:1,e0:1e-3,Ea:0,T0:20,phi:33,C:50,note:''},
+ {id:'beads',name:'Glass microspheres',kind:'granular',rho:1500,eta0:0,n:1,e0:1e-3,Ea:0,T0:20,phi:22,C:10,note:''}];
+const matById=id=>MATERIALS.find(m=>m.id===id);
+// Effective viscosity of a lab material: eta0 at strain rate e0 and temperature T0 (°C); n>1 thins, n<1 thickens.
+function matEta(o,edot,Tk){if(!(o.etaM>0))return NaN;const n=o.nM>0?o.nM:1,aT=o.EaM?Math.exp(o.EaM*1e3/R*(1/Tk-1/((o.T0M==null?20:o.T0M)+273.15))):1;return o.etaM*Math.pow(edot/(o.e0M>0?o.e0M:1e-3),1/n-1)*aT;}
+// JSON (repo database) <-> internal flow-law form
+function lawFromJson(j){const m=x=>x&&x.enabled?{A:+x.A,n:+x.n,p:+x.p||0,r:+x.r||0,E:+x.E,V:+x.V||0}:null;
+  return{id:j.id,name:j.name,ref:j.ref||'',st:j.status||'memory',note:j.note||'',w:j.water_label?{label:j.water_label,val:+j.water_default||1}:undefined,disl:m(j.disl),diff:m(j.diff)};}
+function lawToJson(k){const m=x=>x?{enabled:true,A:x.A,n:x.n,p:x.p,r:x.r,E:x.E,V:x.V}:{enabled:false,A:1,n:1,p:0,r:0,E:0,V:0};
+  return{id:k.id,name:k.name,ref:k.ref,status:k.st,note:k.note||'',water_label:k.w?k.w.label:'',water_default:k.w?k.w.val:1,disl:m(k.disl),diff:m(k.diff)};}
+function checkLaw(k){const e=[];if(!k.id||!k.name)e.push('needs an id and a name');if(!k.disl&&!k.diff)e.push('needs at least one mechanism');
+  for(const m of[k.disl,k.diff])if(m){if(!(m.A>0))e.push('A must be positive');if(!(m.n>0))e.push('n must be positive');if(!(m.E>=0))e.push('E must not be negative');if(!(m.p>=0)||!(m.r>=0)||!isFinite(m.V))e.push('p, r, V must be numbers');}return e;}
+// geometry, all in cm
+const boxArea=B=>B.shape==='rect'?B.x*B.y:Math.PI*B.d*B.d/4;
+const bodyHalf=b=>b.shape==='sphere'?b.r:b.shape==='cyl'?b.h/2:b.lz/2;
+function bodyVolBetween(b,z0,z1){const a=Math.max(z0,b.z-bodyHalf(b)),c=Math.min(z1,b.z+bodyHalf(b));if(c<=a)return 0;
+  if(b.shape==='sphere'){const F=u=>Math.PI*(b.r*b.r*u-u*u*u/3);return F(c-b.z)-F(a-b.z);}
+  return(b.shape==='cyl'?Math.PI*b.r*b.r:b.lx*b.ly)*(c-a);}
+const bodyVol=b=>bodyVolBetween(b,-1e9,1e9);
+function layout(S,sc){let top=sc.Hm*100;return sc.layers.map(l=>{const z1=top;top-=l.h*100;return{z0:Math.abs(top)<1e-9?0:top,z1};});}
+function recipe(S,sc,lay){const A=boxArea(S.box),rows=S.layers.map((L,i)=>{const v=A*(lay[i].z1-lay[i].z0)-S.bodies.reduce((s,b)=>s+bodyVolBetween(b,lay[i].z0,lay[i].z1),0);return{name:L.name,vol:v,mass:v*L.rhoM/1e6,kind:'layer',i};});
+  S.bodies.forEach(b=>{const v=bodyVol(b);rows.push({name:b.name,vol:v,mass:v*b.rhoM/1e6,kind:'body'});});return rows;}
+// viscosity used for lab-side estimates: the chosen material if there is one, else the required value
+function labEta(S,sc,res){return sc.layers.map((l,i)=>{const L=S.layers[i],m=matById(L.mat);if(res.ref.layers[i].allBrittle||(m&&m.kind==='granular'))return NaN;return isFinite(l.yours)?l.yours:l.req;});}
+// Stokes descent of a body (Hadamard–Rybczynski drop), piecewise through the layers. Returns path [t s, z cm].
+function dripPath(b,S,sc,lay,eta){
+  const g=S.model.g,r=Math.cbrt(3*bodyVol(b)*1e-6/(4*Math.PI)),half=bodyHalf(b),top=lay[0].z1,eb=b.etaM>0?b.etaM:Infinity,pts=[[0,b.z]];
+  const at=z=>{const i=lay.findIndex(l=>z>=l.z0-1e-9&&z<=l.z1+1e-9);if(i<0||!(eta[i]>0))return{v:0,i};const f=isFinite(eb)?(eta[i]+eb)/(2*eta[i]+3*eb):1/3;return{v:(2/3)*(b.rhoM-S.layers[i].rhoM)*g*r*r/eta[i]*f,i};};
+  let z=b.z,t=0,end='stalled';const first=at(z);
+  for(let k=0;k<60;k++){const{v,i}=at(z);if(i<0){end='outside';break;}if(v===0){end=eta[i]>0?'neutral':'stalled';break;}
+    const down=v>0,lim=down?Math.max(lay[i].z0,half):Math.min(lay[i].z1,top-half),dz=Math.abs(z-lim);
+    if(dz>1e-7){t+=dz/100/Math.abs(v);z=lim;pts.push([t,z]);}
+    if(down&&z<=half+1e-7){end='floor';break;}if(!down&&z>=top-half-1e-7){end='surface';break;}
+    const zn=z+(down?-1e-6:1e-6),nx=at(zn);if(nx.i<0){end=down?'floor':'surface';break;}if(nx.v===0){end=eta[nx.i]>0?'neutral':'stalled';break;}if((nx.v>0)!==down){end='neutral';break;}z=zn;if(t>1e12)break;}
+  return{pts,end,r:r*100,v0:first.v,host:first.i,t};
+}
+// Rayleigh–Taylor growth time of each unstable interface: isoviscous two-layer estimate (Turcotte & Schubert), order of magnitude only
+function rtTimes(S,lay,eta){const out=[];for(let i=0;i<S.layers.length-1;i++){const dr=S.layers[i].rhoM-S.layers[i+1].rhoM;if(dr<=0||!(eta[i]>0)||!(eta[i+1]>0))continue;
+  const b=Math.min(lay[i].z1-lay[i].z0,lay[i+1].z1-lay[i+1].z0)/100;out.push({i,dr,tau:13.04*Math.max(eta[i],eta[i+1])/(dr*S.model.g*b)});}return out;}
+const num=x=>(+x.toPrecision(6)).toString();
+function genLaMEM(S,sc,lay,eta){
+  const B=S.box,hx=(B.shape==='rect'?B.x:B.d)/200,hy=(B.shape==='rect'?B.y:B.d)/200,H=sc.Hm,L=[];
+  L.push('# ScaleLAB export: lab-scale model in SI units (m, kg, s, Pa s).','# Template written without running LaMEM: compare the keyword names with a script of yours that works.',
+   'using LaMEM, GeophysicalModelGenerator','',`model = Model(`,`    Grid(nel=(64,64,32), x=[${num(-hx)},${num(hx)}], y=[${num(-hy)},${num(hy)}], z=[0.0,${num(H)}]),`,
+   `    BoundaryConditions(noslip=[1,1,1,1,1,0]),`,`    SolutionParams(gravity=[0.0,0.0,${num(-S.model.g)}]),`,
+   `    Time(nstep_max=400, dt=${num(360)}, dt_max=${num(3600)}, time_end=${num(3600*24)}),`,`    Scaling(NO_units()))`,'');
+  if(B.shape!=='rect')L.push('# The tank is cylindrical: this grid is its bounding box.','');
+  S.layers.forEach((l,i)=>{L.push(`add_box!(model; xlim=(${num(-hx)},${num(hx)}), ylim=(${num(-hy)},${num(hy)}), zlim=(${num(lay[i].z0/100)},${num(lay[i].z1/100)}), phase=ConstantPhase(${i}))  # ${l.name}`);});
+  S.bodies.forEach((b,j)=>{const id=S.layers.length+j,c=`(${num(b.x/100)},${num(b.y/100)},${num(b.z/100)})`;
+    if(b.shape==='sphere')L.push(`add_sphere!(model; cen=${c}, radius=${num(b.r/100)}, phase=ConstantPhase(${id}))  # ${b.name}`);
+    else if(b.shape==='cyl')L.push(`add_cylinder!(model; base=(${num(b.x/100)},${num(b.y/100)},${num((b.z-b.h/2)/100)}), cap=(${num(b.x/100)},${num(b.y/100)},${num((b.z+b.h/2)/100)}), radius=${num(b.r/100)}, phase=ConstantPhase(${id}))  # ${b.name}`);
+    else L.push(`add_box!(model; xlim=(${num((b.x-b.lx/2)/100)},${num((b.x+b.lx/2)/100)}), ylim=(${num((b.y-b.ly/2)/100)},${num((b.y+b.ly/2)/100)}), zlim=(${num((b.z-b.lz/2)/100)},${num((b.z+b.lz/2)/100)}), phase=ConstantPhase(${id}))  # ${b.name}`);});
+  L.push('');
+  S.layers.forEach((l,i)=>L.push(`add_phase!(model, Phase(ID=${i}, Name="${l.name.replace(/[^A-Za-z0-9]+/g,'_')}", rho=${num(l.rhoM)}, eta=${isFinite(eta[i])?num(eta[i]):'1e7'}))${isFinite(eta[i])?'':'  # brittle or granular layer: placeholder viscosity, add plasticity'}`));
+  S.bodies.forEach((b,j)=>L.push(`add_phase!(model, Phase(ID=${S.layers.length+j}, Name="${b.name.replace(/[^A-Za-z0-9]+/g,'_')}", rho=${num(b.rhoM)}, eta=${b.etaM>0?num(b.etaM):'1e7'}))`));
+  L.push('','run_lamem(model, 4)');return L.join('\n');
+}
+function genASPECT(S,res){
+  const N=S.nat,n=S.layers.length,ord=[n-1,...S.layers.map((_,i)=>i).slice(0,n-1)],H=res.ref.H,W=Math.max(2*H,1e5);
+  const pre=(L,key)=>{const m=L.laws[key];if(!m||!m.on)return'1e-50';return(m.A*geomF(m.n,N.geom)*Math.pow(1e-6,m.n)*Math.pow(1e-6,m.p)*Math.pow(L.d*1e-3,-m.p)*(m.r?Math.pow(L.w||1,m.r):1)).toExponential(4);};
+  const val=(L,key,f,def)=>{const m=L.laws[key];return m&&m.on?f(m):def;},list=f=>ord.map(i=>f(S.layers[i])).join(', ');
+  const fname=i=>'layer'+(i+1),flds=ord.slice(1);
+  const comp=flds.map(i=>{const l=res.ref.layers[i];return`if(${num(H)}-y>=${num(l.ztop)} && ${num(H)}-y<${num(l.zbot)}, 1, 0)`;}).join('; ');
+  return[`# ScaleLAB export: natural-scale reference case for ASPECT (visco plastic material model).`,`# Template written without running ASPECT: add boundary conditions, mesh and solver settings for your problem.`,
+  `# Prefactors are in Pa^-n s^-1. They already include grain size, the water term and the lab-data conversion chosen in ScaleLAB,`,`# so grain-size exponents are set to 0 here. Order of every list: ${ord.map(i=>S.layers[i].name).join(', ')} (first = background).`,'',
+  `set Dimension = 2`,`set End time = 0`,`set Use years in output instead of seconds = true`,`set Adiabatic surface temperature = ${num(N.Tp)}`,'',
+  `subsection Geometry model`,`  set Model name = box`,`  subsection Box`,`    set X extent = ${num(W)}`,`    set Y extent = ${num(H)}`,`  end`,`end`,'',
+  `subsection Gravity model`,`  set Model name = vertical`,`  subsection Vertical`,`    set Magnitude = ${num(N.g)}`,`  end`,`end`,'',
+  `subsection Compositional fields`,`  set Number of fields = ${flds.length}`,`  set Names of fields = ${flds.map(fname).join(', ')}`,`end`,'',
+  `subsection Initial composition model`,`  set Model name = function`,`  subsection Function`,`    set Variable names = x,y`,`    set Function expression = ${comp}`,`  end`,`end`,'',
+  `subsection Initial temperature model`,`  set Model name = function`,`  subsection Function`,`    set Variable names = x,y`,`    set Function expression = min(${num(N.Ts)}+${num(N.G/1e3)}*(${num(H)}-y), ${num(N.Tp)}+${num(N.Ga/1e3)}*(${num(H)}-y))`,`  end`,`end`,'',
+  `subsection Material model`,`  set Model name = visco plastic`,`  subsection Visco Plastic`,`    set Viscous flow law = composite`,`    set Reference strain rate = ${N.e.toExponential(2)}`,`    set Minimum viscosity = 1e17`,`    set Maximum viscosity = ${N.cap.toExponential(2)}`,
+  `    set Densities = ${list(L=>num(L.rho))}`,`    set Grain size = 1`,
+  `    set Prefactors for dislocation creep = ${list(L=>pre(L,'disl'))}`,`    set Stress exponents for dislocation creep = ${list(L=>val(L,'disl',m=>num(m.n),'1'))}`,
+  `    set Activation energies for dislocation creep = ${list(L=>val(L,'disl',m=>num(m.E*1e3),'0'))}`,`    set Activation volumes for dislocation creep = ${list(L=>val(L,'disl',m=>(m.V*1e-6).toExponential(3),'0'))}`,
+  `    set Prefactors for diffusion creep = ${list(L=>pre(L,'diff'))}`,`    set Stress exponents for diffusion creep = ${list(()=>'1')}`,`    set Grain size exponents for diffusion creep = ${list(()=>'0')}`,
+  `    set Activation energies for diffusion creep = ${list(L=>val(L,'diff',m=>num(m.E*1e3),'0'))}`,`    set Activation volumes for diffusion creep = ${list(L=>val(L,'diff',m=>(m.V*1e-6).toExponential(3),'0'))}`,
+  `    set Angles of internal friction = 30`,`    set Cohesions = ${num(Math.max(N.C0,1)*1e6)}`,`  end`,`end`].join('\n');
+}
+function genGeneric(S,sc,res,lay,eta){
+  const N=S.nat,si=(L,key)=>{const m=L.laws[key];return m&&m.on?{A_Pa_m_s:m.A*Math.pow(1e-6,m.n)*Math.pow(1e-6,m.p),n:m.n,p:m.p,r:m.r,E_J_mol:m.E*1e3,V_m3_mol:m.V*1e-6,water_term:m.r?L.w:null}:null;};
+  return JSON.stringify({generator:'ScaleLAB',units:'SI',note:'Neutral description of the setup for codes without a dedicated exporter (for example MILET or MILEVA). A is the published prefactor converted to Pa and m, with no lab-geometry conversion applied.',
+   nature:{gravity:N.g,surface_T:N.Ts,potential_T:N.Tp,gradient_K_per_m:N.G/1e3,adiabat_K_per_m:N.Ga/1e3,strain_rate:N.e,viscosity_cutoff:N.cap,lab_data_conversion:N.geom,
+    layers:S.layers.map((L,i)=>{const r=res.ref.layers[i];return{name:L.name,rheology:rockById(L.rock).name,top_m:r.ztop,bottom_m:r.zbot,density:L.rho,grain_size_m:L.d*1e-3,dislocation:si(L,'disl'),diffusion:si(L,'diff'),layer_viscosity:r.rep,brittle_thickness_m:r.brittle};})},
+   scaling:{length:sc.Ls,stress:sc.sigS,viscosity:sc.etaS,time:sc.tS,model_strain_rate:sc.em},
+   lab:{gravity:S.model.g,temperature_C:S.model.Tlab,box:S.box.shape==='rect'?{shape:'box',x_m:S.box.x/100,y_m:S.box.y/100,z_m:S.box.z/100}:{shape:'cylinder',diameter_m:S.box.d/100,z_m:S.box.z/100},
+    layers:S.layers.map((L,i)=>({name:L.name,bottom_m:lay[i].z0/100,top_m:lay[i].z1/100,density:L.rhoM,viscosity:isFinite(eta[i])?eta[i]:null,required_viscosity:sc.layers[i].req,stress_exponent:L.nM||1,material:L.mat})),
+    bodies:S.bodies.map(b=>({name:b.name,shape:b.shape,centre_m:[b.x/100,b.y/100,b.z/100],radius_m:b.shape==='box'?null:b.r/100,height_m:b.shape==='cyl'?b.h/100:null,size_m:b.shape==='box'?[b.lx/100,b.ly/100,b.lz/100]:null,density:b.rhoM,viscosity:b.etaM}))}},null,1);
+}
+// ---------- validation ----------
+function mechRate(m,sig,T,P,dum,W){return Math.exp(lnC(m,T,P,dum,W,'none')+m.n*Math.log(sig));}
+// Lab conditions used for the plausibility test. src:true = range stated by the source; false = typical value.
+const LAB={ol_dry:[1523,1e-5,false],ol_wet:[1523,1e-5,false],dun_dry:[1573,1e-5,true],gran_maf:[1123,1e-6,true],gran_fel:[1173,1e-5,true],
+ diab_col:[1323,1e-5,false],diab_mar:[1323,1e-5,false],diab_wet:[1173,1e-6,false],an_dry:[1400,1e-5,true,3],an_wet:[1300,1e-5,true,3],
+ cpx_dry:[1473,1e-5,true],ecl:[1573,1e-5,false],qtz_wet:[1173,1e-6,true],qtz_gt:[1273,1e-6,false]};
+function selfTest(){
+  const out=[],add=(group,name,got,exp,tol)=>{const rel=Math.abs(got/exp-1);out.push({group,name,got,exp,rel,pass:rel<=tol});};
+  const ow=rockById('ol_wet');
+  add('Published value','Hirth & Kohlstedt 2003, wet olivine diffusion creep rate (1/s) at 1400 °C, 1 GPa, 0.3 MPa, 10 mm, 1000 H/10⁶Si',mechRate(ow.diff,0.3,1673.15,1e9,1e4,1000),7.8e-15,0.05);
+  add('Published value','Hirth & Kohlstedt 2003, wet olivine dislocation creep rate (1/s) at 1400 °C, 1 GPa, 0.3 MPa, 1000 H/10⁶Si',mechRate(ow.disl,0.3,1673.15,1e9,1,1000),2.5e-12,0.05);
+  add('Published value','Hirth & Kohlstedt 2003, mantle-wedge viscosity σ/ε̇ (Pa s) at 1200 °C, 1 GPa, 0.3 MPa, 500 H/10⁶Si',0.3e6/mechRate(ow.disl,0.3,1473.15,1e9,1,500),3e19,0.15);
+  const T0=1400,P0=1e9,d0=1000,e0=1e-14;
+  for(const k of ROCKS){if(k.id==='custom')continue;const W=k.w?k.w.val:1,ms=[['dislocation',k.disl],['diffusion',k.diff]].filter(x=>x[1]);
+    for(const [t,m] of ms){const tag=k.name+', '+t;
+      const sCF=Math.pow(e0/Math.exp(lnC(m,T0,P0,d0,W,'none')),1/m.n),r=solveVisc([m],T0,P0,d0,W,'none',e0);
+      add('Solver = closed form',tag+': stress (MPa)',r.sig,sCF,1e-8);
+      add('Solver = closed form',tag+': viscosity (Pa s)',r.eta,sCF*1e6/(2*e0),1e-8);
+      const r2=solveVisc([m],T0,P0,d0,W,'none',e0*10);add('Recovers n',tag,Math.log(10)/Math.log(r2.sig/r.sig),m.n,1e-6);
+      const a=mechRate(m,10,T0,P0,d0,W),b=mechRate(m,10,T0+50,P0,d0,W);
+      add('Recovers E + PV',tag+' (kJ/mol)',-R*Math.log(b/a)/(1/(T0+50)-1/T0)/1e3,m.E+P0*m.V*1e-9,1e-6);
+      if(m.p)add('Recovers p',tag,-Math.log(mechRate(m,10,T0,P0,d0*10,W)/a)/Math.log(10),m.p,1e-6);
+      if(m.r)add('Recovers r',tag,Math.log(mechRate(m,10,T0,P0,d0,W*10)/a)/Math.log(10),m.r,1e-6);
+      if(m.V)add('Recovers V',tag+' (cm³/mol)',-R*T0*Math.log(mechRate(m,10,T0,P0+1e9,d0,W)/a)/1e9*1e6,m.V,1e-6);
+      for(const g of['axial','shear'])add('Lab-data conversion',tag+', '+g,solveVisc([m],T0,P0,d0,W,g,e0).eta/r.eta,
+        g==='axial'?2/(Math.pow(2,(m.n-1)/m.n)*Math.pow(3,(m.n+1)/(2*m.n))):2/Math.pow(2,(2*m.n-1)/m.n),1e-8);
+      const L=LAB[k.id];if(!L)continue;const dl=t==='diffusion'?(L[3]||10):1000,lo=t==='diffusion'?1:5,sl=Math.pow(L[1]/Math.exp(lnC(m,L[0],3e8,dl,W,'none')),1/m.n);
+      out.push({group:'Lab window',name:tag+': stress for '+L[1].toExponential(0)+' 1/s at '+L[0]+' K'+(L[2]?' (source conditions)':' (typical conditions)')+(t==='diffusion'?', d = '+dl+' µm':''),got:sl,exp:lo+'–2000 MPa',rel:NaN,pass:sl>=lo&&sl<=2000});
+    }
+    if(ms.length===2){for(const d of[10,1000,1e4]){const c=solveVisc([k.disl,k.diff],T0,P0,d,W,'axial',e0),s1=solveVisc([k.disl],T0,P0,d,W,'axial',e0),s2=solveVisc([k.diff],T0,P0,d,W,'axial',e0);
+      const tot=Math.exp(lnC(k.disl,T0,P0,d,W,'axial')+k.disl.n*Math.log(c.sig))+Math.exp(lnC(k.diff,T0,P0,d,W,'axial')+Math.log(c.sig));
+      add('Composite flow',k.name+', d = '+d+' µm: mechanism rates sum to the imposed rate',tot,e0,1e-8);
+      out.push({group:'Composite flow',name:k.name+', d = '+d+' µm: weaker than either mechanism alone',got:c.eta,exp:'≤ '+Math.min(s1.eta,s2.eta).toExponential(3),rel:NaN,pass:c.eta<=Math.min(s1.eta,s2.eta)*(1+1e-9)});}}
+  }
+  const S0=hydrate(EXAMPLE),res=runAll(S0),sc=scaleModel(S0,res);
+  S0.layers.forEach((L,i)=>{const r=res.ref.layers[i],l=sc.layers[i];
+    add('Scaling','Ramberg number ρgh/(ηε̇), model = nature: '+L.name,(L.rho*sc.rhoS)*S0.model.g*l.h/(l.req*sc.em),L.rho*S0.nat.g*r.h/(r.rep*S0.nat.e),1e-9);});
+  return out;
+}
+/*CORE-END*/
+
+// ---------- formatting ----------
+const SUP={'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+const sup=n=>String(n).split('').map(c=>SUP[c]||c).join('');
+function sci(x,d=1){if(!isFinite(x))return'–';if(x===0)return'0';let e=Math.floor(Math.log10(Math.abs(x))),m=x/Math.pow(10,e);if(+m.toFixed(d)>=10){m/=10;e++;}
+  if(e>=-2&&e<4)return (+x.toPrecision(d+1)).toString();return m.toFixed(d)+'×10'+sup(e);}
+const fx=(x,d=1)=>isFinite(x)?(+x.toFixed(d)).toString():'–';
+function dur(s){const y=s/YR;if(y>=1e9)return fx(y/1e9,2)+' Gyr';if(y>=1e6)return fx(y/1e6,2)+' Myr';if(y>=1e3)return fx(y/1e3,1)+' kyr';if(y>=1)return fx(y,1)+' yr';if(s>=86400)return fx(s/86400,1)+' days';return sci(s)+' s';}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=id=>document.getElementById(id);
+const col=i=>`var(--s${(i%6)+1})`;
+function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2200);}
+
+// ---------- state ----------
+const PLANETS={Venus:[8.87,737],Earth:[9.81,288],Mars:[3.71,215],Mercury:[3.70,440],Moon:[1.62,250],Custom:null};
+let S;
+function load(){try{const t=localStorage.getItem('scalelab.v1');if(t)return hydrate(JSON.parse(t));}catch(e){}return hydrate(EXAMPLE);}
+function persist(){try{localStorage.setItem('scalelab.v1',JSON.stringify(S));}catch(e){}}
+function getPath(k){return k.split('.').reduce((o,p)=>o==null?o:o[p],S);}
+function setPath(k,v){const p=k.split('.'),last=p.pop();const o=p.reduce((o,q)=>o[q],S);o[last]=v;}
+const TEXTKEYS=/(\.name|\.rock|\.mat|\.shape|nat\.regime|nat\.avg|nat\.geom|nat\.planet|model\.mode)$/;
+
+// ---------- inputs ----------
+function mechRow(i,key,title,m){
+  if(!m)return'';const f=(k,l)=>`<label>${l}<input class="n" data-k="layers.${i}.laws.${key}.${k}" value="${m[k]}"></label>`;
+  return `<div class="mech"><label class="on"><input type="checkbox" data-k="layers.${i}.laws.${key}.on" ${m.on?'checked':''}>${title}</label>${f('A','A')}${f('n','n')}${f('p','p')}${f('r','r')}${f('E','E')}${f('V','V')}</div>`;
+}
+function stPill(st){return st==='checked'?'<span class="pill good">parameters confirmed</span>':st==='partial'?'<span class="pill info">n, Q confirmed · A to verify</span>':st==='user'?'<span class="pill plain">your values</span>':'<span class="pill warn">verify against source</span>';}
+function renderLayers(){
+  $('layers').innerHTML=S.layers.map((L,i)=>{const r=rockById(L.rock);return `
+  <div class="layer" style="--c:${col(i)}">
+    <div class="top"><label>Layer name<input data-k="layers.${i}.name" value="${esc(L.name)}"></label>
+      <div class="tools"><button class="ghost" data-act="up" data-i="${i}" title="Move up" aria-label="Move layer up">↑</button><button class="ghost" data-act="down" data-i="${i}" title="Move down" aria-label="Move layer down">↓</button><button class="ghost" data-act="del" data-i="${i}" aria-label="Remove layer">Remove</button></div></div>
+    <label>Rheology<select data-k="layers.${i}.rock" data-rock="1">${[...ROCKS.slice(0,-1),...S.userLaws,ROCKS[ROCKS.length-1]].map(k=>`<option value="${k.id}" ${k.id===L.rock?'selected':''}>${esc(k.name)} · ${esc(k.ref)}</option>`).join('')}</select></label>
+    <label>Thickness (km) · min / reference / max<span class="tri"><input class="n" data-k="layers.${i}.hMin" value="${L.hMin}"><input class="n" data-k="layers.${i}.h" value="${L.h}"><input class="n" data-k="layers.${i}.hMax" value="${L.hMax}"></span></label>
+    <div class="grid"><label>Density (kg/m³)<input class="n" data-k="layers.${i}.rho" value="${L.rho}"></label>
+      <label>Grain size (mm)<input class="n" data-k="layers.${i}.d" value="${L.d}"></label>
+      ${r.w?`<label>${r.w.label}<input class="n" data-k="layers.${i}.w" value="${L.w}"></label>`:''}</div>
+    <span class="sub">In the lab</span>
+    <label>Material<select data-k="layers.${i}.mat" data-mat="1"><option value="custom">Custom values</option>${MATERIALS.map(m=>`<option value="${m.id}" ${m.id===L.mat?'selected':''}>${esc(m.name)}</option>`).join('')}</select></label>
+    <div class="grid"><label>Model density (kg/m³)<input class="n" data-k="layers.${i}.rhoM" value="${L.rhoM}"></label>
+      <label>Viscosity η₀ (Pa s) · 0 = not chosen<input class="n" data-k="layers.${i}.etaM" value="${L.etaM}"></label></div>
+    <details><summary>Material rheology</summary><div class="body"><div class="grid">
+      <label>Stress exponent n<input class="n" data-k="layers.${i}.nM" value="${L.nM}"></label><label>η₀ measured at (1/s)<input class="n" data-k="layers.${i}.e0M" value="${L.e0M}"></label>
+      <label>Eₐ (kJ/mol)<input class="n" data-k="layers.${i}.EaM" value="${L.EaM}"></label><label>η₀ measured at (°C)<input class="n" data-k="layers.${i}.T0M" value="${L.T0M}"></label></div>
+      <p class="hint">n = 1 is Newtonian, above 1 shear-thinning, below 1 shear-thickening.</p></div></details>
+    <details><summary>Flow-law parameters</summary><div class="body">
+      ${mechRow(i,'disl','Disloc.',L.laws.disl)}${mechRow(i,'diff','Diffus.',L.laws.diff)}
+      <p class="hint">${esc(r.ref)} ${stPill(r.st)} ${r.note?esc(r.note)+'.':''} Edit any value to override it for this layer.</p></div></details>
+  </div>`;}).join('');
+  $('anchorSel').innerHTML=S.layers.map((L,i)=>`<option value="${i}">${esc(L.name)}</option>`).join('');
+  $('anchorSel').value=S.model.anchor;
+}
+function fillStatic(){
+  $('planet').innerHTML=Object.keys(PLANETS).map(p=>`<option>${p}</option>`).join('');$('planet').value=S.nat.planet||'Custom';
+  document.querySelectorAll('#inputs>section [data-k]').forEach(el=>{if(el.closest('#layers')||el.closest('#bodies'))return;if(el.type==='checkbox')return;const v=getPath(el.dataset.k);if(v!=null)el.value=v;});
+  $('uiCases').checked=!!(S.ui&&S.ui.cases);$('lAnchor').style.display=S.model.mode==='anchor'?'':'none';$('lTime').style.display=S.model.mode==='time'?'':'none';
+}
+function onInput(ev){
+  const el=ev.target,k=el.dataset&&el.dataset.k;if(!k)return;
+  let v;if(el.type==='checkbox')v=el.checked;else if(TEXTKEYS.test(k))v=el.value;else{v=parseFloat(String(el.value).replace(',','.'));if(!isFinite(v))return;}
+  setPath(k,v);
+  if(el.dataset.rock){const L=S.layers[+k.split('.')[1]],r=rockById(v);L.laws={disl:r.disl?{on:true,...r.disl}:null,diff:r.diff?{on:true,...r.diff}:null};L.w=r.w?r.w.val:1;renderLayers();}
+  if(el.dataset.mat){const L=S.layers[+k.split('.')[1]],m=matById(v);if(m){L.rhoM=m.rho;L.etaM=m.eta0;L.nM=m.n;L.e0M=m.e0;L.EaM=m.Ea;L.T0M=m.T0;}renderLayers();}
+  if(el.dataset.bshape)renderBodies();
+  if(k==='model.mode')fillStatic();
+  if(/\.name$/.test(k)){const a=$('anchorSel');a.innerHTML=S.layers.map((L,i)=>`<option value="${i}">${esc(L.name)}</option>`).join('');a.value=S.model.anchor;}
+  if(k==='nat.g'||k==='nat.Ts'){S.nat.planet='Custom';$('planet').value='Custom';}
+  update();
+}
+document.addEventListener('input',onInput);document.addEventListener('change',onInput);
+$('planet').addEventListener('change',e=>{const p=PLANETS[e.target.value];S.nat.planet=e.target.value;if(p){S.nat.g=p[0];S.nat.Ts=p[1];}fillStatic();update();});
+$('layers').addEventListener('click',e=>{const b=e.target.closest('button[data-act]');if(!b)return;const i=+b.dataset.i,a=b.dataset.act,Ls=S.layers;
+  if(a==='del'&&Ls.length>1){Ls.splice(i,1);if(S.model.anchor>=Ls.length)S.model.anchor=Ls.length-1;}
+  if(a==='up'&&i>0)[Ls[i-1],Ls[i]]=[Ls[i],Ls[i-1]];
+  if(a==='down'&&i<Ls.length-1)[Ls[i+1],Ls[i]]=[Ls[i],Ls[i+1]];
+  renderLayers();update();});
+$('bAdd').onclick=()=>{if(S.layers.length>=6){toast('Six layers is the limit');return;}{const u=S.userLaws;S.layers.push(hydrate({nat:S.nat,model:S.model,userLaws:u,layers:[{name:'New layer',rock:ROCKS[0].id,hMin:20,h:40,hMax:60,rho:3300,d:3,rhoM:1100,etaM:0}]}).layers[0]);S.userLaws=u;EXTRA=u;}renderLayers();update();};
+$('bExample').onclick=()=>{S=hydrate(EXAMPLE);fillStatic();renderLayers();renderBodies();lib();update();toast('Venus example loaded');};
+function copy(t,msg){const done=()=>toast(msg);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done).catch(()=>fallbackCopy(t,done));else fallbackCopy(t,done);}
+function fallbackCopy(t,done){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');done();}catch(e){toast('Copy was blocked by the browser');}a.remove();}
+$('bSave').onclick=()=>copy(JSON.stringify(S,null,1),'Setup copied');
+$('bLoad').onclick=()=>{$('dlgTxt').value='';$('dlg').showModal();};
+$('dlgCancel').onclick=()=>$('dlg').close();
+$('dlgOk').onclick=()=>{try{const o=JSON.parse($('dlgTxt').value);if(!o.nat||!o.layers||!o.model)throw 0;S=hydrate(o);fillStatic();renderLayers();renderBodies();lib();update();$('dlg').close();toast('Setup loaded');}catch(e){toast('That text is not a ScaleLAB setup');}};
+
+// ---------- charts ----------
+function niceLin(a,b,n=5){const st=Math.pow(10,Math.floor(Math.log10((b-a)/n))),e=(b-a)/n/st,s=st*(e>=5?10:e>=2?5:e>=1?2:1),t=[];for(let v=Math.ceil(a/s)*s;v<=b+1e-9;v+=s)t.push(+v.toPrecision(10));return t;}
+function chart(host,o){
+  const W=440,H=o.h||420,m={l:46,r:14,t:10,b:38},pw=W-m.l-m.r,ph=H-m.t-m.b;
+  const ax=a=>{const f=a.log?Math.log10:x=>x,d0=f(a.dom[0]),d1=f(a.dom[1]);return v=>(f(v)-d0)/(d1-d0);};
+  const fx_=ax(o.x),fy_=ax(o.y),X=v=>m.l+fx_(v)*pw,Y=v=>o.y.down?m.t+fy_(v)*ph:m.t+(1-fy_(v))*ph;
+  const ticks=a=>{if(!a.log)return niceLin(a.dom[0],a.dom[1]);const t=[],e0=Math.ceil(Math.log10(a.dom[0])-1e-9),e1=Math.floor(Math.log10(a.dom[1])+1e-9),st=Math.ceil((e1-e0+1)/7);for(let e=e0;e<=e1;e+=st)t.push(Math.pow(10,e));return t;};
+  const lab=(a,v)=>a.log?'10'+sup(Math.round(Math.log10(v))):String(v);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.title)}"><defs><clipPath id="cp${o.id}"><rect x="${m.l}" y="${m.t}" width="${pw}" height="${ph}"/></clipPath></defs>`;
+  for(const b of o.bands||[]){const y0=Y(b.y0),hh=Math.max(0,Y(b.y1)-y0);s+=`<rect x="${m.l}" y="${y0}" width="${pw}" height="${hh}" fill="${b.c}" opacity="${b.o||.07}"/>`;if(b.line)s+=`<line x1="${m.l}" x2="${m.l+pw}" y1="${y0}" y2="${y0}" stroke="var(--muted)" stroke-width=".6"/>`;}
+  for(const t of ticks(o.x))s+=`<line x1="${X(t)}" x2="${X(t)}" y1="${m.t}" y2="${m.t+ph}" stroke="var(--line)"/><text x="${X(t)}" y="${m.t+ph+14}" text-anchor="middle">${lab(o.x,t)}</text>`;
+  for(const t of ticks(o.y))s+=`<line x1="${m.l}" x2="${m.l+pw}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)"/><text x="${m.l-6}" y="${Y(t)+3.5}" text-anchor="end">${lab(o.y,t)}</text>`;
+  s+=`<text x="${m.l+pw/2}" y="${H-6}" text-anchor="middle">${o.x.label}</text><text transform="translate(11,${m.t+ph/2}) rotate(-90)" text-anchor="middle">${o.y.label}</text><g clip-path="url(#cp${o.id})">`;
+  const cl=(v,a)=>Math.min(Math.max(v,a.dom[0]),a.dom[1]);
+  for(const q of o.series){if(!q.pts.length)continue;s+=`<path d="${q.pts.map((p,i)=>(i?'L':'M')+X(cl(p[0],o.x)).toFixed(1)+' '+Y(cl(p[1],o.y)).toFixed(1)).join('')}" fill="none" stroke="${q.c}" stroke-width="${q.w||2}" ${q.dash?'stroke-dasharray="5 4"':''} opacity="${q.o||1}" stroke-linejoin="round" stroke-linecap="round"/>`;}
+  for(const b of o.bands||[]){const y0=Y(b.y0),hh=Y(b.y1)-y0;if(b.label&&hh>=13)s+=`<text x="${m.l+pw-5}" y="${y0+Math.min(hh/2+3.5,14)}" text-anchor="end" style="fill:var(--ink);font-weight:500">${esc(b.label)}</text>`;}
+  s+=`</g><line id="g${o.id}" stroke="var(--muted)" stroke-dasharray="2 3" style="display:none"/><rect x="${m.l}" y="${m.t}" width="${pw}" height="${ph}" fill="transparent" id="h${o.id}"/></svg>`;
+  host.querySelectorAll('svg,.blank').forEach(e=>e.remove());let tt=host.querySelector('.tt');if(!tt){tt=document.createElement('div');tt.className='tt';host.appendChild(tt);}
+  host.insertAdjacentHTML('beforeend',s);const svg=host.querySelector('svg'),hit=svg.querySelector('#h'+o.id),g=svg.querySelector('#g'+o.id);
+  const move=ev=>{const r=svg.getBoundingClientRect(),e=ev.touches?ev.touches[0]:ev,px=(e.clientX-r.left)/r.width*W,py=(e.clientY-r.top)/r.height*H;
+    const inv=(a,f)=>{const F=a.log?Math.log10:x=>x,d0=F(a.dom[0]),d1=F(a.dom[1]),v=d0+f*(d1-d0);return a.log?Math.pow(10,v):v;};
+    let html;if(o.hoverY){let fy=(py-m.t)/ph;if(!o.y.down)fy=1-fy;const v=inv(o.y,Math.min(1,Math.max(0,fy)));html=o.tip(v);g.setAttribute('x1',m.l);g.setAttribute('x2',m.l+pw);g.setAttribute('y1',py);g.setAttribute('y2',py);}
+    else{const v=inv(o.x,Math.min(1,Math.max(0,(px-m.l)/pw)));html=o.tip(v);g.setAttribute('y1',m.t);g.setAttribute('y2',m.t+ph);g.setAttribute('x1',px);g.setAttribute('x2',px);}
+    if(!html){tt.style.display='none';return;}g.style.display='';tt.innerHTML=html;tt.style.display='block';
+    const hr=host.getBoundingClientRect();let L=e.clientX-hr.left+12,T=e.clientY-hr.top+12;if(L+tt.offsetWidth>hr.width)L=Math.max(0,e.clientX-hr.left-tt.offsetWidth-12);tt.style.left=L+'px';tt.style.top=T+'px';};
+  const out=()=>{tt.style.display='none';g.style.display='none';};
+  hit.addEventListener('mousemove',move);hit.addEventListener('touchstart',move,{passive:true});hit.addEventListener('touchmove',move,{passive:true});hit.addEventListener('mouseleave',out);hit.addEventListener('touchend',out);
+}
+const decade=(lo,hi)=>[Math.pow(10,Math.floor(Math.log10(lo))),Math.pow(10,Math.ceil(Math.log10(hi)))];
+function blank(host,msg){host.querySelectorAll('svg,.blank').forEach(e=>e.remove());const t=host.querySelector('.tt');if(t)t.style.display='none';host.insertAdjacentHTML('beforeend',`<div class="blank">${msg}</div>`);}
+function drawCharts(res,sc,ok){
+  const ref=res.ref,names=S.layers.map(l=>l.name),shown=S.ui&&S.ui.cases?res.cases:[],all=[ref,...shown],N=S.nat;
+  let lo=Infinity,hi=0,Hmax=0;for(const c of all){Hmax=Math.max(Hmax,c.H);for(const p of c.pts){if(p.eta<lo)lo=p.eta;if(p.eta>hi)hi=p.eta;}}
+  const step=Hmax/1e3>400?100:Hmax/1e3>150?50:Hmax/1e3>40?10:5,zk=Math.ceil(Hmax/1e3/step-1e-9)*step,zdom=[0,zk],mm=sc.Ls*1e6,zdomM=[0,zk*mm];
+  // brittle intervals of the reference case
+  const runs=[];ref.pts.forEach(p=>{if(!p.br)return;const dz=ref.layers[p.li].h/K,a=(p.z-dz/2)/1e3,b=(p.z+dz/2)/1e3,l=runs[runs.length-1];if(l&&Math.abs(l[1]-a)<1e-6)l[1]=b;else runs.push([a,b]);});
+  const bands=f=>ref.layers.map((l,i)=>({y0:l.ztop/1e3*f,y1:l.zbot/1e3*f,c:col(i),label:names[i],line:i>0})).concat(runs.map(r=>({y0:r[0]*f,y1:r[1]*f,c:'var(--muted)',o:.28})));
+  const at=z=>{if(z*1e3>ref.H)return null;let b=null,d=Infinity;for(const p of ref.pts){const q=Math.abs(p.z/1e3-z);if(q<d){d=q;b=p;}}return b;};
+  const seg=(f,g)=>ref.layers.map((l,i)=>({c:col(i),w:2.6,pts:ref.pts.filter(p=>p.li===i).map(p=>[f(p),g(p)])}));
+  const steps=(fx,fz)=>ref.layers.map((l,i)=>l.allBrittle?null:{c:'var(--ink)',w:1.5,pts:[[fx(l,i),fz(l.ztop)],[fx(l,i),fz(l.zbot)]]}).filter(Boolean);
+  // 1 viscosity, nature
+  chart($('cEta'),{id:'a',title:'Viscosity with depth, nature',x:{log:true,dom:decade(lo,hi),label:'Viscosity (Pa s)'},y:{dom:zdom,down:true,label:'Depth (km)'},bands:bands(1),hoverY:true,
+    series:[...shown.map(c=>({c:'var(--muted)',w:1,o:.5,pts:c.pts.map(p=>[p.eta,p.z/1e3])})),...seg(p=>p.eta,p=>p.z/1e3),...steps(l=>l.rep,z=>z/1e3)],
+    tip:z=>{const p=at(z);if(!p)return'';const l=ref.layers[p.li];return `<b>${esc(names[p.li])}</b><br>${fx(p.z/1e3,1)} km · ${fx(p.T,0)} K<br>η ${sci(p.eta)} Pa s${p.br?' · brittle':''}<br>layer value ${l.allBrittle?'–':sci(l.rep)}`;}});
+  // 2 viscosity, lab
+  if(!ok)blank($('cEtaM'),'Set the time scale to see the lab profile.');
+  else{let l2=lo*sc.etaS,h2=hi*sc.etaS;sc.layers.forEach(l=>{if(isFinite(l.yours)){l2=Math.min(l2,l.yours);h2=Math.max(h2,l.yours);}});
+    const yours=sc.layers.map((l,i)=>isFinite(l.yours)?{c:col(i),w:2.4,dash:true,pts:[[l.yours,ref.layers[i].ztop/1e3*mm],[l.yours,ref.layers[i].zbot/1e3*mm]]}:null).filter(Boolean);
+    chart($('cEtaM'),{id:'d',title:'Required viscosity with model depth',x:{log:true,dom:decade(l2,h2),label:'Viscosity (Pa s)'},y:{dom:zdomM,down:true,label:'Model depth (mm)'},bands:bands(mm),hoverY:true,
+      series:[...shown.map(c=>({c:'var(--muted)',w:1,o:.5,pts:c.pts.map(p=>[p.eta*sc.etaS,p.z/1e3*mm])})),...seg(p=>p.eta*sc.etaS,p=>p.z/1e3*mm),...steps(l=>l.rep*sc.etaS,z=>z/1e3*mm),...yours],
+      tip:z=>{const p=at(z/mm);if(!p)return'';const l=ref.layers[p.li],L=S.layers[p.li];return `<b>${esc(names[p.li])}</b><br>${fx(p.z/1e3*mm,1)} mm (${fx(p.z/1e3,1)} km)<br>required η ${sci(p.eta*sc.etaS)} Pa s${p.br?' · brittle':''}<br>layer value ${l.allBrittle?'granular':sci(l.rep*sc.etaS)}<br>yours ${isFinite(sc.layers[p.li].yours)?sci(sc.layers[p.li].yours):'–'}`;}});}
+  // 3 strength, nature
+  let smax=10;for(const p of ref.pts){const v=Math.min(p.sv,p.sb);if(v>smax)smax=v;}
+  const sdom=[0.1,decade(1,smax*1.5)[1]],br=N.regime!=='off';
+  chart($('cStr'),{id:'b',title:'Strength with depth, nature',x:{log:true,dom:sdom,label:'Differential stress (MPa)'},y:{dom:zdom,down:true,label:'Depth (km)'},bands:bands(1),hoverY:true,
+    series:[...(br?[{c:'var(--ink)',w:1.5,dash:true,pts:ref.pts.map(p=>[Math.max(p.sb,1e-9),p.z/1e3])}]:[]),...seg(p=>p.sv,p=>p.z/1e3)],
+    tip:z=>{const p=at(z);return p?`<b>${esc(names[p.li])}</b> · ${fx(p.z/1e3,1)} km<br>viscous ${sci(p.sv)} MPa${isFinite(p.sb)?`<br>brittle ${sci(p.sb)} MPa`:''}<br>${p.br?'brittle holds':'viscous holds'}`:'';}});
+  // 4 strength, lab
+  if(!ok)blank($('cStrM'),'Set the time scale to see the lab profile.');
+  else{const k=1e6*sc.sigS;chart($('cStrM'),{id:'e',title:'Scaled strength with model depth',x:{log:true,dom:decade(sdom[0]*k,sdom[1]*k*.999),label:'Differential stress (Pa)'},y:{dom:zdomM,down:true,label:'Model depth (mm)'},bands:bands(mm),hoverY:true,
+    series:[...(br?[{c:'var(--ink)',w:1.5,dash:true,pts:ref.pts.map(p=>[Math.max(p.sb,1e-9)*k,p.z/1e3*mm])}]:[]),...seg(p=>p.sv*k,p=>p.z/1e3*mm)],
+    tip:z=>{const p=at(z/mm);return p?`<b>${esc(names[p.li])}</b> · ${fx(p.z/1e3*mm,1)} mm<br>viscous ${sci(p.sv*k)} Pa${isFinite(p.sb)?`<br>brittle ${sci(p.sb*k)} Pa`:''}<br>${p.br?'brittle holds':'viscous holds'}`:'';}});}
+  // 5 temperature, nature
+  const Tmax=Math.max(...all.map(c=>c.pts[c.pts.length-1].T)),Tdz=[Math.floor(N.Ts/100)*100,Math.ceil(Tmax/100)*100];
+  chart($('cTz'),{id:'f',title:'Temperature with depth',x:{dom:Tdz,label:'Temperature (K)'},y:{dom:zdom,down:true,label:'Depth (km)'},bands:bands(1),hoverY:true,
+    series:[...shown.map(c=>({c:'var(--muted)',w:1,o:.5,pts:c.pts.map(p=>[p.T,p.z/1e3])})),...seg(p=>p.T,p=>p.z/1e3)],
+    tip:z=>{const p=at(z);return p?`<b>${esc(names[p.li])}</b><br>${fx(p.z/1e3,1)} km · ${fx(p.T,0)} K<br>${sci(p.P/1e9)} GPa`:'';}});
+  // 6 flow laws
+  const Tdom=[Tdz[0],Tdz[1]+100],s3=[],curve=[];let elo=Infinity,ehi=0;
+  S.layers.forEach((L,i)=>{const r=ref.layers[i],f=T=>Math.min(solveVisc(activeMechs(L),T,r.Pmid,L.d*1e3,L.w||1,N.geom,N.e).eta,1e40);curve.push(f);
+    const a=[],b=[];for(let T=Tdom[0];T<=Tdom[1];T+=10){const e=f(T);a.push([T,e]);if(T>=r.Ttop-5&&T<=r.Tbot+5){b.push([T,e]);if(e<elo)elo=e;if(e>ehi)ehi=e;}}
+    s3.push({c:col(i),w:1.2,o:.75,pts:a});s3.push({c:col(i),w:4,pts:b});});
+  chart($('cT'),{id:'c',title:'Viscosity against temperature',x:{dom:Tdom,label:'Temperature (K)'},y:{log:true,dom:decade(Math.max(elo/100,1e10),Math.min(ehi*100,1e36)),label:'Viscosity (Pa s)'},series:s3,
+    tip:T=>`<b>${fx(T,0)} K</b>`+S.layers.map((L,i)=>`<br><span class="sw" style="--c:${col(i)}"></span>${esc(L.name)} ${sci(curve[i](T))}`).join('')});
+  $('legend').innerHTML=S.layers.map((L,i)=>`<span><span class="sw" style="--c:${col(i)}"></span>${esc(L.name)}</span>`).join('');
+}
+
+// ---------- results ----------
+let LAST=null;
+function update(){
+  persist();
+  const badBox=!(S.box.z>0&&(S.box.shape==='rect'?S.box.x>0&&S.box.y>0:S.box.d>0))||S.bodies.some(b=>!(b.rhoM>0&&(b.shape==='box'?b.lx>0&&b.ly>0&&b.lz>0:b.r>0&&(b.shape!=='cyl'||b.h>0))));
+  const bad=badBox||S.layers.some(L=>!(L.hMin>0&&L.h>0&&L.hMax>0&&L.rho>0&&L.d>0&&L.rhoM>0))||!(S.nat.e>0&&S.nat.emin>0&&S.nat.emax>0&&S.nat.g>0&&S.nat.Ts>0&&S.model.kmPerCm>0&&S.model.g>0&&S.nat.cap>0);
+  if(bad){$('tiles').innerHTML='<div class="tile"><span>Input needed</span><b>Check the values</b><small>Thickness, density, grain size, gravity, strain rate, box size and body size must all be positive numbers.</small></div>';return;}
+  const res=runAll(S),sc=scaleModel(S,res);LAST={res,sc};
+  const anchorOk=S.model.mode!=='anchor'||S.layers[sc.ai].etaM>0;
+  const tile=(l,v,sm)=>`<div class="tile"><span>${l}</span><b>${v}</b><small>${sm||''}</small></div>`;
+  $('tiles').innerHTML=!anchorOk?tile('Time scale','Not set',`Enter the viscosity of your material for “${esc(S.layers[sc.ai].name)}”, or switch to a chosen run time.`):
+    tile('1 hour in the lab',dur(sc.natPerHour),'of natural time')+
+    tile('1 cm/yr in nature',sci(sc.vmm_h)+' mm/h','in the model')+
+    tile('Length ratio',sci(sc.Ls),`1 cm = ${S.model.kmPerCm} km`)+
+    tile('Stress ratio σ*',sci(sc.sigS),`ρ* ${fx(sc.rhoS,3)} · g* ${fx(sc.gS,3)}`)+
+    tile('Viscosity ratio η*',sci(sc.etaS),'model / nature')+
+    tile('Model strain rate',sci(sc.em)+' s⁻¹',`stack ${fx(sc.Hm*1e3,0)} mm thick`);
+  const fit=(i,l)=>{if(!anchorOk)return'';if(S.model.mode==='anchor'&&i===sc.ai)return'<span class="pill info">anchor</span>';if(!isFinite(l.ratio))return'<span class="pill plain">not chosen</span>';
+    const r=l.ratio,f=r>=1?r:1/r,t=(r>=1?'×':'÷')+(f<10?fx(f,1):sci(f,0));return f<=2?`<span class="pill good">match ${t}</span>`:f<=10?`<span class="pill warn">off ${t}</span>`:`<span class="pill crit">off ${t}</span>`;};
+  const mats=req=>{const m=MATERIALS.filter(x=>x.kind==='viscous'&&matEta({etaM:x.eta0,nM:x.n,e0M:x.e0,EaM:x.Ea,T0M:x.T0},sc.em,sc.Tk)/req<3&&matEta({etaM:x.eta0,nM:x.n,e0M:x.e0,EaM:x.Ea,T0M:x.T0},sc.em,sc.Tk)/req>1/3).map(x=>esc(x.name));return m.length?m.join('; '):(req>2e8?'Too stiff for a viscous analogue: treat as rigid or brittle':'None in the library within a factor of 3');};
+  $('tModel').innerHTML=`<tr><th>Layer</th><th>Thickness (mm)<br>min / ref / max</th><th>Brittle top (mm)</th><th>Required viscosity (Pa s)</th><th>Range over cases</th><th>Yours at model strain rate</th><th>Fit</th><th>Density for equal ratio / yours</th><th>Library materials within ×3 at model strain rate</th></tr>`+
+   sc.layers.map((l,i)=>{const L=S.layers[i],r=res.ref.layers[i];return `<tr><td><span class="sw" style="--c:${col(i)}"></span>${esc(L.name)}</td>
+    <td class="n">${fx(l.hMin*1e3,1)} / <b>${fx(l.h*1e3,1)}</b> / ${fx(l.hMax*1e3,1)}</td>
+    <td class="n">${S.nat.regime==='off'?'–':r.allBrittle?'all':fx(l.brittle*1e3,1)}</td>
+    <td class="n">${r.allBrittle?'brittle':anchorOk?'<b>'+sci(l.req)+'</b>':'–'}</td><td class="n">${anchorOk?sci(l.reqLo)+' – '+sci(l.reqHi):'–'}</td>
+    <td class="n">${isFinite(l.yours)?sci(l.yours):'–'}</td><td>${fit(i,l)}</td>
+    <td class="n">${fx(l.rhoReq,0)} / ${fx(L.rhoM,0)}</td><td class="wrap">${r.allBrittle?MATERIALS.filter(x=>x.kind==='granular').map(x=>esc(x.name)).join('; ')||'Granular material':anchorOk?mats(l.req):''}</td></tr>`;}).join('');
+  const ck=[];
+  if(anchorOk){
+    ck.push([sc.Re<1e-2?'good':'crit',`Reynolds number ${sci(sc.Re)}: inertia is ${sc.Re<1e-2?'negligible':'not negligible'}.`]);
+    const dr=Math.max(...sc.layers.map((l,i)=>Math.abs(S.layers[i].rhoM-l.rhoReq)/l.rhoReq));
+    ck.push([dr<.03?'good':dr<.1?'warn':'crit',`Model densities are within ${fx(dr*100,1)} % of a constant density ratio. Buoyancy contrasts scale only if this stays small.`]);
+    const dl=sc.layers.filter((l,i)=>!res.ref.layers[i].allBrittle),dq=(dl.length?dl:sc.layers).map(l=>l.req),span=Math.max(...dq)/Math.min(...dq);
+    ck.push([span<1e4?'good':'warn',`Required viscosities of the ductile layers span a factor of ${sci(span,0)}. ${span<1e4?'':'Layers at the cut-off are effectively rigid; model them as brittle or rigid, or lower the cut-off.'}`]);
+    res.ref.layers.forEach((r,i)=>{if(r.allBrittle)return;const nm=S.layers[i].nM||1,d=Math.abs(nm-r.neff);if(d>.5)ck.push(['warn',`${esc(S.layers[i].name)} flows with n ≈ ${fx(r.neff,1)} in nature; its lab material has n = ${fx(nm,1)}. Viscosity matches only near ${sci(S.nat.e)} s⁻¹ (${sci(sc.em)} s⁻¹ in the lab).`]);else ck.push(['good',`${esc(S.layers[i].name)}: stress exponent of the lab material (n = ${fx(nm,1)}) is close to nature (n ≈ ${fx(r.neff,1)}).`]);});
+    if(S.nat.regime!=='off')ck.push(['info',`Brittle material: friction as in nature${S.nat.C0>0?`, cohesion ${sci(sc.C0m)} Pa`:', cohesion as close to zero as possible'}.`]);
+  }
+  $('checks').innerHTML=ck.map(c=>`<div><span class="pill ${c[0]}">${c[0]==='good'?'OK':c[0]==='warn'?'Note':c[0]==='crit'?'Problem':'Info'}</span><span>${c[1]}</span></div>`).join('');
+  $('tNat').innerHTML=`<tr><th>Layer</th><th>Thickness (km)<br>min / ref / max</th><th>Brittle / ductile (km)</th><th>T top – base (K)</th><th>Layer viscosity (Pa s)</th><th>Min – max inside layer</th><th>Envelope over cases</th><th>n eff.</th><th>Mechanism</th></tr>`+
+   res.ref.layers.map((r,i)=>{const L=S.layers[i],capd=r.min>=S.nat.cap*.999;return `<tr><td><span class="sw" style="--c:${col(i)}"></span>${esc(L.name)}</td>
+    <td class="n">${L.hMin} / <b>${L.h}</b> / ${L.hMax}</td><td class="n">${fx(r.brittle/1e3,1)} / ${fx(r.ductile/1e3,1)}</td>
+    <td class="n">${fx(r.Ttop,0)} – ${fx(r.Tbot,0)}</td><td class="n"><b>${sci(r.rep)}</b></td><td class="n">${sci(r.min)} – ${sci(r.max)}</td>
+    <td class="n">${sci(res.env[i].lo)} – ${sci(res.env[i].hi)}</td><td class="n">${fx(r.neff,1)}</td>
+    <td>${r.allBrittle?'<span class="pill plain">brittle throughout</span>':capd?'<span class="pill plain">at cut-off</span>':r.fd>.9?'<span class="pill info">dislocation</span>':r.fd<.1?'<span class="pill info">diffusion</span>':`<span class="pill info">mixed · ${fx(r.fd*100,0)} % disl.</span>`}</td></tr>`;}).join('');
+  drawCharts(res,sc,anchorOk);extras(res,sc,anchorOk);
+}
+function csv(){
+  if(!LAST)return'';const{res,sc}=LAST,rows=[['layer','rheology','h_min_km','h_ref_km','h_max_km','brittle_km','T_top_K','T_base_K','eta_layer_Pa_s','eta_min_in_layer','eta_max_in_layer','eta_env_lo','eta_env_hi','n_eff','model_h_min_mm','model_h_ref_mm','model_h_max_mm','model_brittle_mm','eta_required_Pa_s','eta_required_lo','eta_required_hi','eta_yours','rho_model_required','rho_model_yours']];
+  S.layers.forEach((L,i)=>{const r=res.ref.layers[i],l=sc.layers[i],e=x=>x.toExponential(3);rows.push([L.name,rockById(L.rock).name,L.hMin,L.h,L.hMax,(r.brittle/1e3).toFixed(2),r.Ttop.toFixed(0),r.Tbot.toFixed(0),e(r.rep),e(r.min),e(r.max),e(res.env[i].lo),e(res.env[i].hi),r.neff.toFixed(2),(l.hMin*1e3).toFixed(2),(l.h*1e3).toFixed(2),(l.hMax*1e3).toFixed(2),(l.brittle*1e3).toFixed(2),e(l.req),e(l.reqLo),e(l.reqHi),isFinite(l.yours)?e(l.yours):'',l.rhoReq.toFixed(0),L.rhoM]);});
+  rows.push([]);rows.push(['length_ratio',sc.Ls]);rows.push(['stress_ratio',sc.sigS]);rows.push(['viscosity_ratio',sc.etaS]);rows.push(['time_ratio',sc.tS]);rows.push(['natural_seconds_per_model_hour',sc.natPerHour]);rows.push(['model_strain_rate_per_s',sc.em]);
+  return rows.map(r=>r.map(c=>/[",]/.test(String(c))?'"'+String(c).replace(/"/g,'""')+'"':c).join(',')).join('\n');
+}
+$('bCsv').onclick=()=>copy(csv(),'Results copied as CSV');
+function lib(){
+  const row=(k,t,m)=>`<tr><td>${esc(k.name)}</td><td>${t}</td><td class="n">${sci(m.A,2)}</td><td class="n">${m.n}</td><td class="n">${m.p}</td><td class="n">${m.r}</td><td class="n">${m.E}</td><td class="n">${m.V}</td><td>${k.w?esc(k.w.label):'–'}</td><td>${esc(k.ref)}</td><td>${stPill(k.st)}${k.st==='user'?` <button class="ghost" data-ldel="${k.id}">Remove</button>`:''}</td></tr>`;
+  $('tLib').innerHTML='<tr><th>Rock</th><th>Mechanism</th><th>A</th><th>n</th><th>p</th><th>r</th><th>E</th><th>V</th><th>Water term</th><th>Source</th><th>Status</th></tr>'+
+   [...ROCKS.filter(k=>k.id!=='custom'),...S.userLaws].map(k=>(k.disl?row(k,'dislocation',k.disl):'')+(k.diff?row(k,'diffusion',k.diff):'')).join('');
+}
+function validation(){
+  const t=selfTest(),g={};t.forEach(x=>{(g[x.group]=g[x.group]||[0,0])[x.pass?0:1]++;});const fail=t.filter(x=>!x.pass).length;
+  $('vSum').innerHTML=fail?`<span class="pill crit">${fail} of ${t.length} failed</span>`:`<span class="pill good">${t.length} of ${t.length} passed</span>`;
+  $('tValSum').innerHTML='<tr><th>Test group</th><th>Passed</th><th>Failed</th></tr>'+Object.keys(g).map(k=>`<tr><td>${k}</td><td class="n">${g[k][0]}</td><td class="n">${g[k][1]}</td></tr>`).join('');
+  const f=v=>typeof v==='number'?(Math.abs(v)>=1e4||Math.abs(v)<1e-2?v.toExponential(3):(+v.toPrecision(5)).toString()):esc(v);
+  $('tVal').innerHTML='<tr><th>Group</th><th>Test</th><th>Computed</th><th>Expected</th><th>Result</th></tr>'+t.map(x=>`<tr><td>${x.group}</td><td class="wrap">${esc(x.name)}</td><td class="n">${f(x.got)}</td><td class="n">${f(x.exp)}</td><td><span class="pill ${x.pass?'good':'crit'}">${x.pass?'pass':'fail'}</span></td></tr>`).join('');
+}
+// ---------- bodies ----------
+function renderBodies(){
+  const f=(i,k,l)=>`<label>${l}<input class="n" data-k="bodies.${i}.${k}" value="${S.bodies[i][k]}"></label>`;
+  $('bodies').innerHTML=S.bodies.map((b,i)=>`<div class="layer" style="--c:var(--ink2)">
+    <div class="top"><label>Body name<input data-k="bodies.${i}.name" value="${esc(b.name)}"></label><div class="tools"><button class="ghost" data-bdel="${i}">Remove</button></div></div>
+    <div class="grid"><label>Shape<select data-k="bodies.${i}.shape" data-bshape="1"><option value="sphere" ${b.shape==='sphere'?'selected':''}>Sphere</option><option value="cyl" ${b.shape==='cyl'?'selected':''}>Vertical cylinder</option><option value="box" ${b.shape==='box'?'selected':''}>Box</option></select></label>
+      ${f(i,'x','Centre x (cm)')}${f(i,'y','Centre y (cm)')}${f(i,'z','Centre z (cm)')}</div>
+    <div class="grid">${b.shape==='sphere'?f(i,'r','Radius (cm)'):b.shape==='cyl'?f(i,'r','Radius (cm)')+f(i,'h','Height (cm)'):f(i,'lx','Size x (cm)')+f(i,'ly','Size y (cm)')+f(i,'lz','Size z (cm)')}
+      ${f(i,'rhoM','Density (kg/m³)')}${f(i,'etaM','Viscosity (Pa s)')}</div></div>`).join('')||'<p class="hint">No bodies. Add one for a drip, a plume source or an inclusion.</p>';
+}
+$('bodies').addEventListener('click',e=>{const b=e.target.closest('button[data-bdel]');if(!b)return;S.bodies.splice(+b.dataset.bdel,1);renderBodies();update();});
+$('bAddBody').onclick=()=>{if(S.bodies.length>=6){toast('Six bodies is the limit');return;}S.bodies.push({name:'Body '+(S.bodies.length+1),shape:'sphere',x:0,y:0,z:5,r:1,h:2,lx:2,ly:2,lz:2,rhoM:1200,etaM:1e4});renderBodies();update();};
+
+// ---------- 3D view and section ----------
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function prep(cv,h){const w=cv.clientWidth||600,d=window.devicePixelRatio||1;cv.width=w*d;cv.height=h*d;const c=cv.getContext('2d');c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,w,h);c.font='11px '+cssv('--font');return{c,w,h};}
+let AZ=35,GEO=null;
+function draw3D(){
+  if(!GEO)return;const lay=GEO.lay,B=S.box,rect=B.shape==='rect',hx=(rect?B.x:B.d)/2,hy=(rect?B.y:B.d)/2,{c,w,h}=prep($('cv3'),360);
+  const a=AZ*Math.PI/180,el=24*Math.PI/180,ca=Math.cos(a),sa=Math.sin(a),ce=Math.cos(el),se=Math.sin(el),Rr=rect?Math.hypot(hx,hy):hx,ztop=Math.max(B.z,lay[0].z1);
+  const k=Math.min((w-170)/(2*Rr),(h-56)/(ztop*ce+2*Rr*se)),cx=(w-130)/2+10,cy=h-30-Rr*se*k;
+  const P=(x,y,z)=>{const X=x*ca-y*sa,D=x*sa+y*ca;return[cx+k*X,cy-k*z*ce+k*D*se];},ink=cssv('--ink'),line=cssv('--muted');
+  const poly=(pts,fill,al,stroke)=>{c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();if(fill){c.globalAlpha=al;c.fillStyle=fill;c.fill();}c.globalAlpha=1;if(stroke){c.strokeStyle=stroke;c.lineWidth=.8;c.stroke();}};
+  const prism=(x0,y0,ax,ay,z0,z1,fill,al,top,st)=>{const cr=[[ax,ay],[-ax,ay],[-ax,-ay],[ax,-ay]],nm=[[0,1],[-1,0],[0,-1],[1,0]];
+    for(let i=0;i<4;i++){const d=nm[i][0]*sa+nm[i][1]*ca;if(d<=0)continue;const p=cr[i],q=cr[(i+1)%4];poly([P(x0+p[0],y0+p[1],z0),P(x0+q[0],y0+q[1],z0),P(x0+q[0],y0+q[1],z1),P(x0+p[0],y0+p[1],z1)],fill,al*(.75+.25*d),st);}
+    if(top)poly(cr.map(p=>P(x0+p[0],y0+p[1],z1)),fill,al*.8,st);};
+  const cyl=(x0,y0,r,z0,z1,fill,al,top,st)=>{const p0=P(x0,y0,z0),p1=P(x0,y0,z1),rx=k*r,ry=k*r*se;c.beginPath();c.moveTo(p1[0]-rx,p1[1]);c.lineTo(p0[0]-rx,p0[1]);c.ellipse(p0[0],p0[1],rx,ry,0,Math.PI,0,true);c.lineTo(p1[0]+rx,p1[1]);c.ellipse(p1[0],p1[1],rx,ry,0,0,Math.PI,false);c.closePath();
+    c.globalAlpha=al;c.fillStyle=fill;c.fill();c.globalAlpha=1;if(st){c.strokeStyle=st;c.lineWidth=.8;c.stroke();}
+    if(top){c.beginPath();c.ellipse(p1[0],p1[1],rx,ry,0,0,2*Math.PI);c.globalAlpha=al*.8;c.fill();c.globalAlpha=1;if(st)c.stroke();}};
+  for(let i=lay.length-1;i>=0;i--){const col_=cssv('--s'+(i%6+1));(rect?prism:cyl).apply(null,rect?[0,0,hx,hy,lay[i].z0,lay[i].z1,col_,.5,i===0,line]:[0,0,hx,lay[i].z0,lay[i].z1,col_,.5,i===0,line]);}
+  // tank outline
+  c.setLineDash([4,3]);if(rect)prism(0,0,hx,hy,0,B.z,null,0,true,ink);else cyl(0,0,hx,0,B.z,'transparent',0,true,ink);c.setLineDash([]);
+  // bodies, far to near
+  const bcol=cssv('--ink2');[...S.bodies].sort((p,q)=>(p.x*sa+p.y*ca)-(q.x*sa+q.y*ca)).forEach(b=>{
+    if(b.shape==='sphere'){const p=P(b.x,b.y,b.z),g=c.createRadialGradient(p[0]-k*b.r*.3,p[1]-k*b.r*.3,k*b.r*.1,p[0],p[1],k*b.r);g.addColorStop(0,cssv('--muted'));g.addColorStop(1,ink);c.beginPath();c.arc(p[0],p[1],k*b.r,0,2*Math.PI);c.globalAlpha=.9;c.fillStyle=g;c.fill();c.globalAlpha=1;}
+    else if(b.shape==='cyl')cyl(b.x,b.y,b.r,b.z-b.h/2,b.z+b.h/2,bcol,.9,true,ink);else prism(b.x,b.y,b.lx/2,b.ly/2,b.z-b.lz/2,b.z+b.lz/2,bcol,.9,true,ink);
+    const p=P(b.x,b.y,b.z+bodyHalf(b));c.fillStyle=ink;c.textAlign='center';c.fillText(b.name,p[0],p[1]-5);});
+  // labels
+  c.textAlign='left';const lx=cx+k*Rr+14;let ly=-1e9;lay.forEach((l,i)=>{const y=Math.max(cy-k*((l.z0+l.z1)/2)*ce,ly+27);ly=y;c.fillStyle=cssv('--s'+(i%6+1));c.fillRect(lx,y-8,8,8);c.fillStyle=ink;c.fillText(S.layers[i].name,lx+12,y);c.fillStyle=line;c.fillText(fx((l.z1-l.z0)*10,1)+' mm',lx+12,y+12);});
+  c.fillStyle=cssv('--ink2');c.textAlign='center';c.fillText(rect?`${B.x} × ${B.y} × ${B.z} cm (x × y × z) · drag to rotate`:`⌀ ${B.d} × ${B.z} cm · drag to rotate`,cx,h-8);
+}
+function drawSection(){
+  if(!GEO)return;const lay=GEO.lay,B=S.box,W=B.shape==='rect'?B.x:B.d,{c,w,h}=prep($('cvS'),360),ys=S.bodies.length?S.bodies[0].y:0,ztop=Math.max(B.z,lay[0].z1);
+  const m={l:40,r:14,t:14,b:34},k=Math.min((w-m.l-m.r)/W,(h-m.t-m.b)/ztop),x0=m.l+((w-m.l-m.r)-k*W)/2+k*W/2,y0=h-m.b,X=x=>x0+k*x,Y=z=>y0-k*z,ink=cssv('--ink'),line=cssv('--muted');
+  lay.forEach((l,i)=>{c.globalAlpha=.5;c.fillStyle=cssv('--s'+(i%6+1));c.fillRect(X(-W/2),Y(l.z1),k*W,k*(l.z1-l.z0));c.globalAlpha=1;c.strokeStyle=line;c.lineWidth=.6;c.strokeRect(X(-W/2),Y(l.z1),k*W,k*(l.z1-l.z0));});
+  c.fillStyle=cssv('--ink2');S.bodies.forEach(b=>{const dy=Math.abs(ys-b.y);c.globalAlpha=.92;
+    if(b.shape==='sphere'){if(dy<b.r){c.beginPath();c.arc(X(b.x),Y(b.z),k*Math.sqrt(b.r*b.r-dy*dy),0,2*Math.PI);c.fill();}}
+    else if(b.shape==='cyl'){if(dy<b.r){const hw=Math.sqrt(b.r*b.r-dy*dy);c.fillRect(X(b.x-hw),Y(b.z+b.h/2),2*k*hw,k*b.h);}}
+    else if(dy<b.ly/2)c.fillRect(X(b.x-b.lx/2),Y(b.z+b.lz/2),k*b.lx,k*b.lz);c.globalAlpha=1;});
+  c.strokeStyle=ink;c.lineWidth=1.2;c.setLineDash([4,3]);c.strokeRect(X(-W/2),Y(B.z),k*W,k*B.z);c.setLineDash([]);
+  c.fillStyle=cssv('--ink2');c.textAlign='center';for(const t of niceLin(-W/2,W/2,6)){c.fillText(t,X(t),y0+13);c.fillRect(X(t),y0,1,3);}
+  c.fillText(`x (cm) · section at y = ${fx(ys,1)} cm`,x0,h-6);c.textAlign='right';for(const t of niceLin(0,ztop,5)){c.fillText(t,X(-W/2)-6,Y(t)+3.5);c.fillRect(X(-W/2)-3,Y(t),3,1);}
+  c.save();c.translate(11,(m.t+y0)/2);c.rotate(-Math.PI/2);c.textAlign='center';c.fillText('z (cm)',0,0);c.restore();
+}
+(()=>{const cv=$('cv3');let down=null;cv.addEventListener('pointerdown',e=>{down=[e.clientX,AZ];cv.setPointerCapture(e.pointerId);});
+  cv.addEventListener('pointermove',e=>{if(!down)return;AZ=down[1]-(e.clientX-down[0])*.5;draw3D();});cv.addEventListener('pointerup',()=>down=null);cv.addEventListener('pointercancel',()=>down=null);
+  window.addEventListener('resize',()=>{draw3D();drawSection();});})();
+
+// ---------- geometry, recipe, drip, exports ----------
+const vol=v=>v>=1000?fx(v/1000,2)+' L':fx(v,0)+' cm³',mass=m=>m>=1?fx(m,2)+' kg':fx(m*1000,0)+' g';
+let EXP={};
+function extras(res,sc,ok){
+  const lay=layout(S,sc),eta=labEta(S,sc,res),B=S.box,W=B.shape==='rect'?B.x:B.d,D=B.shape==='rect'?B.y:B.d;GEO={lay};
+  $('gRect').style.display=B.shape==='rect'?'contents':'none';$('gCyl').style.display=B.shape==='rect'?'none':'';
+  draw3D();drawSection();
+  const ck=[],Hs=lay[0].z1;ck.push([Hs<=B.z+1e-9?'good':'crit',`The layer stack is ${fx(Hs,1)} cm high in a ${fx(B.z,1)} cm deep ${B.shape==='rect'?'box':'tank'}${Hs<=B.z?'':': it does not fit. Raise the box or increase km per cm.'}`]);
+  ck.push([W/Hs>=2?'good':'warn',`Width to stack height is ${fx(Math.min(W,D)/Hs,1)}. ${Math.min(W,D)/Hs>=2?'Side walls are far enough for a central structure.':'Side-wall drag will affect most of the model.'}`]);
+  S.bodies.forEach(b=>{const hw=b.shape==='box'?Math.max(b.lx,b.ly)/2:b.r,out=b.z-bodyHalf(b)<-1e-9||b.z+bodyHalf(b)>Hs+1e-9||(B.shape==='rect'?Math.abs(b.x)+hw>B.x/2||Math.abs(b.y)+hw>B.y/2:Math.hypot(b.x,b.y)+hw>B.d/2);
+    if(out)ck.push(['crit',`${esc(b.name)} reaches outside the layer stack or the walls.`]);});
+  $('gChecks').innerHTML=ck.map(c=>`<div><span class="pill ${c[0]}">${c[0]==='good'?'OK':c[0]==='warn'?'Note':'Problem'}</span><span>${c[1]}</span></div>`).join('');
+  const rc=recipe(S,sc,lay);
+  $('tRecipe').innerHTML='<tr><th>Material for</th><th>Volume</th><th>Density (kg/m³)</th><th>Mass</th><th>Material</th></tr>'+rc.map((r,j)=>{const L=r.kind==='layer'?S.layers[r.i]:null,m=L&&matById(L.mat);
+    return`<tr><td>${L?`<span class="sw" style="--c:${col(r.i)}"></span>`:'<span class="sw" style="--c:var(--ink2)"></span>'}${esc(r.name)}</td><td class="n">${vol(r.vol)}</td><td class="n">${fx(r.mass/r.vol*1e6,0)}</td><td class="n"><b>${mass(r.mass)}</b></td><td>${L?(m?esc(m.name):'Custom'):'Body'}</td></tr>`;}).join('')+
+    `<tr><td><b>Total</b></td><td class="n">${vol(rc.reduce((s,r)=>s+r.vol,0))}</td><td></td><td class="n"><b>${mass(rc.reduce((s,r)=>s+r.mass,0))}</b></td><td></td></tr>`;
+  // drip
+  const paths=ok?S.bodies.map(b=>dripPath(b,S,sc,lay,eta)):[],endTxt={floor:'reaches the floor',surface:'rises to the surface',neutral:'stops at neutral buoyancy',stalled:'held by a brittle or undefined layer',outside:'outside the layers'};
+  $('tDrip').innerHTML=!ok?'':'<tr><th>Body</th><th>Starts in</th><th>Density contrast (kg/m³)</th><th>Equivalent radius</th><th>Stokes speed, lab</th><th>Same in nature</th><th>Outcome</th><th>Lab time</th><th>Natural time</th></tr>'+
+    S.bodies.map((b,j)=>{const p=paths[j],h=p.host>=0?S.layers[p.host]:null,vn=Math.abs(p.v0)/(sc.Ls/sc.tS);return`<tr><td>${esc(b.name)}</td><td>${h?esc(h.name):'–'}</td><td class="n">${h?fx(b.rhoM-h.rhoM,0):'–'}</td><td class="n">${fx(p.r,2)} cm · ${fx(p.r/100/sc.Ls/1e3,1)} km</td>
+      <td class="n">${sci(Math.abs(p.v0)*3.6e6)} mm/h ${p.v0>0?'down':p.v0<0?'up':''}</td><td class="n">${sci(vn*YR*100)} cm/yr</td><td>${endTxt[p.end]}</td><td class="n">${p.t>0?dur(p.t):'–'}</td><td class="n">${p.t>0?dur(p.t/sc.tS):'–'}</td></tr>`;}).join('');
+  const rt=ok?rtTimes(S,lay,eta):[];
+  $('rt').innerHTML=!ok?'':rt.length?rt.map(r=>`<div><span class="pill warn">Unstable</span><span>${esc(S.layers[r.i].name)} is ${fx(r.dr,0)} kg/m³ denser than ${esc(S.layers[r.i+1].name)} below it. Rayleigh–Taylor growth time about ${dur(r.tau)} in the lab, ${dur(r.tau/sc.tS)} in nature.</span></div>`).join(''):'<div><span class="pill good">Stable</span><span>No layer is denser than the layer below it, so the stack itself does not overturn.</span></div>';
+  if(!ok||!paths.some(p=>p.pts.length>1))blank($('cDrip'),ok?'No body moves: check density contrasts and layer viscosities.':'Set the time scale first.');
+  else{const tm=Math.max(...paths.map(p=>p.t))/3600||1;chart($('cDrip'),{id:'g',title:'Body height over time',h:340,x:{dom:[0,tm*1.05],label:'Lab time (h)'},y:{dom:[0,Math.ceil(Hs)],label:'Height above floor (cm)'},
+    bands:lay.map((l,i)=>({y0:l.z1,y1:l.z0,c:col(i),label:S.layers[i].name})),series:paths.map((p,j)=>({c:'var(--ink)',w:2.2,dash:j%2===1,pts:p.pts.map(q=>[q[0]/3600,q[1]])})),
+    tip:t=>`<b>${fx(t,2)} h in the lab</b><br>${dur(t*3600/sc.tS)} in nature`+paths.map((p,j)=>{let z=p.pts[p.pts.length-1][1];for(let i=1;i<p.pts.length;i++)if(t*3600<=p.pts[i][0]){const a=p.pts[i-1],b=p.pts[i];z=a[1]+(b[1]-a[1])*(t*3600-a[0])/(b[0]-a[0]||1);break;}return`<br>${esc(S.bodies[j].name)} at ${fx(z,2)} cm`;}).join('')});}
+  // flow curves
+  const fl=S.layers.map((L,i)=>L.etaM>0&&isFinite(eta[i])?i:-1).filter(i=>i>=0);
+  if(!ok||!fl.length)blank($('cFlow'),'Choose a material for at least one layer to see its flow curve.');
+  else{const xd=[Math.pow(10,Math.floor(Math.log10(sc.em))-3),Math.pow(10,Math.ceil(Math.log10(sc.em))+3)],ser=[];let lo=Infinity,hi=0;
+    fl.forEach(i=>{const pts=[];for(let e=Math.log10(xd[0]);e<=Math.log10(xd[1])+1e-9;e+=.25){const v=matEta(S.layers[i],Math.pow(10,e),sc.Tk);pts.push([Math.pow(10,e),v]);lo=Math.min(lo,v);hi=Math.max(hi,v);}
+      const rq=sc.layers[i].req;lo=Math.min(lo,rq);hi=Math.max(hi,rq);ser.push({c:col(i),w:2.4,pts});ser.push({c:'var(--ink)',w:2,pts:[[sc.em/2.5,rq],[sc.em*2.5,rq]]});});
+    const yd=decade(lo/2,hi*2);ser.unshift({c:'var(--muted)',w:1,dash:true,pts:[[sc.em,yd[0]],[sc.em,yd[1]]]});
+    chart($('cFlow'),{id:'h',title:'Lab material flow curves',h:340,x:{log:true,dom:xd,label:'Strain rate (1/s)'},y:{log:true,dom:yd,label:'Viscosity (Pa s)'},series:ser,
+      tip:e=>`<b>${sci(e)} s⁻¹</b>`+fl.map(i=>`<br><span class="sw" style="--c:${col(i)}"></span>${esc(S.layers[i].name)} ${sci(matEta(S.layers[i],e,sc.Tk))}`).join('')});}
+  EXP={ok,lamem:()=>genLaMEM(S,sc,lay,eta),aspect:()=>genASPECT(S,res),generic:()=>genGeneric(S,sc,res,lay,eta)};showExport();
+}
+function showExport(){const k=$('expSel').value;$('expTxt').value=k!=='aspect'&&!EXP.ok?'Set the time scale first.':EXP[k]?EXP[k]():'';}
+$('expSel').addEventListener('change',showExport);
+$('bExpCopy').onclick=()=>copy($('expTxt').value,'Export copied');
+const framed=(()=>{try{return window.self!==window.top;}catch(e){return true;}})();
+if(framed)$('bExpDl').style.display='none';
+$('bExpDl').onclick=()=>{const k=$('expSel').value,n={lamem:'scalelab_lamem.jl',aspect:'scalelab_aspect.prm',generic:'scalelab_setup.json'}[k],a=document.createElement('a');a.href=URL.createObjectURL(new Blob([$('expTxt').value],{type:'text/plain'}));a.download=n;document.body.appendChild(a);a.click();a.remove();};
+
+// ---------- libraries: in-app law editor, materials ----------
+function matLib(){$('tMat').innerHTML='<tr><th>Material</th><th>Kind</th><th>Density</th><th>η₀ (Pa s)</th><th>n</th><th>Ref. rate (1/s)</th><th>Eₐ (kJ/mol)</th><th>T₀ (°C)</th><th>Friction (°)</th><th>Cohesion (Pa)</th><th>Note</th></tr>'+
+  MATERIALS.map(m=>`<tr><td>${esc(m.name)}</td><td>${m.kind}</td><td class="n">${m.rho}</td><td class="n">${m.kind==='granular'?'–':sci(m.eta0)}</td><td class="n">${m.kind==='granular'?'–':m.n}</td><td class="n">${m.kind==='granular'?'–':sci(m.e0)}</td><td class="n">${m.Ea||'–'}</td><td class="n">${m.T0}</td><td class="n">${m.phi||'–'}</td><td class="n">${m.C||'–'}</td><td class="wrap">${esc(m.note||'')}</td></tr>`).join('');}
+const LF=['A','n','p','r','E','V'];
+$('bAddLaw').onclick=()=>{$('lawErr').textContent='';$('dlgLaw').showModal();};
+$('lawCancel').onclick=()=>$('dlgLaw').close();
+$('lawOk').onclick=()=>{const g=id=>$(id).value.trim(),mech=p=>$(p+'on').checked?Object.fromEntries(LF.map(k=>[k,parseFloat(g(p+k))||0])):null;
+  const k={id:'user_'+Date.now().toString(36),name:g('lawName'),ref:g('lawRef')||'your values',st:'user',note:'',w:g('lawW')?{label:g('lawW'),val:parseFloat(g('lawWv'))||1}:undefined,disl:mech('ld'),diff:mech('lf')};
+  const err=checkLaw(k);if(err.length){$('lawErr').textContent='Not saved: '+err.join('; ')+'.';return;}
+  S.userLaws.push(k);EXTRA=S.userLaws;$('dlgLaw').close();renderLayers();lib();update();toast('Flow law added to this setup');};
+$('tLib').addEventListener('click',e=>{const b=e.target.closest('button[data-ldel]');if(!b)return;const id=b.dataset.ldel;if(S.layers.some(L=>L.rock===id)){toast('A layer still uses this law');return;}S.userLaws=S.userLaws.filter(k=>k.id!==id);EXTRA=S.userLaws;renderLayers();lib();update();});
+$('bLibJson').onclick=()=>copy(JSON.stringify({laws:[...ROCKS.filter(k=>k.id!=='custom'),...S.userLaws].map(lawToJson)},null,1),'Library copied: paste it into data/flowlaws.json');
+// ---------- shared database (data/*.json in the repository) ----------
+async function loadData(){
+  try{const r=await fetch('data/flowlaws.json',{cache:'no-store'});if(r.ok){const j=await r.json(),ls=(j.laws||[]).map(lawFromJson).filter(k=>!checkLaw(k).length);if(ls.length){const cu=ROCKS.find(k=>k.id==='custom');ROCKS.length=0;ROCKS.push(...ls,cu);$('dbState').innerHTML='<span class="pill good">shared database loaded</span>';}}}catch(e){}
+  try{const r=await fetch('data/materials.json',{cache:'no-store'});if(r.ok){const j=await r.json();if(j.materials&&j.materials.length){MATERIALS.length=0;MATERIALS.push(...j.materials);}}}catch(e){}
+  renderLayers();lib();matLib();validation();update();
+}
+
+S=load();fillStatic();renderLayers();renderBodies();lib();matLib();validation();update();loadData();
+</script>
+</body>
+</html>

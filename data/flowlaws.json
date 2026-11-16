@@ -1,0 +1,382 @@
+{
+ "laws": [
+  {
+   "id": "ol_dry",
+   "name": "Olivine, dry",
+   "ref": "Hirth & Kohlstedt 2003",
+   "status": "checked",
+   "note": "Source gives a range for V: see its Table 2 (disl.) and 2–10 cm³/mol (diff.)",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 110000,
+    "n": 3.5,
+    "p": 0,
+    "r": 0,
+    "E": 530,
+    "V": 15
+   },
+   "diff": {
+    "enabled": true,
+    "A": 1500000000,
+    "n": 1,
+    "p": 3,
+    "r": 0,
+    "E": 375,
+    "V": 6
+   }
+  },
+  {
+   "id": "ol_wet",
+   "name": "Olivine, wet (constant C_OH)",
+   "ref": "Hirth & Kohlstedt 2003",
+   "status": "checked",
+   "note": "",
+   "water_label": "C_OH (H/10⁶ Si)",
+   "water_default": 1000,
+   "disl": {
+    "enabled": true,
+    "A": 90,
+    "n": 3.5,
+    "p": 0,
+    "r": 1.2,
+    "E": 480,
+    "V": 11
+   },
+   "diff": {
+    "enabled": true,
+    "A": 1000000,
+    "n": 1,
+    "p": 3,
+    "r": 1,
+    "E": 335,
+    "V": 4
+   }
+  },
+  {
+   "id": "dun_dry",
+   "name": "Dunite, dry (Åheim)",
+   "ref": "Chopra & Paterson 1984",
+   "status": "memory",
+   "note": "",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 25000,
+    "n": 3.6,
+    "p": 0,
+    "r": 0,
+    "E": 535,
+    "V": 0
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0
+   }
+  },
+  {
+   "id": "gran_maf",
+   "name": "Mafic granulite",
+   "ref": "Wilks & Carter 1990",
+   "status": "checked",
+   "note": "Confirmed through a later compilation table, not the original paper",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 14000,
+    "n": 4.2,
+    "p": 0,
+    "r": 0,
+    "E": 445,
+    "V": 0
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0
+   }
+  },
+  {
+   "id": "gran_fel",
+   "name": "Felsic granulite",
+   "ref": "Wen et al. 2021",
+   "status": "checked",
+   "note": "",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.000039810717055349695,
+    "n": 4.2,
+    "p": 0,
+    "r": 0,
+    "E": 260,
+    "V": 0
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0
+   }
+  },
+  {
+   "id": "diab_col",
+   "name": "Diabase, dry (Columbia)",
+   "ref": "Mackwell et al. 1998",
+   "status": "partial",
+   "note": "",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 190,
+    "n": 4.7,
+    "p": 0,
+    "r": 0,
+    "E": 485,
+    "V": 0
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0
+   }
+  },
+  {
+   "id": "diab_mar",
+   "name": "Diabase, dry (Maryland)",
+   "ref": "Mackwell et al. 1998",
+   "status": "partial",
+   "note": "",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 8,
+    "n": 4.7,
+    "p": 0,
+    "r": 0,
+    "E": 485,
+    "V": 0
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0
+   }
+  },
+  {
+   "id": "diab_wet",
+   "name": "Diabase, as-received (wet)",
+   "ref": "Shelton & Tullis 1981",
+   "status": "memory",
+   "note": "",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.0002,
+    "n": 3.4,
+    "p": 0,
+    "r": 0,
+    "E": 260,
+    "V": 0
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0
+   }
+  },
+  {
+   "id": "an_dry",
+   "name": "Anorthite, dry",
+   "ref": "Rybacki & Dresen 2000",
+   "status": "checked",
+   "note": "Rybacki et al. 2006 add V ≈ 24 cm³/mol",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 5011872336272.715,
+    "n": 3,
+    "p": 0,
+    "r": 0,
+    "E": 648,
+    "V": 0
+   },
+   "diff": {
+    "enabled": true,
+    "A": 1258925411794.1663,
+    "n": 1,
+    "p": 3,
+    "r": 0,
+    "E": 467,
+    "V": 0
+   }
+  },
+  {
+   "id": "an_wet",
+   "name": "Anorthite, wet",
+   "ref": "Rybacki & Dresen 2000",
+   "status": "checked",
+   "note": "Rybacki et al. 2006 add V ≈ 38 cm³/mol and fH₂O¹",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 398.1071705534973,
+    "n": 3,
+    "p": 0,
+    "r": 0,
+    "E": 356,
+    "V": 0
+   },
+   "diff": {
+    "enabled": true,
+    "A": 50.11872336272722,
+    "n": 1,
+    "p": 3,
+    "r": 0,
+    "E": 170,
+    "V": 0
+   }
+  },
+  {
+   "id": "cpx_dry",
+   "name": "Clinopyroxenite, dry",
+   "ref": "Bystricky & Mackwell 2001",
+   "status": "partial",
+   "note": "",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 6309573444.801943,
+    "n": 4.7,
+    "p": 0,
+    "r": 0,
+    "E": 760,
+    "V": 0
+   },
+   "diff": {
+    "enabled": true,
+    "A": 1258925411794166.2,
+    "n": 1,
+    "p": 3,
+    "r": 0,
+    "E": 560,
+    "V": 0
+   }
+  },
+  {
+   "id": "ecl",
+   "name": "Eclogite",
+   "ref": "Jin et al. 2001",
+   "status": "memory",
+   "note": "",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 1995.2623149688789,
+    "n": 3.4,
+    "p": 0,
+    "r": 0,
+    "E": 480,
+    "V": 0
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0
+   }
+  },
+  {
+   "id": "qtz_wet",
+   "name": "Quartzite, wet",
+   "ref": "Hirth et al. 2001",
+   "status": "checked",
+   "note": "",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 6.309573444801943e-12,
+    "n": 4,
+    "p": 0,
+    "r": 1,
+    "E": 135,
+    "V": 0
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0
+   }
+  },
+  {
+   "id": "qtz_gt",
+   "name": "Quartzite, wet (no fugacity term)",
+   "ref": "Gleason & Tullis 1995",
+   "status": "partial",
+   "note": "",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.00011,
+    "n": 4,
+    "p": 0,
+    "r": 0,
+    "E": 223,
+    "V": 0
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0
+   }
+  }
+ ]
+}
