@@ -9,53 +9,59 @@
 <style>
 /* Layout idea: lab-instrument panel. Inputs left (nature, layers, lab), results right; stacks to one column on a phone. */
 :root{
-  --bg:#f3f5f7; --surface:#ffffff; --sunk:#f7f9fa; --ink:#10202e; --ink2:#465664; --muted:#74828e; --line:#d9e0e6;
-  --accent:#0d5c8c; --accent-ink:#ffffff; --accent-soft:#e3eef5;
-  --good:#1b7a3b; --good-bg:#e2f3e7; --warn:#9a5b00; --warn-bg:#fbefd6; --crit:#b3312a; --crit-bg:#fae3e1;
+  --bg:#f4f7fe; --surface:#ffffff; --sunk:#f4f7fe; --ink:#1b2559; --ink2:#47548c; --muted:#8f9bba; --line:#e3e9f6;
+  --accent:#4318ff; --accent-ink:#ffffff; --accent-soft:#ece8ff;
+  --good:#05875a; --good-bg:#dcf7ec; --warn:#a05a00; --warn-bg:#fff1d6; --crit:#c5221f; --crit-bg:#fde4e3;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300;
+  --shadow:0 18px 40px rgba(112,144,176,.12); --r:20px;
   --font:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#0e1418; --surface:#161e24; --sunk:#111920; --ink:#e7ecf0; --ink2:#b4bfc9; --muted:#8492a0; --line:#28333c;
-    --accent:#5cb2e2; --accent-ink:#06202e; --accent-soft:#17303f;
-    --good:#58c97c; --good-bg:#15301f; --warn:#e3a93c; --warn-bg:#33270f; --crit:#f08079; --crit-bg:#3a1917;
+    --bg:#0b1437; --surface:#111c44; --sunk:#0b1437; --ink:#ffffff; --ink2:#c3cbe6; --muted:#8f9bba; --line:#25336b;
+    --accent:#7551ff; --accent-ink:#ffffff; --accent-soft:#1f2a63;
+    --good:#4fd1a1; --good-bg:#0f3a35; --warn:#ffce70; --warn-bg:#3b3013; --crit:#ff8a84; --crit-bg:#45192a;
     --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#0ca30c;
+    --shadow:none;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0e1418; --surface:#161e24; --sunk:#111920; --ink:#e7ecf0; --ink2:#b4bfc9; --muted:#8492a0; --line:#28333c;
-  --accent:#5cb2e2; --accent-ink:#06202e; --accent-soft:#17303f;
-  --good:#58c97c; --good-bg:#15301f; --warn:#e3a93c; --warn-bg:#33270f; --crit:#f08079; --crit-bg:#3a1917;
+  --bg:#0b1437; --surface:#111c44; --sunk:#0b1437; --ink:#ffffff; --ink2:#c3cbe6; --muted:#8f9bba; --line:#25336b;
+  --accent:#7551ff; --accent-ink:#ffffff; --accent-soft:#1f2a63;
+  --good:#4fd1a1; --good-bg:#0f3a35; --warn:#ffce70; --warn-bg:#3b3013; --crit:#ff8a84; --crit-bg:#45192a;
   --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#0ca30c;
+  --shadow:none;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--font);-webkit-text-size-adjust:100%}
 h1,h2,h3{margin:0;font-weight:600;text-wrap:balance}
-h1{font-size:20px;letter-spacing:.01em}
-h2{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink2)}
-h3{font-size:14px}
+h1{font-size:26px;font-weight:700;letter-spacing:-.02em}
+h2{font-size:17px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+h3{font-size:14px;font-weight:700}
 p{margin:0}
 .num,td.n,input.n,.tile b{font-family:var(--mono);font-variant-numeric:tabular-nums}
-header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--surface)}
+header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;padding:18px 24px 6px}
 header .brand{display:flex;flex-direction:column;gap:2px}
-header .brand span{color:var(--muted);font-size:12.5px}
+header .brand span{color:var(--muted);font-size:13px;font-weight:500}
 .actions{display:flex;flex-wrap:wrap;gap:8px}
-button{font:500 13px var(--font);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:7px 11px;cursor:pointer}
-button:hover{border-color:var(--accent)}
-button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-button.ghost{border-color:transparent;color:var(--accent);padding:4px 6px}
+button{font:600 13px var(--font);color:var(--ink);background:var(--surface);border:1px solid transparent;border-radius:12px;padding:9px 14px;cursor:pointer;box-shadow:var(--shadow);transition:background .15s,color .15s}
+button:hover{background:var(--accent-soft);color:var(--accent)}
+.panel button{box-shadow:none;background:var(--sunk)}
+.panel button:hover{background:var(--accent-soft)}
+button.primary,.panel button.primary{background:var(--accent);color:var(--accent-ink)}
+#bExample{background:var(--accent);color:var(--accent-ink)}
+button.ghost,.panel button.ghost{background:transparent;box-shadow:none;color:var(--accent);padding:4px 8px;border-radius:8px}
 button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-main{display:grid;grid-template-columns:minmax(340px,440px) minmax(0,1fr);gap:20px;padding:20px;max-width:1500px;margin:0 auto}
+main{display:grid;grid-template-columns:minmax(360px,460px) minmax(0,1fr);gap:20px;padding:14px 24px 20px;width:100%}
 @media (min-width:981px){html,body{height:100%}body{display:flex;flex-direction:column;overflow:hidden}
   main{flex:1;min-height:0;width:100%;grid-template-rows:minmax(0,1fr);padding-bottom:0}
   #inputs,#results{overflow-y:auto;min-height:0;padding:0 8px 24px 0;scrollbar-gutter:stable}}
-#mini{display:none;position:sticky;top:0;z-index:6;background:var(--surface);border-bottom:1px solid var(--line);padding:8px 16px;gap:6px 14px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--ink2)}
+#mini{display:none;position:sticky;top:0;z-index:6;background:var(--surface);box-shadow:var(--shadow);padding:10px 16px;gap:6px 14px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--ink2)}
 #mini b{color:var(--ink);font-weight:600}
 @media (max-width:980px){#mini{display:flex}}
 details.layer{border-top:1px solid var(--line);padding:0}
@@ -67,15 +73,26 @@ details.layer>summary .hint{overflow:hidden;text-overflow:ellipsis;white-space:n
 details.layer>.lb{display:flex;flex-direction:column;gap:10px;padding:0 12px 12px}
 .mech.pei{grid-template-columns:auto repeat(7,minmax(0,1fr))}
 .take{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-#libQ{max-width:260px}
-@media (max-width:980px){main{grid-template-columns:minmax(0,1fr);padding:16px}}
-.col{display:flex;flex-direction:column;gap:16px;min-width:0}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+#libQ,#matQ{max-width:320px;border-radius:99px;padding-left:16px;background:var(--sunk);border-color:transparent}
+details.fold{padding:0;border:none;gap:0}
+details.fold>summary{list-style:none;display:flex;align-items:center;gap:12px;padding:20px 22px;color:var(--ink)}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary h2{flex:1}
+details.fold>summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s;margin-right:4px}
+details.fold[open]>summary::after{transform:rotate(-135deg)}
+details.fold>.fb{display:flex;flex-direction:column;gap:14px;padding:0 22px 22px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.bar .sp{flex:1}
+@media (max-width:980px){main{grid-template-columns:minmax(0,1fr);padding:12px 14px}header{padding:14px 14px 4px}}
+.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel{background:var(--surface);border-radius:var(--r);padding:20px 22px;display:flex;flex-direction:column;gap:14px;min-width:0;box-shadow:var(--shadow)}
 .panel>.head{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px}
 .grid.w{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
-label{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--ink2);min-width:0}
-input,select,textarea{font:13px var(--font);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:6px 8px;width:100%;min-width:0}
+label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:500;color:var(--ink2);min-width:0}
+input,select,textarea{font:500 13px var(--font);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 11px;width:100%;min-width:0;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+input[type=checkbox]{accent-color:var(--accent);box-shadow:none}
 input.n{font-size:12.5px}
 canvas{width:100%;display:block;touch-action:pan-y}
 #cv3{cursor:grab}
@@ -83,34 +100,41 @@ canvas{width:100%;display:block;touch-action:pan-y}
 @media (max-width:640px){.views{grid-template-columns:minmax(0,1fr)}}
 #expTxt{height:220px;font:12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
 .tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
-.tri input:nth-child(2){border-color:var(--accent);background:var(--surface)}
-.hint{font-size:11.5px;color:var(--muted)}
-.layer{border:1px solid var(--line);border-left:4px solid var(--c);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
+.tri input:nth-child(2){border-color:var(--accent);background:var(--accent-soft)}
+.hint{font-size:12px;color:var(--muted);font-weight:500}
+.layer{border:1px solid var(--line);border-left:5px solid var(--c);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
 .layer .top{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
 .layer .tools{display:flex;gap:2px}
-.sub{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.sub{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 details{border-top:1px dashed var(--line);padding-top:8px}
-summary{cursor:pointer;font-size:12.5px;color:var(--accent);font-weight:500}
+details.fold{border-top:none}
+summary{cursor:pointer;font-size:12.5px;color:var(--accent);font-weight:600}
 details .body{display:flex;flex-direction:column;gap:8px;margin-top:8px}
 .mech{display:grid;grid-template-columns:auto repeat(6,minmax(0,1fr));gap:4px;align-items:end}
 .mech .on{display:flex;flex-direction:row;align-items:center;gap:4px;font-size:12px;color:var(--ink);min-width:66px;padding-bottom:6px}
 .mech .on input{width:auto}
-.pill{display:inline-block;font-size:11px;font-weight:500;border-radius:99px;padding:1px 8px;white-space:nowrap;border:1px solid transparent}
+.pill{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:3px 10px;white-space:nowrap;border:1px solid transparent}
 .pill.good{color:var(--good);background:var(--good-bg)}
 .pill.warn{color:var(--warn);background:var(--warn-bg)}
 .pill.crit{color:var(--crit);background:var(--crit-bg)}
 .pill.info{color:var(--accent);background:var(--accent-soft)}
 .pill.plain{color:var(--ink2);border-color:var(--line)}
-.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:2px;min-width:0}
-.tile span{font-size:11.5px;color:var(--ink2)}
-.tile b{font-size:17px;font-weight:500;overflow-wrap:anywhere}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px}
+.tile{background:var(--surface);border-radius:var(--r);padding:16px 18px 16px 70px;display:flex;flex-direction:column;gap:1px;min-width:0;box-shadow:var(--shadow);position:relative}
+.tile::before{content:attr(data-g);position:absolute;left:16px;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:var(--sunk);color:var(--accent);display:grid;place-items:center;font-weight:700;font-size:15px}
+.tile span{font-size:12px;font-weight:500;color:var(--muted)}
+.tile b{font-size:20px;font-weight:700;letter-spacing:-.01em;overflow-wrap:anywhere}
 .tile small{color:var(--muted);font-size:11.5px}
 .scroll{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:12.5px}
-th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;white-space:nowrap}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;white-space:normal}
+td.n{white-space:nowrap}
+tr:last-child td{border-bottom:none}
+table.fit{font-size:12px;table-layout:auto}
+table.fit th,table.fit td{padding:7px 6px}
+table.fit td.n{white-space:nowrap}
 td.wrap{white-space:normal;min-width:180px}
-th{font-size:11px;font-weight:500;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;white-space:normal;vertical-align:bottom}
+th{font-size:11.5px;font-weight:600;color:var(--muted);letter-spacing:0;white-space:normal;vertical-align:bottom}
 td.n{font-size:12px}
 .sw{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--c);margin-right:6px;vertical-align:baseline}
 .charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px}
@@ -123,13 +147,13 @@ td.n{font-size:12px}
 .chart h3{font-size:13px}
 .chart svg{width:100%;height:auto;display:block;touch-action:pan-y}
 .chart text{font:10.5px var(--font);fill:var(--ink2)}
-.chart .tt{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:11.5px;box-shadow:0 4px 14px rgba(0,0,0,.12);display:none;z-index:2;white-space:nowrap}
+.chart .tt{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 8px;font-size:11.5px;box-shadow:0 4px 14px rgba(0,0,0,.12);display:none;z-index:2;white-space:nowrap}
 .legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink2)}
 .notes{font-size:12.5px;color:var(--ink2);display:flex;flex-direction:column;gap:6px;max-width:75ch}
 .notes code{font-family:var(--mono);font-size:12px;color:var(--ink)}
 .checks{display:flex;flex-direction:column;gap:6px;font-size:12.5px}
 .checks div{display:flex;gap:8px;align-items:baseline}
-dialog{border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:16px;width:min(560px,92vw)}
+dialog{border:none;border-radius:var(--r);box-shadow:var(--shadow);background:var(--surface);color:var(--ink);padding:16px;width:min(560px,92vw)}
 dialog::backdrop{background:rgba(0,0,0,.4)}
 dialog textarea{height:200px;font:12px var(--mono)}
 dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
@@ -218,20 +242,20 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
       <div class="views"><canvas id="cv3" aria-label="3D view of the model"></canvas><canvas id="cvS" aria-label="Vertical section of the model"></canvas></div>
       <div class="checks" id="gChecks"></div>
       <h3>Material recipe</h3>
-      <div class="scroll"><table id="tRecipe"></table></div>
+      <div class="scroll"><table id="tRecipe" class="fit"></table></div>
       <p class="hint">Volumes use the thicknesses selected above and the container footprint, minus the parts of bodies inside each layer. Add your own margin for losses.</p>
     </section>
     <section class="panel">
       <div class="head"><h2>Model design</h2></div>
-      <div class="scroll"><table id="tModel"></table></div>
+      <div class="scroll"><table id="tModel" class="fit"></table></div>
       <div class="checks" id="checks"></div>
       <h3>Density contrasts</h3>
-      <div class="scroll"><table id="tContrast"></table></div>
+      <div class="scroll"><table id="tContrast" class="fit"></table></div>
       <p class="hint">Buoyancy-driven flow scales with density differences. "Needed" is the natural contrast times the density scale behind the stress ratio. Set a body's natural density in "Box and bodies" to include it here.</p>
     </section>
     <section class="panel">
       <div class="head"><h2>Bodies and behaviour over time</h2></div>
-      <div class="scroll"><table id="tDrip"></table></div>
+      <div class="scroll"><table id="tDrip" class="fit"></table></div>
       <div class="checks" id="rt"></div>
       <div class="charts">
         <div class="chart" id="cDrip"><span class="tag">Lab</span><h3>Body height over time</h3></div>
@@ -241,7 +265,7 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
     </section>
     <section class="panel">
       <div class="head"><h2>Prototype viscosity</h2></div>
-      <div class="scroll"><table id="tNat"></table></div>
+      <div class="scroll"><table id="tNat" class="fit"></table></div>
       <p class="hint">Envelope = spread of the layer value over the 8 end-member cases (all thicknesses min or max × gradient min or max × strain rate min or max).</p>
     </section>
     <section class="panel">
@@ -258,30 +282,42 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
       </div>
       <p class="hint">Nature and lab panels share the same vertical geometry: lab depth is natural depth times the length ratio. In strength panels the solid line is viscous stress and the dashed line brittle strength; the weaker one holds. In the last panel the thick part of each curve is the temperature range that layer spans. Every panel redraws as you type.</p>
     </section>
-    <section class="panel">
-      <div class="head"><h2>Export to numerical codes</h2><div class="actions"><button id="bExpCopy">Copy</button><button id="bExpDl">Download</button></div></div>
+    <details class="panel fold" id="f_exporttonumericalcodes">
+      <summary><h2>Export to numerical codes</h2></summary>
+      <div class="fb">
+      <div class="bar"><div class="actions"><button id="bExpCopy">Copy</button><button id="bExpDl">Download</button></div></div>
       <label>Format<select id="expSel"><option value="lamem">LaMEM.jl script, lab scale</option><option value="aspect">ASPECT parameter file, natural scale</option><option value="generic">Neutral JSON, both scales (MILET, MILEVA, other codes)</option></select></label>
       <textarea id="expTxt" readonly spellcheck="false" wrap="off"></textarea>
       <p class="hint">The LaMEM and ASPECT files are templates that have not been run. MILET and MILEVA have no dedicated exporter yet: the neutral JSON carries every number they need, in SI units.</p>
-    </section>
-    <section class="panel">
-      <div class="head"><h2>Flow-law library</h2><div class="actions"><span class="hint" id="libN"></span><input id="libQ" placeholder="Search rock or author" aria-label="Search the flow-law library"><span id="dbState"></span><button id="bAddLaw">Add flow law</button><button id="bLibJson">Copy library JSON</button></div></div>
-      <div class="scroll"><table id="tLib"></table></div>
+      </div>
+    </details>
+    <details class="panel fold" id="f_flowlawlibrary">
+      <summary><h2>Flow-law library</h2><span class="pill info" id="libC"></span></summary>
+      <div class="fb">
+      <div class="bar"><input id="libQ" type="search" placeholder="Search rock, author or mechanism" aria-label="Search the flow-law library"><span class="hint" id="libN"></span><span class="sp"></span><span id="dbState"></span><button id="bAddLaw">Add flow law</button><button id="bLibJson">Copy library JSON</button></div>
+      <div class="scroll"><table id="tLib" class="fit"></table></div>
       <p class="hint">Imported from the creep-law database of GeoParams.jl (version and commit are recorded in <code>data/flowlaws.json</code>), plus two laws entered from memory and marked "verify against source". A in MPa⁻ⁿ µmᵖ s⁻¹, E in kJ/mol, V in cm³/mol. "Experiment" is the geometry each law was measured in and sets its conversion to stress and strain-rate invariants. Hover a row for the database's note on that law, including known discrepancies with the source paper. On the published site this table is read from <code>data/flowlaws.json</code>, which the CMS edits.</p>
-    </section>
-    <section class="panel">
-      <div class="head"><h2>Lab materials library</h2></div>
-      <div class="scroll"><table id="tMat"></table></div>
+      </div>
+    </details>
+    <details class="panel fold" id="f_labmaterialslibrary">
+      <summary><h2>Lab materials library</h2><span class="pill info" id="matC"></span></summary>
+      <div class="fb">
+      <div class="bar"><input id="matQ" type="search" placeholder="Search material or source" aria-label="Search the lab materials library"><span class="hint" id="matN"></span></div>
+      <div class="scroll"><table id="tMat" class="fit"></table></div>
       <p class="hint">"Datasheet" and "measured" entries carry their source; "indicative" ones are starting values from memory. Measure your own batches either way. Viscosity follows η = η₀ (ε̇/ε̇₀)^(1/n − 1) exp[Eₐ/R (1/T − 1/T₀)], so n above 1 is shear-thinning and n below 1 shear-thickening. Picking a material in a layer copies these values there, where they can be changed.</p>
-    </section>
-    <section class="panel">
-      <div class="head"><h2>Validation</h2><span id="vSum"></span></div>
+      </div>
+    </details>
+    <details class="panel fold" id="f_validation">
+      <summary><h2>Validation</h2><span id="vSum"></span></summary>
+      <div class="fb">
       <div class="scroll"><table id="tValSum"></table></div>
       <details><summary>Every test</summary><div class="body"><div class="scroll"><table id="tVal"></table></div></div></details>
       <p class="hint">Runs each time the page opens. "Published value" reproduces numbers printed in the source. "Lab window" asks whether a law predicts a believable laboratory stress at laboratory temperature and strain rate: it catches unit errors, not a factor-of-few error in A. The remaining groups test the code against closed-form results.</p>
-    </section>
-    <section class="panel">
-      <div class="head"><h2>Method</h2></div>
+      </div>
+    </details>
+    <details class="panel fold" id="f_method">
+      <summary><h2>Method</h2></summary>
+      <div class="fb">
       <div class="notes">
         <p><b>Flow law.</b> <code>ε̇ = A σⁿ d⁻ᵖ Wʳ exp(−(E + PV)/RT)</code> for each mechanism. Dislocation creep, diffusion creep and low-temperature plasticity act in parallel: at each depth the stress is solved so that their strain rates sum to the imposed strain rate, and <code>η = σ_II / 2ε̇_II</code>.</p>
         <p><b>Low-temperature plasticity.</b> <code>ε̇ = A σⁿ exp[−(E/RT)(1 − (σ/σ_P)ᵖ)^q]</code>, with the barrier set to zero above the Peierls stress σ_P. The exponential form leaves a finite rate at zero stress, so each law is used only above a minimum stress (200 MPa unless you change it) and is switched off below it. Where the mechanism would be faster than the imposed strain rate at that minimum, the stress sits at the minimum.</p>
@@ -291,7 +327,8 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
         <p><b>Scaling.</b> With starred ratios model/nature: <code>σ* = ρ* g* L*</code> (or <code>Δρ* g* L*</code> when the stress scale is taken from a density contrast), <code>η* = σ* t*</code>, <code>v* = L*/t*</code>, <code>ε̇* = 1/t*</code>. Required model viscosity is <code>η_nature · η*</code>; a model cohesion scales with <code>σ*</code>.</p>
         <p><b>Limits.</b> A Newtonian analogue matches a power-law layer only at the reference strain rate. Grain-boundary sliding, melt, strain hardening and grain-size evolution are not included. Published low-temperature plasticity laws disagree widely, so compare more than one.</p>
       </div>
-    </section>
+      </div>
+    </details>
   </div>
 </main>
 <dialog id="dlg"><h3>Paste a setup</h3><p class="hint" style="margin:6px 0">Paste the text you got from "Copy setup".</p><textarea id="dlgTxt"></textarea><div class="row"><button id="dlgCancel">Cancel</button><button class="primary" id="dlgOk">Load</button></div></dialog>
@@ -741,14 +778,14 @@ function update(){
   if(bad){$('tiles').innerHTML='<div class="tile"><span>Input needed</span><b>Check the values</b><small>Thickness, density, grain size, gravity, strain rate, box size and body size must all be positive numbers.</small></div>';return;}
   const res=runAll(S),sc=scaleModel(S,res);LAST={res,sc};
   const anchorOk=S.model.mode!=='anchor'||S.layers[sc.ai].etaM>0;
-  const tile=(l,v,sm)=>`<div class="tile"><span>${l}</span><b>${v}</b><small>${sm||''}</small></div>`;
+  const tile=(l,v,sm,g)=>`<div class="tile" data-g="${g||'·'}"><span>${l}</span><b>${v}</b><small>${sm||''}</small></div>`;
   $('tiles').innerHTML=!anchorOk?tile('Time scale','Not set',`Enter the viscosity of your material for “${esc(S.layers[sc.ai].name)}”, or switch to a chosen run time.`):
-    tile('1 hour in the lab',dur(sc.natPerHour),'of natural time')+
-    tile('1 cm/yr in nature',sci(sc.vmm_h)+' mm/h','in the model')+
-    tile('Length ratio',sci(sc.Ls),`1 cm = ${S.model.kmPerCm} km`)+
-    tile('Stress ratio σ*',sci(sc.sigS),`${sc.sigMode==='contrast'?'Δρ*':'ρ*'} ${fx(sc.rhoS,3)} · g* ${fx(sc.gS,3)}`)+
-    tile('Viscosity ratio η*',sci(sc.etaS),'model / nature')+
-    tile('Model strain rate',sci(sc.em)+' s⁻¹',`stack ${fx(sc.Hm*1e3,0)} mm thick`);
+    tile('1 hour in the lab',dur(sc.natPerHour),'of natural time','t*')+
+    tile('1 cm/yr in nature',sci(sc.vmm_h)+' mm/h','in the model','v*')+
+    tile('Length ratio',sci(sc.Ls),`1 cm = ${S.model.kmPerCm} km`,'L*')+
+    tile('Stress ratio σ*',sci(sc.sigS),`${sc.sigMode==='contrast'?'Δρ*':'ρ*'} ${fx(sc.rhoS,3)} · g* ${fx(sc.gS,3)}`,'σ*')+
+    tile('Viscosity ratio η*',sci(sc.etaS),'model / nature','η*')+
+    tile('Model strain rate',sci(sc.em)+' s⁻¹',`stack ${fx(sc.Hm*1e3,0)} mm thick`,'ε̇');
   $('mini').innerHTML=!anchorOk?'<span>Time scale not set</span>':`<span><b>1 h</b> = ${dur(sc.natPerHour)}</span><span>stack <b>${fx(sc.Hm*100,1)} cm</b> in ${fx(S.box.z,1)} cm</span><span>η* <b>${sci(sc.etaS)}</b></span><button class="ghost" id="bJump">Results ↓</button>`;
   if($('bJump'))$('bJump').onclick=()=>$('results').scrollIntoView({behavior:'smooth'});
   const fit=(i,l)=>{if(!anchorOk)return'';if(S.model.mode==='anchor'&&i===sc.ai)return'<span class="pill info">anchor</span>';if(!isFinite(l.ratio))return'<span class="pill plain">not chosen</span>';
@@ -796,13 +833,15 @@ function csv(){
   return rows.map(r=>r.map(c=>/[",]/.test(String(c))?'"'+String(c).replace(/"/g,'""')+'"':c).join(',')).join('\n');
 }
 $('bCsv').onclick=()=>copy(csv(),'Results copied as CSV');
+const r4=x=>(+(+x).toPrecision(4)).toString();
 function lib(){
-  const q=($('libQ').value||'').toLowerCase(),sp=x=>x==='axial'?'axial':x==='shear'?'shear':'invariant';
-  const row=(k,t,m)=>`<tr title="${esc(k.note||'')}"><td>${esc(k.name)}</td><td>${esc(k.ref)}</td><td>${t}</td><td class="n">${sci(m.A,2)}</td><td class="n">${m.n}</td><td class="n">${t==='Peierls'?'–':m.p}</td><td class="n">${t==='Peierls'?'–':m.r}</td><td class="n">${m.E}</td><td class="n">${t==='Peierls'?'–':m.V}</td><td class="n">${t==='Peierls'?`${m.sp} · ${m.pp} · ${m.q}`:'–'}</td><td>${sp(m.app)}</td><td>${stPill(k.st)}${k.st==='user'?` <button class="ghost" data-ldel="${k.id}">Remove</button>`:''}</td></tr>`;
-  const all=[...ROCKS.filter(k=>k.id!=='custom'),...S.userLaws].filter(k=>!q||(k.name+' '+k.ref).toLowerCase().includes(q));
-  $('tLib').innerHTML='<tr><th>Rock</th><th>Source</th><th>Mechanism</th><th>A</th><th>n</th><th>p</th><th>r</th><th>E</th><th>V</th><th>σP (MPa) · p · q</th><th>Experiment</th><th>Status</th></tr>'+
-   all.map(k=>(k.disl?row(k,'dislocation',k.disl):'')+(k.diff?row(k,'diffusion',k.diff):'')+(k.pei?row(k,'Peierls',k.pei):'')).join('');
-  $('libN').textContent=`${all.length} of ${ROCKS.length-1+S.userLaws.length} entries`;
+  const q=($('libQ').value||'').toLowerCase().trim(),sp=x=>x==='axial'?'axial':x==='shear'?'shear':'invariant';
+  const row=(k,t,m)=>`<tr title="${esc(k.note||'')}"><td><b>${esc(k.name)}</b><br><span class="hint">${esc(k.ref)}</span></td><td>${t}</td><td class="n">${sci(m.A,2)}</td><td class="n">${r4(m.n)}</td><td class="n">${t==='Peierls'?'–':r4(m.p)}</td><td class="n">${t==='Peierls'?'–':r4(m.r)}</td><td class="n">${r4(m.E)}</td><td class="n">${t==='Peierls'?'–':r4(m.V)}</td><td class="n">${t==='Peierls'?`${m.sp} · ${m.pp} · ${m.q}`:'–'}</td><td>${sp(m.app)}</td><td>${stPill(k.st)}${k.st==='user'?` <button class="ghost" data-ldel="${k.id}">Remove</button>`:''}</td></tr>`;
+  const hit=(k,t)=>!q||q.split(/\s+/).every(w=>(k.name+' '+k.ref+' '+t).toLowerCase().includes(w));
+  const src=[...ROCKS.filter(k=>k.id!=='custom'),...S.userLaws];let n=0;
+  $('tLib').innerHTML='<tr><th>Rock and source</th><th>Mechanism</th><th>A</th><th>n</th><th>p</th><th>r</th><th>E</th><th>V</th><th>σP · p · q</th><th>Experiment</th><th>Status</th></tr>'+
+   src.map(k=>{let h='';for(const[t,m]of[['dislocation',k.disl],['diffusion',k.diff],['Peierls',k.pei]])if(m&&hit(k,t)){h+=row(k,t,m);n++;}return h;}).join('');
+  $('libN').textContent=q?`${n} matching laws`:`${n} laws from ${src.length} entries`;$('libC').textContent=`${src.length} entries`;
 }
 function validation(){
   const t=selfTest(),g={};t.forEach(x=>{(g[x.group]=g[x.group]||[0,0])[x.pass?0:1]++;});const fail=t.filter(x=>!x.pass).length;
@@ -830,7 +869,7 @@ const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).tri
 function prep(cv,h){const w=cv.clientWidth||600,d=window.devicePixelRatio||1;cv.width=w*d;cv.height=h*d;const c=cv.getContext('2d');c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,w,h);c.font='11px '+cssv('--font');return{c,w,h};}
 let AZ=35,GEO=null;
 function draw3D(){
-  if(!GEO)return;const lay=GEO.lay,B=S.box,rect=B.shape==='rect',hx=(rect?B.x:B.d)/2,hy=(rect?B.y:B.d)/2,{c,w,h}=prep($('cv3'),360);
+  if(!GEO)return;const lay=GEO.lay,B=S.box,rect=B.shape==='rect',hx=(rect?B.x:B.d)/2,hy=(rect?B.y:B.d)/2,{c,w,h}=prep($('cv3'),300);
   const a=AZ*Math.PI/180,el=24*Math.PI/180,ca=Math.cos(a),sa=Math.sin(a),ce=Math.cos(el),se=Math.sin(el),Rr=rect?Math.hypot(hx,hy):hx,ztop=Math.max(B.z,lay[0].z1);
   const k=Math.min((w-170)/(2*Rr),(h-56)/(ztop*ce+2*Rr*se)),cx=(w-130)/2+10,cy=h-30-Rr*se*k;
   const P=(x,y,z)=>{const X=x*ca-y*sa,D=x*sa+y*ca;return[cx+k*X,cy-k*z*ce+k*D*se];},ink=cssv('--ink'),line=cssv('--muted');
@@ -854,7 +893,7 @@ function draw3D(){
   c.fillStyle=cssv('--ink2');c.textAlign='center';c.fillText(rect?`${B.x} × ${B.y} × ${B.z} cm (x × y × z) · drag to rotate`:`⌀ ${B.d} × ${B.z} cm · drag to rotate`,cx,h-8);
 }
 function drawSection(){
-  if(!GEO)return;const lay=GEO.lay,B=S.box,W=B.shape==='rect'?B.x:B.d,{c,w,h}=prep($('cvS'),360),ys=GEO.bodies.length?GEO.bodies[0].y:0,ztop=Math.max(B.z,lay[0].z1);
+  if(!GEO)return;const lay=GEO.lay,B=S.box,W=B.shape==='rect'?B.x:B.d,{c,w,h}=prep($('cvS'),300),ys=GEO.bodies.length?GEO.bodies[0].y:0,ztop=Math.max(B.z,lay[0].z1);
   const m={l:40,r:14,t:14,b:34},k=Math.min((w-m.l-m.r)/W,(h-m.t-m.b)/ztop),x0=m.l+((w-m.l-m.r)-k*W)/2+k*W/2,y0=h-m.b,X=x=>x0+k*x,Y=z=>y0-k*z,ink=cssv('--ink'),line=cssv('--muted');
   lay.forEach((l,i)=>{c.globalAlpha=.5;c.fillStyle=cssv('--s'+(i%6+1));c.fillRect(X(-W/2),Y(l.z1),k*W,k*(l.z1-l.z0));c.globalAlpha=1;c.strokeStyle=line;c.lineWidth=.6;c.strokeRect(X(-W/2),Y(l.z1),k*W,k*(l.z1-l.z0));});
   c.fillStyle=cssv('--ink2');GEO.bodies.forEach(b=>{const dy=Math.abs(ys-b.y);c.globalAlpha=.92;
@@ -918,14 +957,17 @@ $('expSel').addEventListener('change',showExport);
 $('bExpCopy').onclick=()=>copy($('expTxt').value,'Export copied');
 const framed=(()=>{try{return window.self!==window.top;}catch(e){return true;}})();
 if(framed)$('bExpDl').style.display='none';
-$('libQ').addEventListener('input',lib);
+$('libQ').addEventListener('input',lib);$('matQ').addEventListener('input',matLib);
 $('bExpDl').onclick=()=>{const k=$('expSel').value,n={lamem:'scalelab_lamem.jl',aspect:'scalelab_aspect.prm',generic:'scalelab_setup.json'}[k],a=document.createElement('a');a.href=URL.createObjectURL(new Blob([$('expTxt').value],{type:'text/plain'}));a.download=n;document.body.appendChild(a);a.click();a.remove();};
 
 // ---------- libraries: in-app law editor, materials ----------
-function matLib(){$('tMat').innerHTML='<tr><th>Material</th><th>Kind</th><th>Density</th><th>η₀ (Pa s)</th><th>n</th><th>Ref. rate (1/s)</th><th>Eₐ (kJ/mol)</th><th>T₀ (°C)</th><th>Newtonian up to (1/s)</th><th>Friction (°)</th><th>Cohesion (Pa)</th><th>Status</th><th>Source and note</th></tr>'+
-  MATERIALS.map(m=>`<tr><td>${esc(m.name)}</td><td>${m.kind}</td><td class="n">${m.rho}</td><td class="n">${m.kind==='granular'?'–':m.eta0>0?sci(m.eta0):'not given'}</td><td class="n">${m.kind==='granular'?'–':m.n}</td><td class="n">${m.kind==='granular'?'–':sci(m.e0)}</td><td class="n">${m.Ea||'–'}</td><td class="n">${m.T0}</td><td class="n">${m.ecrit?sci(m.ecrit):'–'}</td><td class="n">${m.phi||'–'}</td><td class="n">${m.C||'–'}</td><td>${stPill(m.status||'indicative')}</td><td class="wrap">${esc([m.source,m.note].filter(Boolean).join('. '))}</td></tr>`).join('');}
+function matLib(){const q=($('matQ').value||'').toLowerCase().trim(),all=MATERIALS.filter(m=>!q||q.split(/\s+/).every(w=>(m.name+' '+(m.source||'')+' '+m.kind+' '+(m.status||'')).toLowerCase().includes(w)));
+  $('tMat').innerHTML='<tr><th>Material</th><th>Density (kg/m³)</th><th>η₀ (Pa s)</th><th>n</th><th>Ref. rate (1/s)</th><th>Eₐ (kJ/mol)</th><th>T₀ (°C)</th><th>Newtonian to (1/s)</th><th>Friction (°) · cohesion (Pa)</th><th>Status</th><th>Source and note</th></tr>'+
+  all.map(m=>`<tr><td><b>${esc(m.name)}</b><br><span class="hint">${m.kind}</span></td><td class="n">${m.rho}</td><td class="n">${m.kind==='granular'?'–':m.eta0>0?sci(m.eta0):'not given'}</td><td class="n">${m.kind==='granular'?'–':m.n}</td><td class="n">${m.kind==='granular'?'–':sci(m.e0)}</td><td class="n">${m.Ea||'–'}</td><td class="n">${m.T0}</td><td class="n">${m.ecrit?sci(m.ecrit):'–'}</td><td class="n">${m.phi?m.phi+' · '+m.C:'–'}</td><td>${stPill(m.status||'indicative')}</td><td style="min-width:180px"><span class="hint">${esc([m.source,m.note].filter(Boolean).join('. '))}</span></td></tr>`).join('');
+  $('matN').textContent=`${all.length} of ${MATERIALS.length} materials`;$('matC').textContent=`${MATERIALS.length} materials`;}
 const LF=['A','n','p','r','E','V'];
 $('bAddLaw').onclick=()=>{$('lawErr').textContent='';$('dlgLaw').showModal();};
+for(const id of['f_flowlawlibrary','f_labmaterialslibrary'])$(id).addEventListener('toggle',()=>{if(id==='f_flowlawlibrary')lib();else matLib();});
 $('lawCancel').onclick=()=>$('dlgLaw').close();
 $('lawOk').onclick=()=>{const g=id=>$(id).value.trim(),mech=p=>$(p+'on').checked?Object.fromEntries(LF.map(k=>[k,parseFloat(g(p+k))||0])):null;
   const k={id:'user_'+Date.now().toString(36),name:g('lawName'),ref:g('lawRef')||'your values',st:'user',note:'',w:g('lawW')?{label:g('lawW'),val:parseFloat(g('lawWv'))||1}:undefined,disl:mech('ld'),diff:mech('lf'),pei:null};if(k.disl)k.disl.app='axial';if(k.diff)k.diff.app='axial';
