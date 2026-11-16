@@ -1,75 +1,23 @@
 {
+ "source": "GeoParams.jl v0.10.1 (0318aeb 2026-11-11), https://github.com/JuliaGeodynamics/GeoParams.jl, MIT licence",
  "laws": [
   {
-   "id": "ol_dry",
-   "name": "Olivine, dry",
-   "ref": "Hirth & Kohlstedt 2003",
-   "status": "checked",
-   "note": "Source gives a range for V: see its Table 2 (disl.) and 2–10 cm³/mol (diff.)",
+   "id": "amphibolite_hacker_christie_1990",
+   "name": "Amphibolite",
+   "ref": "Hacker & Christie (1990)",
+   "status": "geoparams",
+   "note": "Dislocation: Hacker & Christie (1990), p. 139: A = (1.1 ± 0.3)e-4 MPa^-3.7 s^-1, n = 3.7, Q = 244 kJ/mol; synthetic amphibolite, 650-850 °C, 1 GPa confining pressure, differential stress. Reproduces the paper's data: log10 misfit -0.12 ± 0.22 (N = 14, Table 3, faulted runs excluded as in the paper), and the Fig. 16 lines within 0.15 dex. The 950 °C runs follow a separate law (p. 140) not covered here.",
    "water_label": "",
    "water_default": 1,
    "disl": {
     "enabled": true,
-    "A": 110000,
-    "n": 3.5,
-    "p": 0,
-    "r": 0,
-    "E": 530,
-    "V": 15
-   },
-   "diff": {
-    "enabled": true,
-    "A": 1500000000,
-    "n": 1,
-    "p": 3,
-    "r": 0,
-    "E": 375,
-    "V": 6
-   }
-  },
-  {
-   "id": "ol_wet",
-   "name": "Olivine, wet (constant C_OH)",
-   "ref": "Hirth & Kohlstedt 2003",
-   "status": "checked",
-   "note": "",
-   "water_label": "C_OH (H/10⁶ Si)",
-   "water_default": 1000,
-   "disl": {
-    "enabled": true,
-    "A": 90,
-    "n": 3.5,
-    "p": 0,
-    "r": 1.2,
-    "E": 480,
-    "V": 11
-   },
-   "diff": {
-    "enabled": true,
-    "A": 1000000,
-    "n": 1,
-    "p": 3,
-    "r": 1,
-    "E": 335,
-    "V": 4
-   }
-  },
-  {
-   "id": "dun_dry",
-   "name": "Dunite, dry (Åheim)",
-   "ref": "Chopra & Paterson 1984",
-   "status": "memory",
-   "note": "",
-   "water_label": "",
-   "water_default": 1,
-   "disl": {
-    "enabled": true,
-    "A": 25000,
-    "n": 3.6,
-    "p": 0,
-    "r": 0,
-    "E": 535,
-    "V": 0
+    "A": 0.00011,
+    "n": 3.7,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 244.0,
+    "V": 0.0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": false,
@@ -78,25 +26,37 @@
     "p": 0,
     "r": 0,
     "E": 0,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "gran_maf",
-   "name": "Mafic granulite",
-   "ref": "Wilks & Carter 1990",
-   "status": "checked",
-   "note": "Confirmed through a later compilation table, not the original paper",
+   "id": "anhydrite_dorner_et_al_2014",
+   "name": "Anhydrite",
+   "ref": "Dorner et al. (2014)",
+   "status": "geoparams",
+   "note": "Dislocation: Dorner et al. (2014), Eq. 4 (p. 810), indentation creep converted to uniaxial reference stress and strain rate (Eqs. 1-2; c1 = 0.296, c2 = 0.755), 708-920 °C, 1 atm: A = 4.8e-19 Pa^-3.9 s^-1, n = 3.9, Q = 338 kJ/mol (the 388 kJ/mol in the Conclusions is a typo). Reproduces the paper's data: log10 misfit -0.01 ± 0.13 (N = 17, Table 1), and the Fig. 8 flow-law curves within about 0.1 dex.",
    "water_label": "",
    "water_default": 1,
    "disl": {
     "enabled": true,
-    "A": 14000,
-    "n": 4.2,
-    "p": 0,
-    "r": 0,
-    "E": 445,
-    "V": 0
+    "A": 120570.54871245973,
+    "n": 3.9,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 338.0,
+    "V": 0.0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": false,
@@ -105,25 +65,37 @@
     "p": 0,
     "r": 0,
     "E": 0,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "gran_fel",
-   "name": "Felsic granulite",
-   "ref": "Wen et al. 2021",
-   "status": "checked",
-   "note": "",
+   "id": "antigorite_burdette_hirth_2022",
+   "name": "Antigorite",
+   "ref": "Burdette & Hirth (2022)",
+   "status": "geoparams",
+   "note": "Peierls: Burdette & Hirth (2022), Eq. 1 and Table 2: ε̇ = A (σ/μ)² exp(-(ΔF/RT)(1-(σ/τ0)^p)^q), ln A = -0.624 (A in s^-1), μ = 35 GPa, ΔF = 86.3 kJ/mol, τ0 = 2.42 GPa, p = 1 (imposed), q = 1.18; σ is differential stress. Intact antigorite cores, 1 GPa, 75-550 °C, Griggs apparatus. Reproduces the paper's data: log10 misfit -0.01 ± 0.10 (N = 57, digitized from Fig. 5b; tabulated data are in Supporting Information S1), and the Sect. 4.5 viscosities at 50 MPa shear stress within 0.1 dex.",
    "water_label": "",
    "water_default": 1,
    "disl": {
-    "enabled": true,
-    "A": 0.000039810717055349695,
-    "n": 4.2,
+    "enabled": false,
+    "A": 1,
+    "n": 1,
     "p": 0,
     "r": 0,
-    "E": 260,
-    "V": 0
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": false,
@@ -132,25 +104,232 @@
     "p": 0,
     "r": 0,
     "E": 0,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": true,
+    "A": 4.3738527156527025e-10,
+    "n": 2.0,
+    "E": 86.3,
+    "sp": 2420.0,
+    "pp": 1.0,
+    "q": 1.18,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "diab_col",
-   "name": "Diabase, dry (Columbia)",
-   "ref": "Mackwell et al. 1998",
-   "status": "partial",
-   "note": "",
+   "id": "blueschist_tokle_et_al_2023",
+   "name": "Blueschist",
+   "ref": "Tokle et al. (2023)",
+   "status": "geoparams",
+   "note": "Diffusion: Tokle et al. (2023), Eq. 5 (p. 10) and p. 12: A = 2.43e11 MPa^-2 μm s^-1 for σ_eqv = 2τ and ε̇_eqv = γ̇/√3, stored as SimpleShear with A = √3 × 2.43e11; n = 2, p = -1 with d = arithmetic-mean microboudin neck length, Q = 384 kJ/mol. Na-amphibole blueschist, ~1 GPa, 650-700 °C, Griggs general shear. Reproduces the paper's data: log10 misfit 0.02 ± 0.07 (N = 20, Table 1), and the Fig. 3b lines within 0.03 dex.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 420888346239.2372,
+    "n": 2.0,
+    "p": 1.0,
+    "r": 0.0,
+    "E": 384.0,
+    "V": 0.0,
+    "apparatus": "shear"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "calcite_coarse_grained_dislocation_x_mgco3_0_001_gilgannon_herwegh_2025",
+   "name": "Calcite (coarse-grained, dislocation, X_MgCO3 = 0.001)",
+   "ref": "Gilgannon & Herwegh (2025)",
+   "status": "geoparams",
+   "note": "Dislocation: Gilgannon & Herwegh (2025, preprint), Eq. 7 and Table 5 (pp. 17-18): A = 2.16e-8 s^-1 × X_MgCO3^-0.6 with σ_ref = 1 MPa, n = 7; X_MgCO3 = 0.001 (the paper's pure-calcite limit, p. 21) is folded into A. Q = 200 kJ/mol is assumed. Stress is equivalent stress. Reproduces the paper's data: log10 misfit +0.12 ± 0.61 (N = 18, digitized from Fig. 4b), and the Fig. 10c-d curves within 0.05 dex in stress. The Fig. 6d curves lie about 1 dex slower than Table 5 and are inconsistent with Figs. 4b and 10.",
    "water_label": "",
    "water_default": 1,
    "disl": {
     "enabled": true,
-    "A": 190,
+    "A": 1.3628678640772172e-06,
+    "n": 7.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 200.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "calcite_fine_grained_diffusion_x_mgco3_0_001_gilgannon_herwegh_2025",
+   "name": "Calcite (fine-grained, diffusion, X_MgCO3 = 0.001)",
+   "ref": "Gilgannon & Herwegh (2025)",
+   "status": "geoparams",
+   "note": "Diffusion: Gilgannon & Herwegh (2025, preprint), Eq. 5 and Table 5 (pp. 17-18): A = 3.40e7 s^-1 × X_MgCO3^0.8 with σ_ref = 1 MPa, d_ref = 1 μm; X_MgCO3 = 0.001 (the paper's pure-calcite limit, p. 21) is folded into A. This extrapolates below the fine-grained calibration range X_MgCO3 = 0.07-0.17. Q = 200 kJ/mol is assumed, not fitted. Stress is equivalent stress (torsion data converted with σ = √3 τ). Reproduces the Fig. 6a lines at σ = 1 MPa within 0.01 dex; with calcite_fine_dislocation_Gilgannon_2025 at each sample's X_MgCO3, log10 misfit -0.20 ± 0.17 (N = 72, digitized from Fig. 6a).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 135356.43798818905,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 200.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "calcite_fine_grained_dislocation_x_mgco3_0_001_gilgannon_herwegh_2025",
+   "name": "Calcite (fine-grained, dislocation, X_MgCO3 = 0.001)",
+   "ref": "Gilgannon & Herwegh (2025)",
+   "status": "geoparams",
+   "note": "Diffusion: Gilgannon & Herwegh (2025, preprint), Eq. 6 and Table 5 (pp. 17-18): A = 4.00e-8 s^-1 × X_MgCO3^-2.7 with σ_ref = 1 MPa, d_ref = 1 μm, n = 7, d^-3; X_MgCO3 = 0.001 (the paper's pure-calcite limit, p. 21) is folded into A. This extrapolates below the calibration range X_MgCO3 = 0.07-0.17. Q = 200 kJ/mol is assumed. Stress is equivalent stress. With calcite_diffusion_Gilgannon_2025 at each sample's X_MgCO3, reproduces the paper's data: log10 misfit -0.20 ± 0.17 (N = 72, digitized from Fig. 6a). The n = 7 guide line of Fig. 4a implies A ≈ 9.1e-8 instead (0.36 dex faster); the Table 5 value is kept.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 5.0357016471766745,
+    "n": 7.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 200.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "co2_ice_durham_et_al_1999",
+   "name": "CO2 ice",
+   "ref": "Durham et al. (1999)",
+   "status": "geoparams",
+   "note": "Dislocation: Durham et al. (1999), Eq. 1 and text (p. 3494): A = 10^3.86 MPa^-5.6 s^-1, n = 5.6, Q = 33 kJ/mol; polycrystalline CO2 ice, 150-190 K, 5-40 MPa confining pressure (no first-order pressure effect), differential stress. Reproduces the paper's data: log10 misfit -0.10 ± 0.40 (N = 26, Table 1; the paper notes six points outside their error bars).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 7244.359600749898,
+    "n": 5.6,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 33.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "columbia_weak_diabase_mackwell_et_al_1998",
+   "name": "Columbia weak diabase",
+   "ref": "Mackwell et al. (1998)",
+   "status": "geoparams",
+   "note": "Dislocation: Mackwell et al. (1998), flow law p. 980 and Table 2 (p. 978): A = 190 ± 110 MPa^-4.7 s^-1, n = 4.7, E = 485 kJ/mol; dry Columbia diabase, 940-1040 °C, 400-450 MPa confining pressure, gas-medium apparatus, differential stress. Reproduces the paper's data: log10 misfit 0.03 ± 0.25 (N = 65, Table 2).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 190.0,
     "n": 4.7,
-    "p": 0,
-    "r": 0,
-    "E": 485,
-    "V": 0
+    "p": 0.0,
+    "r": 0.0,
+    "E": 485.0,
+    "V": 0.0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": false,
@@ -159,25 +338,37 @@
     "p": 0,
     "r": 0,
     "E": 0,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "diab_mar",
-   "name": "Diabase, dry (Maryland)",
-   "ref": "Mackwell et al. 1998",
-   "status": "partial",
-   "note": "",
+   "id": "diabase_caristan_1982",
+   "name": "Diabase",
+   "ref": "Caristan (1982)",
+   "status": "geoparams",
+   "note": "Dislocation: Maryland diabase. Caristan (1982), p. 6789 (text beside Fig. 10): ε̇ = A σ^n exp(-Q/RT) with A = 6.12e-2 MPa^-n (s^-1), n = 3.05, Q = 276 kJ/mol, cited from Caristan's thesis; experiments in an argon gas-medium apparatus at 1000 °C, as-received samples, differential stress. Matches Carter & Tsenn (1987), Table 4 (n = 3.05, log A = -1.2 MPa^-n/s, Q = 276 kJ/mol, triaxial compression, 900-1000 °C; listed as dry), and Bremond d'Ars et al. (1999). Primary data: Caristan (1982), Table 1 creep points at 1000 °C (log10 misfit -0.37, N = 6); the temperature dependence comes from Caristan (1980, thesis), not available.",
    "water_label": "",
    "water_default": 1,
    "disl": {
     "enabled": true,
-    "A": 8,
-    "n": 4.7,
-    "p": 0,
-    "r": 0,
-    "E": 485,
-    "V": 0
+    "A": 0.0612,
+    "n": 3.05,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 276.0,
+    "V": 0.0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": false,
@@ -186,15 +377,26 @@
     "p": 0,
     "r": 0,
     "E": 0,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "diab_wet",
+   "id": "diabase_as_received_shelton_tullis_1981",
    "name": "Diabase, as-received (wet)",
-   "ref": "Shelton & Tullis 1981",
+   "ref": "Shelton & Tullis (1981)",
    "status": "memory",
-   "note": "",
+   "note": "Entered from memory of standard compilations; not in GeoParams.jl. Check against the source.",
    "water_label": "",
    "water_default": 1,
    "disl": {
@@ -204,7 +406,8 @@
     "p": 0,
     "r": 0,
     "E": 260,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": false,
@@ -213,96 +416,767 @@
     "p": 0,
     "r": 0,
     "E": 0,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "an_dry",
-   "name": "Anorthite, dry",
-   "ref": "Rybacki & Dresen 2000",
-   "status": "checked",
-   "note": "Rybacki et al. 2006 add V ≈ 24 cm³/mol",
+   "id": "dry_anorthite_rybacki_dresen_2000",
+   "name": "Dry Anorthite",
+   "ref": "Rybacki & Dresen (2000)",
+   "status": "geoparams",
+   "note": "Dislocation: Rybacki & Dresen (2000), Table 2, 'Dislocation creep, dry': log A = 12.7 MPa^-n/s, n = 3, Q = 648. Reproduces the paper's data: log10 misfit -0.06 ± 0.09 (N = 20, Table 1). Diffusion: Rybacki & Dresen (2000), Table 2, 'Diffusion creep, dry': log A = 12.1 MPa^-n μm^m/s, Q = 467 kJ/mol, m = 3. Reproduces the paper's data: log10 misfit -0.03 ± 0.09 (N = 19, Table 1).",
    "water_label": "",
    "water_default": 1,
    "disl": {
     "enabled": true,
     "A": 5011872336272.715,
-    "n": 3,
-    "p": 0,
-    "r": 0,
-    "E": 648,
-    "V": 0
+    "n": 3.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 648.0,
+    "V": 0.0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": true,
     "A": 1258925411794.1663,
-    "n": 1,
-    "p": 3,
-    "r": 0,
-    "E": 467,
-    "V": 0
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 467.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "an_wet",
-   "name": "Anorthite, wet",
-   "ref": "Rybacki & Dresen 2000",
-   "status": "checked",
-   "note": "Rybacki et al. 2006 add V ≈ 38 cm³/mol and fH₂O¹",
+   "id": "dry_anorthite_rybacki_et_al_2006",
+   "name": "Dry Anorthite",
+   "ref": "Rybacki et al. (2006)",
+   "status": "geoparams",
+   "note": "Dislocation: Rybacki et al. (2006), Table 5, 'Dislocation creep, dry': log A = 12.7 MPa^-n/s, n = 3, Q = 641, V = 24 cm^3/mol. Reproduces the paper's data: log10 misfit -0.06 ± 0.09 (N = 20; primary data: Rybacki & Dresen 2000, Table 1, which Table 5 refits). Diffusion: Rybacki et al. (2006), Table 5, 'Diffusion creep, dry': log A = 12.1 MPa^-n μm^m/s, Q = 460 kJ/mol, V = 24 cm^3/mol, m = 3. Table 5 refits the Rybacki & Dresen (2000) data (primary data: Rybacki & Dresen 2000, Table 1): log10 misfit -0.04 ± 0.09 (N = 19). Vs the 2006 paper's own dry runs it is about 4× too fast (+0.64 ± 0.26, N = 113); the paper's direct fit to those is log A = 12.4, Q = 482, V = 32.4 cm^3/mol.",
    "water_label": "",
    "water_default": 1,
    "disl": {
     "enabled": true,
-    "A": 398.1071705534973,
-    "n": 3,
-    "p": 0,
-    "r": 0,
-    "E": 356,
-    "V": 0
+    "A": 5011872336272.715,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 641.0,
+    "V": 24.0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": true,
-    "A": 50.11872336272722,
-    "n": 1,
-    "p": 3,
-    "r": 0,
-    "E": 170,
-    "V": 0
+    "A": 1258925411794.1663,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 460.0,
+    "V": 24.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "cpx_dry",
-   "name": "Clinopyroxenite, dry",
-   "ref": "Bystricky & Mackwell 2001",
-   "status": "partial",
-   "note": "",
+   "id": "dry_clinopyroxene_bystricky_mackwell_2001",
+   "name": "Dry Clinopyroxene",
+   "ref": "Bystricky & Mackwell (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: Bystricky & Mackwell (2001), eq. (2), natural Sleaford Bay clinopyroxenite: ε̇ = 10^9.8 σ^4.7 exp(-760 kJ/mol / RT), ε̇ in s^-1, σ = σ1 - σ3 in MPa. Same values in Bürgmann & Dresen (2008), Suppl. Table 1. Reproduces the paper's data: log10 misfit -0.01 ± 0.09 (N = 28, Table 2, natural samples). Diffusion: Bystricky & Mackwell (2001), eq. (5), diffusion term (dry hot-pressed clinopyroxenite, Ni/NiO buffer): ε̇ = 10^15.1 σ d^-3 exp(-560 kJ/mol / RT), ε̇ in s^-1, σ = σ1 - σ3 in MPa; d in μm (unit not printed, implied by the 8 μm normalisation and the strain rates). Same values in Bürgmann & Dresen (2008), Suppl. Table 1. Reproduces the paper's data: log10 misfit 0.00 ± 0.15 (N = 20, Fig. 5 curves, d = 8 μm).",
    "water_label": "",
    "water_default": 1,
    "disl": {
     "enabled": true,
     "A": 6309573444.801943,
     "n": 4.7,
-    "p": 0,
-    "r": 0,
-    "E": 760,
-    "V": 0
+    "p": 0.0,
+    "r": 0.0,
+    "E": 760.0,
+    "V": 0.0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": true,
     "A": 1258925411794166.2,
-    "n": 1,
-    "p": 3,
-    "r": 0,
-    "E": 560,
-    "V": 0
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 560.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "ecl",
+   "id": "dry_clinopyroxene_hier_majumder_et_al_2005",
+   "name": "Dry Clinopyroxene",
+   "ref": "Hier-Majumder et al. (2005)",
+   "status": "geoparams",
+   "note": "Diffusion: Hier-Majumder et al. (2005), eq. (3) and Table 3, row 'Anhydrous': ε̇ = ε̇o (σ/G)^n (d/do)^p exp(-Q/RT) with ε̇o = 10^25.3 s^-1, n = 1, p = -3, Q = 760 kJ/mol, G = 64.9 GPa, do = 10 μm, σ differential stress. In MPa and μm: A = ε̇o do^3 / G = 10^25.3 × 10^3 / 64.9e3 = 3.07e23 MPa^-1 μm^3/s (equal to Bürgmann & Dresen 2008, 10^25.3/64.9; the former 10^25.3/64.9e3 lacked the do^3 factor). Reproduces the paper's data: log10 misfit +0.03 ± 0.10 (N = 36, Table 2a).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 3.074364121677786e+23,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 760.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_diopside_dimanov_dresen_2005",
+   "name": "Dry Diopside",
+   "ref": "Dimanov & Dresen (2005)",
+   "status": "geoparams",
+   "note": "Dislocation: Dimanov & Dresen (2005), Table 3b, row DiD: A = 3.01e-28 Pa^-n/s, n = 5.47, Q = 691. Reproduces the paper's data: log10 misfit -0.08 ± 0.07 (N = 14, Table 1, dislocation-dominated). Diffusion: Dimanov & Dresen (2005), Table 3b, row Di35D (n = 1, Q = 528); A = 10^14 from Bürgmann & Dresen (2008), Suppl. Table 1, since the paper folds d^m into A (m = 3 assumed). A implies an effective grain size of about 13-15 μm, which the paper does not state (it gives only particle size classes).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 198868.7278502858,
+    "n": 5.47,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 691.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 100000000000000.0,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 528.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_dunite_chopra_paterson_1984",
+   "name": "Dry Dunite",
+   "ref": "Chopra & Paterson (1984)",
+   "status": "geoparams",
+   "note": "Dislocation: Chopra & Paterson (1984), p. 7865 and Table 3, row 'Both dunites, dry': ε̇ = A σ^n exp(-Q/RT) with A = 10^(4.46 ± 0.18) s^-1 MPa^-n, n = 3.60 ± 0.22, Q = 535 ± 33 kJ/mol (± 2 standard deviations), σ = differential stress; one multilinear regression of the Table 2 data on Anita Bay (100 μm) and Åheim (900 μm) dunite, predried for > 60 h at 1200 °C, gas-medium apparatus, 300 MPa confining pressure, 1200-1400 °C, 1e-4 to 1e-6 s^-1. No separate law per rock and no activation volume (V = 0). Same values in Kirby & Kronenberg (1987), Table 1. Reproduces the paper's data: log10 misfit -0.02 ± 0.17 (N = 22, Table 2 predried runs without the two upper-limit rates of run 4580; Anita Bay +0.03 ± 0.20, N = 11; Åheim -0.07 ± 0.11, N = 11).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 28840.31503126606,
+    "n": 3.6,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 535.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_dunite_fo2_dependent_keefner_et_al_2011",
+   "name": "Dry Dunite (fO2-dependent)",
+   "ref": "Keefner et al. (2011)",
+   "status": "geoparams",
+   "note": "Dislocation: Keefner et al. (2011), Table 3 (p. 7): A = 10^2.6 MPa^-3.6 Pa^-0.2 s^-1 (stored as 10^3.8 MPa^-3.8 s^-1), n = 3.6 (3.59), r = 0.2 with f = fO2 in Pa (not fH2O), E = 449 kJ/mol; Åheim dunite, d ≈ 0.9 mm, gas-medium apparatus, 300 MPa, 1150-1277 °C, IW to NNO buffers, differential stress. Reproduces the paper's data: log10 misfit 0.02 ± 0.13 (N = 55, Table 2, 1250 °C runs where fO2 is given), and the Fig. 6a,c lines within 0.1 dex.",
+   "water_label": "fO₂ term (see note)",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 6309.57344480193,
+    "n": 3.6,
+    "p": 0.0,
+    "r": 0.2,
+    "E": 449.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_eclogite_zhang_green_2007",
+   "name": "Dry Eclogite",
+   "ref": "Zhang & Green (2007)",
+   "status": "geoparams",
+   "note": "Dislocation: Zhang & Green (2007), Table 2 and text p. 104: A = 10^3.3 MPa^-3.5 s^-1, n = 3.5, E = 403 kJ/mol, V = 27.2 cm³/mol (ΔH = 485 kJ/mol at 3 GPa); differential stress, Griggs axial compression; 50 Grt, 40 Omp, 10 Qz, 2.5-3.5 GPa, 1027-1327 °C. Reproduces the paper's data: log10 misfit -0.10 ± 0.21 (N = 16, Table 2), and the Fig. 4a-c fitted lines within 0.25 dex.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 1995.2623149688789,
+    "n": 3.5,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 403.0,
+    "V": 27.2,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_olivine_demouchy_2013",
+   "name": "Dry Olivine",
+   "ref": "Demouchy (2013)",
+   "status": "geoparams",
+   "note": "Peierls: Demouchy et al. (2013), eq. (4) and Table 2 'Model 3': A = 1e6 1/s, Q = 450 kJ/mol, σP = 15 GPa, p = 1/2, q = 2; σ is the differential stress. Reproduces the paper's Fig. 10b 'model 3' curve within 10 MPa (N = 13, 820-1540 K).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": true,
+    "A": 1000000.0,
+    "n": 0.0,
+    "E": 450.0,
+    "sp": 15000.0,
+    "pp": 0.5,
+    "q": 2.0,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_olivine_faul_jackson_2007",
+   "name": "Dry Olivine",
+   "ref": "Faul & Jackson (2007)",
+   "status": "geoparams",
+   "note": "Diffusion: Faul & Jackson (2007), eq. (2) and paragraph [32]: A = 2e10 MPa^-n μm^p/s, E = 484 kJ/mol, n = 1.37, p = 3; dry, melt-free sol-gel olivine, V not determined. Formerly wet_olivine_Faul_2006. The 'mm' printed in the PDF for A and the grain size is a misprint for μm. Reproduces the paper's data: log10 misfit +0.02 ± 0.09 (N = 77, Table 1, melt-free runs).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 20000000000.0,
+    "n": 1.37,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 484.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_olivine_gerya_2019",
+   "name": "Dry Olivine",
+   "ref": "Gerya (2019)",
+   "status": "geoparams",
+   "note": "Dislocation: Gerya (2010), Exercise 6.1: A = 2.5e-17 Pa^-n/s, n = 3.5, Ea = 532 kJ/mol, Va = 0, 'representative for dry olivine', axial compression (2010 edition checked); the same law is in Gerya (2010), Table 17.1 (2.5e4 MPa^-n/s, 3.5, 532), 'from compilation by Ranalli, 1995'. Ranalli (1995) was not checked. The values are consistent with the arithmetic mean of the three dry-olivine rows of Kirby & Kronenberg (1987), Table 1: Karato et al. 1982 (log A = 3.9 MPa^-n/s, n = 3.5, H = 528 kJ/mol), Kirby 1983 (4.8, 3.5, 533) and Chopra & Paterson 1984 (4.46, 3.6, 535) give log A = 4.39 (2.44e4; Ueda et al. 2008, Table 1, print 10^4.4), n = 3.53 and H = 532.0. Primary data: Chopra & Paterson (1984), Table 2 (predried Anita Bay and Åheim dunite, 1200-1400 °C, 300 MPa): log10 misfit -0.23 ± 0.17 (N = 22, 1.7× too slow), while their own law (dry_dunite_Chopra_1984) fits at -0.02 ± 0.17. The Karato et al. (1982) and Kirby (1983) inputs were not checked against data. Valid for olivine under upper mantle conditions. Ranalli & Murphy (1987) is not the source: its only olivine law is n = 3, Q = 540 kJ/mol (A = 4.0e15 GPa^-n s^-1), a theoretical best fit from Ranalli (1982).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 25000.000000000004,
+    "n": 3.5,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 532.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_olivine_goetze_and_evans_1979",
+   "name": "Dry Olivine",
+   "ref": "Goetze and Evans (1979)",
+   "status": "geoparams",
+   "note": "Peierls: Goetze & Evans (1979), eq. (1a), p. 469: ε̇ = 5.7e11 exp(-Q/RT (1 - σ/σP)^2), Q = 128 kcal/mol, σP = 8.5 GPa, σ = σ1 - σ3 (p = 1, q = 2). Reproduces the Goetze curve of Mei et al. (2010), Fig. 6, within 10 MPa (N = 8, 650-1350 K) and the paper's Fig. 4 Peierls curve up to about 1200 °C. Primary data: Evans & Goetze (1979), microindentation hardness of olivine single crystals (not checked here).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": true,
+    "A": 570000000000.0,
+    "n": 0.0,
+    "E": 536.0,
+    "sp": 8500.0,
+    "pp": 1.0,
+    "q": 2.0,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_olivine_hirth_kohlstedt_2003",
+   "name": "Dry Olivine",
+   "ref": "Hirth & Kohlstedt (2003)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: the printed law is 2.5× too slow vs the paper's own data: -0.40 log10 units vs the Fig. 2a dislocation-creep fit line, -0.30 ± 0.19 vs the primary data, Mei & Kohlstedt (2000b), Table 1, dry runs (N = 12, diffusion removed) and -0.34/-0.48 vs Karato & Jung (2003), Table 1; a data-consistent version is dry_olivine_Hirth_2003_refit. Hirth & Kohlstedt (2003), Table 1, row 'dry dislocation': A = 1.1e5 MPa^-n/s, n = 3.5, E = 530; V = 14 cm^3/mol from Table 2 (range 13.4-27). Diffusion: Hirth & Kohlstedt (2003), Table 1, row 'dry diffusion': A = 1.5e9 MPa^-1 μm^3/s, E = 375, V = 2-10 (upper end used). Reproduces the paper's data: log10 misfit +0.16 ± 0.21 (N = 8; primary data: Mei & Kohlstedt 2000b, Table 1, dry runs at σ ≤ 60 MPa).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 110000.0,
+    "n": 3.5,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 530.0,
+    "V": 14.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 1500000000.0,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 375.0,
+    "V": 10.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_olivine_idrissi_et_al_2016",
+   "name": "Dry Olivine",
+   "ref": "Idrissi et al. (2016)",
+   "status": "geoparams",
+   "note": "Peierls: Idrissi et al. (2016), eq. (1) and Table 1: A = 1e6 1/s, Q = 566 kJ/mol, σ0 = 3.8 GPa, p = 0.5, q = 2 (uniaxial stress). Renamed from dry_olivine_Idrissei_2016. Reproduces the paper's Fig. 1 law at 1e-5 s^-1 within 10 MPa (N = 10, 208-1103 K).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": true,
+    "A": 1000000.0,
+    "n": 0.0,
+    "E": 566.0,
+    "sp": 3800.0,
+    "pp": 0.5,
+    "q": 2.0,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_olivine_karato_jung_2003",
+   "name": "Dry Olivine",
+   "ref": "Karato & Jung (2003)",
+   "status": "geoparams",
+   "note": "Dislocation: Karato & Jung (2003), Table 3 (open system) and abstract: A_d = 10^6.1 s^-1 MPa^-n, n = 3.0, r = 0, E*_d = 510 kJ/mol (taken there from Mei & Kohlstedt 2000), V*_d = 14 cm^3/mol. σ is differential stress (dislocation-density piezometer; Griggs simple-shear runs converted assuming isotropic plasticity). Reproduces the paper's data: log10 misfit -0.07 ± 0.24 (N = 5, Table 1 dry).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 1258925.411794166,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 510.0,
+    "V": 14.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_olivine_mei_et_al_2010",
+   "name": "Dry Olivine",
+   "ref": "Mei et al. (2010)",
+   "status": "geoparams",
+   "note": "Peierls: Mei et al. (2010), eq. (3) and paragraph [23]: A_P = 1.4e-7 MPa^-2/s, σP = 5.9 GPa, E_k(0) = 320 kJ/mol, p = 1/2, q = 1 (axial strain rate, differential stress). Reproduces the paper's data: log10 misfit -0.09 ± 0.18 (N = 11, Table 1).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": true,
+    "A": 1.4e-07,
+    "n": 2.0,
+    "E": 320.0,
+    "sp": 5900.0,
+    "pp": 0.5,
+    "q": 1.0,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_olivine_refit_to_data_hirth_kohlstedt_2003",
+   "name": "Dry Olivine (refit to data)",
+   "ref": "Hirth & Kohlstedt (2003)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: refit of dry_olivine_Hirth_2003 with A = 2.8e5 MPa^-n/s (= 1.1e5 × 10^0.40; not a printed value) so that the law reproduces the paper's own data. The printed A = 1.1e5 is -0.40 log10 units (2.5× too slow) vs the Hirth & Kohlstedt (2003) Fig. 2a dislocation-creep fit line (1250 °C, 300 MPa, σ = 89-250 MPa), -0.30 ± 0.19 vs the Mei & Kohlstedt (2000) dry data it was fitted to (N = 12, σ ≥ 150 MPa, diffusion creep removed) and -0.34/-0.48 vs the dry strengths of Karato & Jung (2003), Table 1. n = 3.5, E = 530 and V = 14 cm^3/mol as in dry_olivine_Hirth_2003, which holds the printed law (Table 1, row 'dry dislocation').",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 280000.0,
+    "n": 3.5,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 530.0,
+    "V": 14.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_quartzite_brace_kohlstedt_1980",
+   "name": "Dry Quartzite",
+   "ref": "Brace & Kohlstedt (1980)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: the law is -0.25 log10 units slower than the paper's Fig. 6, which implies A ≈ 9e-6. Brace & Kohlstedt (1980), Eq. 5 (p. 6250): A = 5e-6 MPa^-3 s^-1 (printed as 5 × 10^6, a misprint; 5e6 puts the 100 MPa depth at < 1 km), n = 3, Q = 190 kJ/mol; dry quartzite (data of Christie et al. 1979 and Heard & Carter 1968), σ1-σ3 < 1000 MPa, differential stress. Reproduces the paper's Fig. 6 100 MPa depths within 1 km; no data table.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 5e-06,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 190.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "dry_quartzite_jaoul_et_al_1984",
+   "name": "Dry Quartzite",
+   "ref": "Jaoul et al. (1984)",
+   "status": "geoparams",
+   "note": "Dislocation: Jaoul et al. (1984), Table 1, row 1 (W-292, creep in CaCO3 assembly, vacuum heated at 685 °C for 4 days, 700-1050 °C, 1.5 GPa): A = 1.37 s^-1 kbar^-n, n = 2.8 ± 0.2, E = 44.0 ± 1.5 kcal/mol; σ = σ1 - σ3 in kbar (Griggs apparatus). A converted to 1.37 × 100^-2.8 = 3.44e-6 MPa^-n/s (previously 10^-5.415, of unknown origin). Reproduces the paper's data: log10 misfit -0.10 ± 0.09 (N = 15, Fig. 5a).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 3.441284411168128e-06,
+    "n": 2.8,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 184.096,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "eclogite_jin_et_al_2001",
    "name": "Eclogite",
-   "ref": "Jin et al. 2001",
+   "ref": "Jin et al. (2001)",
    "status": "memory",
-   "note": "",
+   "note": "Entered from memory of standard compilations; not in GeoParams.jl. Check against the source.",
    "water_label": "",
    "water_default": 1,
    "disl": {
@@ -312,7 +1186,8 @@
     "p": 0,
     "r": 0,
     "E": 480,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": false,
@@ -321,25 +1196,310 @@
     "p": 0,
     "r": 0,
     "E": 0,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "qtz_wet",
-   "name": "Quartzite, wet",
-   "ref": "Hirth et al. 2001",
-   "status": "checked",
-   "note": "",
+   "id": "felsic_granulite_wen_et_al_2021",
+   "name": "Felsic Granulite",
+   "ref": "Wen et al. (2021)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: the printed law is 2× too fast vs the paper's own data: +0.31 ± 0.06 log10 units vs Table 1 (N = 10) and +0.25 vs the 927 °C line of Fig. 2b; a data-consistent version is `felsic_granulite_Wen_2021_refit`. Wen et al. (2021), flow law p. 5: A = 10^(-4.4 ± 0.2) MPa^-4.2 s^-1, n = 4.2, E = 260 kJ/mol; synthetic felsic granulite (65 Pl, 15 Qz, 9 Cpx, 6 Opx, 5 Amp), 827-927 °C, 1 GPa, Griggs apparatus; the paper says flow stress, taken as differential stress.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 3.9810717055349695e-05,
+    "n": 4.2,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 260.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "felsic_granulite_wilks_and_carter_1990",
+   "name": "Felsic Granulite",
+   "ref": "Wilks and Carter (1990)",
+   "status": "geoparams",
+   "note": "Dislocation: Wilks and Carter (1990), abstract (p. 57) and Fig. 6A (p. 70): A = 8.0e-3 MPa^-3.1 s^-1, n = 3.1, E = 243 kJ/mol; Adirondack felsic granulite, 700-900 °C, 1 GPa, differential stress. Reproduces the paper's data: log10 misfit -0.04 ± 0.42 (N = 16 steady-state runs, Table 2), and the Fig. 6A isotherms within 0.05 in log σ.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.008,
+    "n": 3.1,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 243.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "felsic_granulite_refit_to_data_wen_et_al_2021",
+   "name": "Felsic Granulite (refit to data)",
+   "ref": "Wen et al. (2021)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: refit of felsic_granulite_Wen_2021 with A = 10^-4.7 MPa^-4.2 s^-1 (best fit at the printed n = 4.2 and E = 260 kJ/mol: 10^-4.71; a free fit gives n = 4.14, E = 265). Reproduces the paper's data: log10 misfit 0.01 ± 0.06 (N = 10, Table 1), and the 927 °C line of Fig. 2b.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 1.9952623149688786e-05,
+    "n": 4.2,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 260.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "glaucophane_hufford_et_al_2026",
+   "name": "Glaucophane",
+   "ref": "Hufford et al. (2026)",
+   "status": "geoparams",
+   "note": "Dislocation: Hufford et al. (2026), abstract (p. 1) and flow law (p. 11): A = 2.32e10 MPa^-3 s^-1 for σ_equiv = 2τ and ε̇_equiv = γ̇/√3, stored as SimpleShear with A = √3 × 2.32e10; n = 3 (imposed), Q = 450 kJ/mol. Glaucophane aggregates < 63 μm, 1 GPa, 600-700 °C, Griggs general shear. Reproduces the paper's data: log10 misfit 0.00 ± 0.18 (N = 21 creep steps, Table 1), and the Fig. 8 lines within 0.02 dex.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 40183578735.59795,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 450.0,
+    "V": 0.0,
+    "apparatus": "shear"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "glaucophane_glide_hufford_et_al_2026",
+   "name": "Glaucophane glide",
+   "ref": "Hufford et al. (2026)",
+   "status": "geoparams",
+   "note": "Peierls: Hufford et al. (2026), glide law (p. 11): ε̇ = A (σ/μ)² exp(-(H/RT)(1-σ/σP)^2), A = 10^38.0181 s^-1, μ = 60.6 GPa, σP = 22 GPa, H = 800 kJ/mol, p = 1, q = 2, for σ_equiv = 2τ and ε̇_equiv = γ̇/√3; stored as SimpleShear with A/μ² × √3. Glaucophane aggregates, 1 GPa, 600-700 °C, Griggs general shear. Reproduces the paper's data: log10 misfit -0.02 ± 0.21 (N = 12 high-stress steps, Table 1).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": true,
+    "A": 4.917171763216619e+28,
+    "n": 2.0,
+    "E": 800.0,
+    "sp": 22000.0,
+    "pp": 1.0,
+    "q": 2.0,
+    "apparatus": "shear"
+   }
+  },
+  {
+   "id": "granite_carter_and_tsenn_1987",
+   "name": "Granite",
+   "ref": "Carter and Tsenn (1987)",
+   "status": "geoparams",
+   "note": "Dislocation: Carter & Tsenn (1987), Table 4, 'Westerly granite, dry (Hansen & Carter, 1983)': log A = -5.7 MPa^-n/s, n = 3.3, Q = 186.5. Primary data: Hansen & Carter (1983), not available. For comparison only (not its source data): vs the dry Westerly granite of Carter et al. (1981), Fig. 8b (same laboratory, Pc = 1 GPa, 570-765 °C, 0.6-1.2 GPa) the law gives log10 misfit -0.21 ± 0.42 (N = 9; -0.74 at 570 °C, +0.19 at 765 °C), because Q = 186.5 kJ/mol exceeds the 106 kJ/mol of those data.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 1.9952623149688787e-06,
+    "n": 3.3,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 186.5,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "granite_tirel_et_al_2008",
+   "name": "Granite",
+   "ref": "Tirel et al. (2008)",
+   "status": "geoparams",
+   "note": "Dislocation: Tirel et al. (2008), Table 1, 'granite (anomaly)': A = 1.25e-9 MPa^-n/s, n = 3.2, Ea = 123 kJ/mol (cites Kirby & Kronenberg 1987). A hybrid of two links: A is the Kirby & Kronenberg (1987), Table 3, Westerly granite row of Carter et al. (1981) (tabulated 8.5 - 6 × 2.9 = -8.9, i.e. 1.26e-9 MPa^-n/s; the Table 3 header 'MPa^-n s^-1' is a misprint, log A in MPa^-n s^-1 = tabulated value - 6n, confirmed by Carter et al. 1981, eq. 12), while n = 3.2 and E = 123 are the means of the two K&K87 Westerly granite rows (Carter et al. 1981: 2.9, 106; Hansen & Carter 1982: 3.4, 139), as in Ranalli (1995) (Gerya 2010, Table 17.1: 1.8e-9, 3.2, 123). Carter et al. (1981), eq. (12): ε̇ = 1.4e-9 exp(-25.3 kcal/mol / RT) σ^2.9, σ (differential) in MPa. Primary data: Carter et al. (1981), Fig. 8b (dry Westerly granite, Pc = 1 GPa, 570-765 °C, σ = 0.6-1.2 GPa; 9 steady-state points read from the figure): log10 misfit -0.16 ± 0.13 (N = 9; -0.31 at 570 °C), where eq. (12) gives -0.04 ± 0.08. Because n and E differ from eq. (12), the law is 3× slower than eq. (12) at 600 °C and 100 MPa and 12× slower at 400 °C and 10 MPa. Identical to the granite row of Ranalli & Murphy (1987), Tectonophysics 132, Table 1 (A = 5.0 GPa^-n s^-1 = 1.26e-9 MPa^-n s^-1, n = 3.2, Q = 123 kJ/mol), which cites Kirby (1983).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 1.25e-09,
+    "n": 3.2,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 123.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "high_pressure_wet_quartzite_lusk_et_al_2021",
+   "name": "high pressure wet Quartzite",
+   "ref": "Lusk et al. (2021)",
+   "status": "geoparams",
+   "note": "Dislocation: Lusk et al. (2021), Table 2, row 'High pressure' (700-1600 MPa), and abstract: log A = -7.90 MPa^-(n+r)/s, n = 2.0, r = 0.49, Q = 77, V = 2.59 cm^3/mol (r and V from the 'representative reduced' fit). σ is von Mises equivalent stress = differential stress for axial tests. Pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit +0.25 ± 0.46 (N = 158, Fig. 7a).",
    "water_label": "fH₂O (MPa)",
    "water_default": 100,
    "disl": {
     "enabled": true,
-    "A": 6.309573444801943e-12,
-    "n": 4,
-    "p": 0,
-    "r": 1,
-    "E": 135,
-    "V": 0
+    "A": 1.2589254117941661e-08,
+    "n": 2.0,
+    "p": 0.0,
+    "r": 0.49,
+    "E": 77.0,
+    "V": 2.5900000000000003,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": false,
@@ -348,25 +1508,1675 @@
     "p": 0,
     "r": 0,
     "E": 0,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   },
   {
-   "id": "qtz_gt",
-   "name": "Quartzite, wet (no fugacity term)",
-   "ref": "Gleason & Tullis 1995",
-   "status": "partial",
-   "note": "",
+   "id": "high_stress_wet_dunite_chopra_paterson_1981",
+   "name": "High Stress Wet Dunite",
+   "ref": "Chopra & Paterson (1981)",
+   "status": "geoparams",
+   "note": "Dislocation: Chopra & Paterson (1981), Table IV, row 'Anita Bay dunite, constant ε̇ (σ > ~100 MPa)': log A = 3.98 ± 0.17 s^-1 MPa^-n, n = 3.35, Q = 444 kJ/mol; eq. (1) with differential stress, gas-medium apparatus, 300 MPa confining pressure, 'wet' (water from hydrous minerals). Matches Carter & Tsenn (1987), Table 4, and Kirby & Kronenberg (1987), Table 1. Reproduces the paper's data: log10 misfit -0.01 ± 0.16 (N = 22, Table II).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 9549.92586021436,
+    "n": 3.35,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 444.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_ih_basal_slip_goldsby_kohlstedt_2001",
+   "name": "Ice Ih basal slip",
+   "ref": "Goldsby & Kohlstedt (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: the printed law is 2× too fast vs the paper's own data: +0.31 ± 0.17 log10 units (N = 15, Fig. 2b, d = 3-5 μm), +0.17 at 208 K and +0.47 at 193 K, which suggests an apparent Q near 75 kJ/mol; the text quotes 55-62 kJ/mol. Goldsby & Kohlstedt (2001), Table 5 (p. 11,024), basal-slip-accommodated GBS: A = 5.5e7 MPa^-2.4 s^-1, n = 2.4, Q = 60 kJ/mol, V = -13 cm³/mol; fine-grained ice Ih, differential stress.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 55000000.0,
+    "n": 2.4,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 60.0,
+    "V": -13.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_ih_dislocation_t_258_k_goldsby_kohlstedt_2001",
+   "name": "Ice Ih dislocation, T < 258 K",
+   "ref": "Goldsby & Kohlstedt (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: the printed law is 7× too fast vs the paper's own data: +0.87 log10 units vs the T < 258 K points of Fig. 6 (N = 3), and +0.19 ± 0.26 (up to +0.78) in the composite law of Fig. 2a (N = 25); a data-consistent version is `ice_dislocation_cold_Goldsby_2001_refit`. Goldsby & Kohlstedt (2001), Table 5 (p. 11,024): A = 4.0e5 MPa^-4 s^-1, n = 4, Q = 60 kJ/mol, V = -13 cm³/mol; ice Ih, T < 258 K, differential stress.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 400000.0,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 60.0,
+    "V": -13.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_ih_dislocation_t_258_k_refit_to_data_goldsby_kohlstedt_2001",
+   "name": "Ice Ih dislocation, T < 258 K (refit to data)",
+   "ref": "Goldsby & Kohlstedt (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: refit of ice_dislocation_cold_Goldsby_2001 with A = 5.4e4 MPa^-4 s^-1 (log10 A = 4.73 ± 0.03 at the printed n = 4, Q = 60 kJ/mol). Reproduces the paper's data: the T < 258 K points of Fig. 6 (N = 3), -0.01 ± 0.11 in the composite law of Fig. 2a (N = 25), and the text's statement (p. 11,024) that the low-T law underpredicts the 268 K rate by 5.8× (10^-2.95 vs 10^-3.00 measured).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 54000.0,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 60.0,
+    "V": -13.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_ih_dislocation_t_258_k_goldsby_kohlstedt_2001_2",
+   "name": "Ice Ih dislocation, T > 258 K",
+   "ref": "Goldsby & Kohlstedt (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: Goldsby & Kohlstedt (2001), Table 5 (p. 11,024): A = 6.0e28 MPa^-4 s^-1, n = 4, Q = 181 kJ/mol, V = -13 cm³/mol (the paper's pressure normalization, p. 11,020); polycrystalline ice Ih, T > 258 K, differential stress. Lies on the 181 kJ/mol line of Fig. 6; log10 misfit -0.16 (N = 1, the 268 K point of Fig. 6).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 6e+28,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 181.0,
+    "V": -13.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_ih_regime_a_258_240_k_durham_stern_2001",
+   "name": "Ice Ih regime A (258-240 K)",
+   "ref": "Durham & Stern (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: Durham & Stern (2001), Table 1 (p. 305), after Durham et al. (1992, JGR 97): log10 A = 11.8, n = 4.0, E = 91 kJ/mol, V = -13 cm³/mol (estimated); ice Ih, 240-258 K, axisymmetric flow. Reproduces the Fig. 4 viscosity map within 0.02 dex (the map does not distinguish V = -13 from V = 0).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 630957344480.1943,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 91.0,
+    "V": -13.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_ih_regime_b_240_k_durham_stern_2001",
+   "name": "Ice Ih regime B (< 240 K)",
+   "ref": "Durham & Stern (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: Durham & Stern (2001), Table 1 (p. 305), after Durham et al. (1992, JGR 97): log10 A = 5.1, n = 4.0, E = 61 kJ/mol, V = -13 cm³/mol; ice Ih, < 240 K (the B/C boundary depends on T and strain rate), axisymmetric flow. Reproduces the Fig. 4 viscosity map within 0.01 dex.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 125892.54117941661,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 61.0,
+    "V": -13.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_ii_220_k_durham_stern_2001",
+   "name": "Ice II (< 220 K)",
+   "ref": "Durham & Stern (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: Durham & Stern (2001), Table 1 (p. 305), after Durham et al. (1988, JGR 93): log10 A = 1.84, n = 5.3, E = 55 kJ/mol, V = 7 cm³/mol; ice II, < 220 K. Reproduces the Fig. 4 viscosity map within 0.01 dex.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 69.18309709189366,
+    "n": 5.3,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 55.0,
+    "V": 7.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_ii_220_k_durham_stern_2001_2",
+   "name": "Ice II (>= 220 K)",
+   "ref": "Durham & Stern (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: Durham & Stern (2001), Table 1 (p. 305), after Durham et al. (1988, JGR 93): log10 A = 11.7, n = 5.2, E = 98 kJ/mol, V = 4 cm³/mol; ice II, >= 220 K. Reproduces the Fig. 4 viscosity map within 0.02 dex.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 501187233627.2715,
+    "n": 5.2,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 98.0,
+    "V": 4.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_iii_230_k_durham_stern_2001",
+   "name": "Ice III (>= 230 K)",
+   "ref": "Durham & Stern (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: Durham & Stern (2001), Table 1 (p. 305), after Durham et al. (1988, JGR 93): log10 A = 26.4, n = 4.3, E = 151 kJ/mol, V = 0 (estimated); ice III, >= 230 K. Reproduces the Fig. 4 viscosity map within 0.01 dex.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 2.511886431509572e+26,
+    "n": 4.3,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 151.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_v_durham_stern_2001",
+   "name": "Ice V",
+   "ref": "Durham & Stern (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: Durham & Stern (2001), Table 1 (p. 305), after Durham et al. (1996, JGR 101): log10 A = 23, n = 6, E = 136 kJ/mol, V = 29 cm³/mol; ice V (the Durham row; Table 1 also lists a different Sotin & Poirier 1987 law). Reproduces the Fig. 4 viscosity map within 0.12 dex.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 1.0000000000000001e+23,
+    "n": 6.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 136.0,
+    "V": 29.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "ice_vi_250_k_durham_stern_2001",
+   "name": "Ice VI (< 250 K)",
+   "ref": "Durham & Stern (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: Durham & Stern (2001), Table 1 (p. 305), after Durham et al. (1996, JGR 101): log10 A = 6.7, n = 4.5, E = 66 kJ/mol, V = 11 cm³/mol; ice VI, < 250 K. Reproduces the Fig. 4 viscosity map within 0.14 dex.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 5011872.336272725,
+    "n": 4.5,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 66.0,
+    "V": 11.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "low_pressure_wet_quartzite_lusk_et_al_2021",
+   "name": "low pressure wet Quartzite",
+   "ref": "Lusk et al. (2021)",
+   "status": "geoparams",
+   "note": "Dislocation: Lusk et al. (2021), Table 2, row 'Low pressure' (< 560 MPa), and abstract: log A = -9.30 MPa^-(n+r)/s, n = 3.5, r = 0.49, Q = 118, V = 2.59 cm^3/mol (r and V from the 'representative reduced' fit). σ is von Mises equivalent stress = differential stress for axial tests. Pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit +0.04 ± 0.27 (N = 49, Fig. 6a).",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 5.011872336272714e-10,
+    "n": 3.5,
+    "p": 0.0,
+    "r": 0.49,
+    "E": 118.0,
+    "V": 2.5900000000000003,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "low_stress_wet_dunite_chopra_paterson_1981",
+   "name": "Low Stress Wet Dunite",
+   "ref": "Chopra & Paterson (1981)",
+   "status": "geoparams",
+   "note": "Dislocation: Chopra & Paterson (1981), Table IV, row 'Anita Bay dunite, relaxation (σ < ~100 MPa)': log A = 3.88 ± 0.43 s^-1 MPa^-n, n = 2.44, Q = 386 kJ/mol; eq. (1) with differential stress, from stress-relaxation tests, gas-medium apparatus, 300 MPa confining pressure, 'wet'. The authors note Q may be overestimated. Reproduces the paper's Fig. 6 relaxation isotherms within ±0.11 log10 units (N = 4 lines, 1000-1300 °C).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 7585.775750291836,
+    "n": 2.44,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 386.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "low_stress_wet_quartzite_tokle_et_al_2019",
+   "name": "low stress wet Quartzite",
+   "ref": "Tokle et al. (2019)",
+   "status": "geoparams",
+   "note": "Dislocation: Tokle et al. (2019), Table 1, 'Extrapolated fit', row n = 4 (high temperature/low stress, prism <a> / Y-max fabrics): A = 1.75e-12, n = 4, r = 1, Q = 125 kJ/mol; A in MPa^-(n+r)/s with fH2O in MPa (header: MPa^-n/s). Listed as a dislocation-creep law; the authors propose that it reflects disGBS rate-limited by easy prism <a> slip. Pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit +0.02 ± 0.45 (N = 94, supplement, T > 900 °C).",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 1.75e-12,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 1.0,
+    "E": 125.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "mafic_granulite_wilks_and_carter_1990",
+   "name": "Mafic Granulite",
+   "ref": "Wilks and Carter (1990)",
+   "status": "geoparams",
+   "note": "Dislocation: Wilks & Carter (1990), Fig. 6B, Pikwitonei transitional (mafic) granulite: ε̇ = 1.4e4 exp(-445/RT) σ^4.2, A in MPa^-n s^-1 (section 'Steady-state flow'), σ = σ1 - σ3 in MPa, Q in kJ/mol; Griggs-Blacic solid-medium apparatus, 0.8-1.0 GPa. The authors call it preliminary (strain softening above ~800 °C). Same values in Ranalli (1995), Table 10.3, and Afonso & Ranalli (2004), Table 1. Reproduces the paper's data: log10 misfit 0.00 ± 0.24 (N = 10, Table 2, steady-state runs).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 14000.0,
+    "n": 4.2,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 445.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "maryland_strong_diabase_mackwell_et_al_1998",
+   "name": "Maryland strong diabase",
+   "ref": "Mackwell et al. (1998)",
+   "status": "geoparams",
+   "note": "Dislocation: Mackwell et al. (1998), p. 980, flow law for Maryland diabase: ε̇ = (8 ± 4) σ^(4.7 ± 0.6) exp(-(485 ± 30 kJ/mol)/RT), σ (differential) in MPa, A in MPa^-4.7 s^-1; dry, gas-medium creep tests. The weaker Columbia diabase (same page): A = 190 ± 110 MPa^-4.7 s^-1, same n and Q. Reproduces the paper's data: log10 misfit -0.02 ± 0.20 (N = 57, Table 3).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 8.0,
+    "n": 4.7,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 485.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "olivine_disgbs_ohuchi_et_al_2015",
+   "name": "Olivine disGBS",
+   "ref": "Ohuchi et al. (2015)",
+   "status": "geoparams",
+   "note": "Diffusion: Ohuchi et al. (2015), Eq. 2 (p. 5): A = 10^-4.89 MPa^-4.25 m s^-1 (grain size in m), n = 3.0, p = -1 (fixed; best fit 1.1 ± 0.3), r = 1.25 (A includes the fH2O unit; pass f = fH2O in Pa), E = 423 kJ/mol, V = 17.6 cm³/mol; Fo90 olivine aggregates, D-DIA, 1.5-6.4 GPa, 1323-1473 K, axial differential stress. Reproduces the paper's data: log10 misfit -0.02 ± 0.31 (N = 6, digitized from Fig. 3D; tabulated data are in Supplementary Tables S1-S2).",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 12.882495516931348,
+    "n": 3.0,
+    "p": 1.0,
+    "r": 1.25,
+    "E": 423.0,
+    "V": 17.6,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "plagioclase_an75_ji_and_zhao_1993",
+   "name": "Plagioclase An75",
+   "ref": "Ji and Zhao (1993)",
+   "status": "geoparams",
+   "note": "Dislocation: Ji & Zhao (1993), Table 2, row 3 'plagioclase (Ab25An75)', dry: A = 3.27e-4 MPa^-n/s, n = 3.2, Q = 238 kJ/mol, dislocation creep; cited there from Shelton & Tullis (1981) (EOS abstract, not seen). Ranalli (1995), Table 10.3, gives the same law. Rybacki & Dresen (2000, Fig. 6) refit the same Shelton data as wet, as-received material: log A = -3.7, n = 3.2, Q = 239; Ji & Zhao list 3.27e-4 as 'dry'. Primary data: Shelton & Tullis (1981), not available.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.000327,
+    "n": 3.2,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 238.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "quartz_diorite_hansen_carter_1982",
+   "name": "Quartz Diorite",
+   "ref": "Hansen & Carter (1982)",
+   "status": "geoparams",
+   "note": "Dislocation: Hansen (1982, PhD thesis), table 18 (n = 2.25, A = 3.5e-2, Q = 212). Carter & Tsenn (1987), Table 4, list n = 2.4, log A = -1.5 for the same material. Kirby (1983) and Tirel et al. (2008) quote log A = -2.9, Q = 219 (30-55× slower); the experimental ranges of Carter & Tsenn (1987) weakly favour the stored values. Bremond d'Ars et al. (1999), p. 33, print the same values as Carter & Tsenn (1987): A = 3e-2 MPa^-n s^-1, n = 2.4, Q = 212 kJ/mol (citing Hansen & Carter 1982). Primary data: Hansen (1982, thesis) and Hansen & Carter (1982), not available; Carter et al. (1981) contain only a diorite of unknown locality that showed transient creep only (no steady-state data, no law), so the law could not be checked against data. Ranalli & Murphy (1987), Table 1, quartz diorite: A = 2.0e4 GPa^-n s^-1 (= 10^-2.9 MPa^-n s^-1), n = 2.4, Q = 219 kJ/mol, i.e. the Kirby (1983) version, not the values stored here.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.035,
+    "n": 2.25,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 212.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "quartzite_with_1_2_melt_gleason_tullis_1995",
+   "name": "Quartzite with 1-2% melt",
+   "ref": "Gleason & Tullis (1995)",
+   "status": "geoparams",
+   "note": "Dislocation: Gleason & Tullis (1995), Table 3 (p. 13) and Fig. 8a: A = 1.8e-8 MPa^-4 s^-1, n = 4, Q = 137 ± 34 kJ/mol. Black Hills quartzite with 1-2% melt, molten-salt-cell Griggs apparatus, differential stress (uncorrected). Reproduces the paper's data: log10 misfit -0.02 ± 0.02 (N = 3, BA-93), +0.17 ± 0.21 over all six melt-bearing runs (BA-95 at 1100 °C lies +0.36 off).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 1.8e-08,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 137.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "rock_salt_li_urai_2016",
+   "name": "Rock salt",
+   "ref": "Li & Urai (2016)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: the shear modulus is not given by Wawersik & Zeuch (1986); A0 = 7.26e-6 implies μ = 10.5 GPa, while the lines of W&Z Fig. 2 imply 11-12 GPa (A0 ≈ 3.8e-6 MPa^-5/s). The law fits W&Z's Salado (WIPP7) data (0.00 log10 units, N = 5) but is 10× too fast vs their Asse (BGRC1) data at 60 °C (+1.03, N = 8). Li & Urai (2016), Table 1, 'Salt B: dislocation creep' (A0 = 7.26e-6 MPa^-5/s, Q = 53920 J/mol, n = 5). Origin: Wawersik & Zeuch (1986), Table 1, row 'Asse - BGR' (the published fit of Albrecht & Hunsche 1980, whose primary data were not available): γ̇ = C exp(-Q/RT) (τ/μ)^n with C = 9.27e14 s^-1, n = 5.0, Q = 53.92 kJ/mol, τ = σ1 - σ3, γ = e1 - e3 (eq. 3). μ is not given in the paper; A0 = C/μ^5 implies μ ≈ 10.5 GPa (or 9.7 GPa if γ̇ was converted to axial strain rate, 2/3 γ̇), so A0 could not be reproduced exactly.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 7.26e-06,
+    "n": 5.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 53.92,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "rock_salt_avery_island_high_stress_carter_et_al_1993",
+   "name": "Rock salt (Avery Island, high stress)",
+   "ref": "Carter et al. (1993)",
+   "status": "geoparams",
+   "note": "Dislocation: Carter et al. (1993), Eq. 13 and Table 3 (pp. 1263-1264): A = 1.6e-4 MPa^-5.3 s^-1 (Table 3: 1.57e-4, n = 5.34), n = 5.3, Q = 68.1 kJ/mol (Q/R = 8191 K). Avery Island domal salt, 50-200 °C, high-stress regime, σ1-σ3, triaxial compression. Reproduces the paper's data: log10 misfit -0.17 ± 0.21 (N = 28, Table 2), and the Fig. 7 lines within 0.02 in log σ.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.00016,
+    "n": 5.3,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 68.1,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "rock_salt_avery_island_low_stress_carter_et_al_1993",
+   "name": "Rock salt (Avery Island, low stress)",
+   "ref": "Carter et al. (1993)",
+   "status": "geoparams",
+   "note": "Dislocation: Carter et al. (1993), Eq. 12 (p. 1264): A = 8.1e-5 MPa^-3.4 s^-1, n = 3.4, Q = 51.6 kJ/mol. Avery Island domal salt, low-stress regime, σ1-σ3, triaxial compression. Reproduces the paper's data: log10 misfit 0.00 ± 0.09 (N = 10, Table 2), and the Fig. 7 low-stress branch within 0.015 in log σ.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 8.1e-05,
+    "n": 3.4,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 51.6,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "tumut_pond_serpentinite_raleigh_and_paterson_1965",
+   "name": "Tumut Pond Serpentinite",
+   "ref": "Raleigh and Paterson (1965)",
+   "status": "geoparams",
+   "note": "Dislocation: Raleigh & Paterson (1965) print no creep law. The values n = 2.8, A = 6.3e-7 MPa^-n/s, E = 66 kJ/mol are from Bremond d'Ars et al. (1999), p. 33, who fitted them to the Tumut Pond serpentinite data of Raleigh & Paterson (1965), Table 1. Primary data: the Pc = 1 kbar (100 MPa) ultimate strengths at 454-735 °C (without the vented specimen at 650 °C), which are brittle (dehydration-embrittled) failure strengths at a single strain rate of 7e-4 s^-1: log10 misfit -0.04 ± 0.12 (N = 7); refitting that subset with n = 2.8 gives Q = 66 kJ/mol, A = 6.7e-7. With one strain rate, n is not constrained by the data (it must have been assumed). The law does not describe the 5 kbar ductile strengths at 400-605 °C (+0.74 ± 0.40, N = 4) or the runs below 400 °C, and it is not a creep law in the strict sense.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 6.3e-07,
+    "n": 2.8,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 66.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_anorthite_rybacki_dresen_2000",
+   "name": "Wet Anorthite",
+   "ref": "Rybacki & Dresen (2000)",
+   "status": "geoparams",
+   "note": "Dislocation: Rybacki & Dresen (2000), Table 2, 'Dislocation creep, wet': log A = 2.6 MPa^-n/s, n = 3, Q = 356 (water content fixed, no fH2O term). Reproduces the paper's data: log10 misfit -0.02 ± 0.09 (N = 38, Table 1). Diffusion: Rybacki & Dresen (2000), Table 2, 'Diffusion creep, wet': log A = 1.7 MPa^-n μm^m/s, Q = 170 kJ/mol, m = 3. Reproduces the paper's data: log10 misfit -0.04 ± 0.15 (N = 47, Table 1).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 398.1071705534973,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 356.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 50.11872336272722,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 170.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_anorthite_rybacki_et_al_2006",
+   "name": "Wet Anorthite",
+   "ref": "Rybacki et al. (2006)",
+   "status": "geoparams",
+   "note": "Dislocation: Rybacki et al. (2006), Table 5, 'Dislocation creep, wet': log A = 0.2 MPa^-(n+r)/s, n = 3, r = 1, Q = 345, V = 38 cm^3/mol. Pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit -0.04 to -0.08 ± 0.09 (N = 38; primary data: Rybacki & Dresen 2000, Table 1, which Table 5 refits; fH2O ≈ 214-251 MPa). Diffusion: Rybacki et al. (2006), Table 5, 'Diffusion creep, wet': log A = -0.7 MPa^-(n+r) μm^m/s, Q = 159 kJ/mol, V = 38 cm^3/mol, r = 1, m = 3. Pass f = fH2O in Pa. Table 5 refits the Rybacki & Dresen (2000) data (primary data: Rybacki & Dresen 2000, Table 1) (implied fH2O ≈ 250 MPa): log10 misfit -0.06 to -0.11 ± 0.15 (N = 47). Vs the 2006 paper's own wet runs it is about 0.4-0.6 log10 units too slow.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 1.5848931924611136,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 1.0,
+    "E": 345.0,
+    "V": 38.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 0.19952623149688797,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 1.0,
+    "E": 159.0,
+    "V": 38.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_clinopyroxene_chen_et_al_2006",
+   "name": "Wet Clinopyroxene",
+   "ref": "Chen et al. (2006)",
+   "status": "geoparams",
+   "note": "Dislocation: Chen et al. (2006), eq. (3), paragraph [26]: ε̇ = 10^6.7 σ^2.7 fH2O^3.0 exp(-670 kJ/mol / RT), ε̇ in s^-1, σ (differential) and fH2O in MPa, so A = 10^6.7 MPa^-(n+r)/s; V = 0 (paragraph [25]). Triaxial compression, gas medium. Pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit +0.11 ± 0.15 (N = 53, Table 2).",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 5011872.336272725,
+    "n": 2.7,
+    "p": 0.0,
+    "r": 3.0,
+    "E": 670.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_clinopyroxene_hier_majumder_et_al_2005",
+   "name": "Wet Clinopyroxene",
+   "ref": "Hier-Majumder et al. (2005)",
+   "status": "geoparams",
+   "note": "Diffusion: Hier-Majumder et al. (2005), eq. (4) and Table 3, row 'Water-saturated': ε̇ = ε̇o (σ/G)^n (d/do)^p (fH2O/fH2O°)^r exp(-(Q + PV)/RT) with ε̇o = 10^7.9 s^-1, n = 1, p = -3, r = 1.4, Q = 340 kJ/mol, V = 14 cm^3/mol, G = 64.9 GPa, do = 10 μm, fH2O° = 1 MPa, σ differential stress. In MPa and μm: A = 10^7.9 × 10^3 / 64.9e3 = 1.22e6 MPa^-(n+r) μm^3/s (equal to Bürgmann & Dresen 2008; the former value lacked the do^3 factor). Pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit -0.10 ± 0.21 (N = 27, Table 2a).",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 1223926.40173233,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 1.4,
+    "E": 340.0,
+    "V": 14.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_diopside_dimanov_dresen_2005",
+   "name": "Wet Diopside",
+   "ref": "Dimanov & Dresen (2005)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: over-predicts the paper's own high-stress (dislocation-dominated) data by about 0.27 log10 units (N = 30), as do the paper's Fig. 5a curves. Dimanov & Dresen (2005), Table 3a, row DiW: A = 5.16e-33 Pa^-n/s, n = 5.52, Q = 534. Diffusion: Bürgmann & Dresen (2008), Suppl. Table 1 (log A = 8.1, Q = 337, m = 3); Q is the mean of Dimanov & Dresen (2005), Table 3a, rows Di25W/Di35W/Di45W (345, 349, 318 kJ/mol). The paper folds d^m into A. A implies an effective grain size of about 13-15 μm, which the paper does not state (it gives only particle size classes). Primary data: Dimanov & Dresen (2005), not refitted here.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 6.802204770951022,
+    "n": 5.52,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 534.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 125892541.17941661,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 337.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_enstatite_zhang_et_al_2017",
+   "name": "Wet Enstatite",
+   "ref": "Zhang et al. (2017)",
+   "status": "geoparams",
+   "note": "Diffusion: Zhang et al. (2017), Eq. 2 (p. 7722): A = 32 MPa^-1.7 μm³ s^-1 (A includes the fH2O unit; pass f = fH2O in Pa), n = 1 and m = 3 (fixed), r = 0.7, E = 200 kJ/mol, V = 14 cm³/mol; enstatite aggregates, D-DIA, 3.8-6.3 GPa, 1323-1573 K, differential stress. Reproduces the paper's data: log10 misfit +0.10 ± 0.01 (N = 6, Table 1, fH2O converted from GPa) with d = 6 μm; per-run grain sizes are not given (~6 μm), and d = 6.5 μm removes the offset.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 32.0,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.7,
+    "E": 200.0,
+    "V": 14.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_fine_grained_quartz_fukuda_et_al_2018",
+   "name": "Wet fine-grained Quartz",
+   "ref": "Fukuda et al. (2018)",
+   "status": "geoparams",
+   "note": "Diffusion: Fukuda et al. (2018), Eq. 8 (p. 4691): A = 10^-2.97 MPa^-2.7 μm^0.51 s^-1 (A includes the fH2O unit; pass f = fH2O in Pa), n = 1.7, p = -0.51, r = 1.0, E = 183 kJ/mol; wet fine-grained quartz, 800-950 °C, 1.5 GPa, Griggs apparatus, differential stress. Reproduces the paper's data: log10 misfit 0.17 ± 0.29 (N = 45, Table 3, grain sizes from Table 2). The low-T fit (Q = 129 kJ/mol) has no published A.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 0.001071519305237606,
+    "n": 1.7,
+    "p": 0.51,
+    "r": 1.0,
+    "E": 183.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_jadeit_orzol_et_al_2006",
+   "name": "Wet Jadeit",
+   "ref": "Orzol et al. (2006)",
+   "status": "geoparams",
+   "note": "Dislocation: Orzol et al. (2006), eq. (1) and paragraph [36] (also abstract): ε̇ = A Δσ^n exp(-Q/RT), A in MPa^-n s^-1, ln A = -3.3 ± 2.0, n = 3.7 ± 0.4, Q = 326 ± 27 kJ/mol; synthetic wet jadeitite, Griggs-type apparatus (molten salt), 2.5 GPa. A = exp(-3.3) = 3.7e-2 MPa^-n/s; the former 10^-3.3 (Bürgmann & Dresen 2008, Suppl. Table 1) read ln A as log10 A (factor 74). Reproduces the paper's data: log10 misfit +0.07 ± 0.16 (N = 10, Table 2).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.036883167401240015,
+    "n": 3.7,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 326.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_olivine_hirth_kohlstedt_2003",
+   "name": "Wet Olivine",
+   "ref": "Hirth & Kohlstedt (2003)",
+   "status": "geoparams",
+   "note": "Diffusion: Hirth & Kohlstedt (2003), Table 1, row 'wet diffusion' (constant fH2O): A = 2.5e7 for r = 1 (footnote d), E = 375, V = 0-20 (upper end used). A includes the fH2O unit (MPa^-(n+r)); pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit -0.06 ± 0.19 (N = 28; primary data: Mei & Kohlstedt 2000b, Table 1, wet runs at σ ≤ 60 MPa).",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 25000000.0,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 1.0,
+    "E": 375.0,
+    "V": 20.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_olivine_hirth_and_kohlstedt_2003",
+   "name": "Wet Olivine",
+   "ref": "Hirth and Kohlstedt (2003)",
+   "status": "geoparams",
+   "note": "Dislocation: Hirth & Kohlstedt (2003), Table 1, row 'wet dislocation': A = 1600 MPa^-(n+r)/s (fH2O in MPa), n = 3.5, r = 1.2, E = 520, V = 22. Pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit +0.09 ± 0.19 (N = 34; primary data: Mei & Kohlstedt 2000b, Table 1, wet runs at σ ≥ 120 MPa); -0.17 to -0.25 vs the Fig. 5a line.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 1600.0,
+    "n": 3.5,
+    "p": 0.0,
+    "r": 1.2,
+    "E": 520.0,
+    "V": 22.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_olivine_karato_jung_2003",
+   "name": "Wet Olivine",
+   "ref": "Karato & Jung (2003)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: the printed law is 1.6× too fast vs the paper's own data: +0.21 ± 0.07 log10 units vs all 8 wet strengths of Table 1 and +0.19 to +0.20 vs the Fig. 5b fit line, which both correspond to A_w = 10^2.7; a data-consistent version is wet_olivine_Karato_2003_refit. Karato & Jung (2003), Table 3 (open system, constant fH2O) and abstract: A_w = 10^2.9 s^-1 MPa^-(n+r) (fH2O in MPa), n = 3.0, r = 1.2, E*_w = 470 kJ/mol (from Mei & Kohlstedt 2000), V*_w = 24 cm^3/mol. Table 4 gives the closed-system (C_OH) variant: 10^0.56, E = 410, V = 11. Differential stress. Pass f = fH2O in Pa.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 794.3282347242813,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 1.2,
+    "E": 470.0,
+    "V": 24.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_olivine_mei_kohlstedt_2000a",
+   "name": "Wet Olivine",
+   "ref": "Mei & Kohlstedt (2000a)",
+   "status": "geoparams",
+   "note": "Diffusion: Mei & Kohlstedt (2000a), eq. (4), section 4.1: ε̇ = A σ^1.1 d^-3 fH2O^r exp(-(295 kJ/mol + PV)/RT), σ (differential), P, fH2O in MPa, d in μm; the V = 20 cm^3/mol fit: r = 1.0, A = 4.8e4 μm^3 MPa^-2.1 s^-1 (V = 0: r = 0.7, A = 1.3e5 μm^3 MPa^-1.8 s^-1). Triaxial compression, gas medium. Pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit +0.11 ± 0.20 (N = 28, Table 1 of Mei & Kohlstedt 2000b, σ ≤ 60 MPa).",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 48000.0,
+    "n": 1.1,
+    "p": 3.0,
+    "r": 1.0,
+    "E": 295.0,
+    "V": 20.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_olivine_mei_kohlstedt_2000b",
+   "name": "Wet Olivine",
+   "ref": "Mei & Kohlstedt (2000b)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: eq. (2) fits the total strain rate at σ ≥ 120 MPa, including diffusion creep (+0.20 ± 0.16 log10 units, N = 34, Table 1 wet data); it is 2.4× above the paper's own dislocation-creep component (Fig. 2), and combined with wet_olivine_Mei_2000a in a composite rheology it overpredicts the data about 2.2×. Mei & Kohlstedt (2000b), eq. (2), section 4.1: ε̇ = A σ^3.0 fH2O^r exp(-(470 kJ/mol + PV)/RT), σ (differential), P, fH2O in MPa; the V = 20 cm^3/mol fit, r = 0.98, A = 1.5e3 MPa^-(n+r)/s (printed as 'μm^3 MPa^-4 s^-1'; the μm^3 is a misprint, there is no grain-size term). The other fits are V = 0: r = 0.69, A = 4.6e3; V = 38: r = 1.25, A = 5.0e2. Triaxial compression, gas medium. Pass f = fH2O in Pa.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 1500.0,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 0.98,
+    "E": 470.0,
+    "V": 20.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_olivine_refit_to_data_karato_jung_2003",
+   "name": "Wet Olivine (refit to data)",
+   "ref": "Karato & Jung (2003)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: refit of wet_olivine_Karato_2003 with A = 10^2.7 MPa^-(n+r)/s (not a printed value) so that the law reproduces the paper's own data. The printed A_w = 10^2.9 is +0.21 ± 0.07 log10 units (1.6× too fast) vs the 8 wet strengths of Karato & Jung (2003), Table 1 (all positive), and +0.19 to +0.20 vs their Fig. 5b fit line; 10^2.7 fits both. n = 3, r = 1.2, E = 470 and V = 24 cm^3/mol as in wet_olivine_Karato_2003, which holds the printed law (Table 3). Pass f = fH2O in Pa.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 501.18723362727246,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 1.2,
+    "E": 470.0,
+    "V": 24.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_olivine_1_hirth_kohlstedt_2003",
+   "name": "Wet Olivine 1",
+   "ref": "Hirth & Kohlstedt (2003)",
+   "status": "geoparams",
+   "note": "Dislocation: Hirth & Kohlstedt (2003), Table 1, row 'wet dislocation (constant C_OH)': A = 90, n = 3.5, r = 1.2, E = 480, V = 11 (footnote e example: 2.5e-12 /s). Pass f = C_OH in H/10^6 Si. Reproduces the paper's data: log10 misfit +0.25 ± 0.19 (N = 34; primary data: Mei & Kohlstedt 2000b, Table 1, wet runs at σ ≥ 120 MPa); -0.01 vs the Fig. 5b line. Diffusion: Hirth & Kohlstedt (2003), Table 1, row 'wet diffusion (constant C_OH)': A = 1.0e6, r = 1, E = 335, V = 4 (footnote c example: 7.8e-15 /s). Pass f = C_OH in H/10^6 Si. Reproduces the paper's data: log10 misfit +0.02 ± 0.18 (N = 28; primary data: Mei & Kohlstedt 2000b, Table 1, wet runs at σ ≤ 60 MPa).",
+   "water_label": "C_OH (H/10⁶ Si)",
+   "water_default": 1000,
+   "disl": {
+    "enabled": true,
+    "A": 90.0,
+    "n": 3.5,
+    "p": 0.0,
+    "r": 1.2,
+    "E": 480.0,
+    "V": 11.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 1000000.0,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 1.0,
+    "E": 335.0,
+    "V": 4.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_omphacite_zhang_et_al_2006",
+   "name": "Wet Omphacite",
+   "ref": "Zhang et al. (2006)",
+   "status": "geoparams",
+   "note": "Dislocation: Zhang, Green & Bozhilov (2006), eq. (4): ε̇ = 10^-2.0 σ^3.5 exp(-310000/RT), polycrystalline omphacite (Di58Jd42), Griggs apparatus at 3 GPa, 1300-1500 K. Units of σ are not printed with eq. (4); MPa follows from Fig. 4 (log stress in MPa), with which the law agrees. Same values in Bürgmann & Dresen (2008), Suppl. Table 1. Reproduces the paper's data: log10 misfit +0.22 ± 0.19 (N = 14, Fig. 4).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.01,
+    "n": 3.5,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 310.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_plagioclase_an60_rybacki_dresen_2004",
+   "name": "Wet Plagioclase An60",
+   "ref": "Rybacki & Dresen (2004)",
+   "status": "geoparams",
+   "note": "Dislocation: Rybacki & Dresen (2004), Table 1 (p. 175): A = 10^(-1.5 ± 0.5) MPa^-3 s^-1, n = 3, Q = 235 kJ/mol; synthetic An60 aggregates with 0.3 wt% H2O, data of Dimanov et al. (unpublished); differential stress, axial strain rate. No data table; reproduces the An60 dislocation-creep curves of Fig. 2 (p. 177) within 0.03 dex. Diffusion: Rybacki & Dresen (2004), Table 1 (p. 175): A = 10^(1.1 ± 0.6) MPa^-1 μm^3 s^-1, n = 1, p = -3, Q = 153 kJ/mol; synthetic An60 aggregates with 0.3 wt% H2O, data of Dimanov et al. (unpublished); differential stress. No data table; reproduces the diffusion-creep lines of Fig. 2 (p. 177) within about 0.1 dex.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.03162277660168379,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 235.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 12.589254117941675,
+    "n": 1.0,
+    "p": 3.0,
+    "r": 0.0,
+    "E": 153.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_gleason_tullis_1995",
+   "name": "Wet Quartzite",
+   "ref": "Gleason & Tullis (1995)",
+   "status": "geoparams",
+   "note": "Dislocation: Gleason & Tullis (1995), Table 3 (p. 13): A = 1.1e-4 MPa^-4 s^-1, n = 4.0 ± 0.9, Q = 223 ± 56 kJ/mol. Melt-free Black Hills quartzite, molten-salt-cell Griggs apparatus, P ≈ 1.5 GPa, differential stress (uncorrected; see wet_quartzite_Gleason_1995_Holyoke_2010). Reproduces the paper's data: log10 misfit -0.04 ± 0.27 (N = 10, Tables 1-2, stress at ~3% strain), and the Fig. 8b line.",
    "water_label": "",
    "water_default": 1,
    "disl": {
     "enabled": true,
     "A": 0.00011,
-    "n": 4,
-    "p": 0,
-    "r": 0,
-    "E": 223,
-    "V": 0
+    "n": 4.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 223.0,
+    "V": 0.0,
+    "apparatus": "axial"
    },
    "diff": {
     "enabled": false,
@@ -375,7 +3185,486 @@
     "p": 0,
     "r": 0,
     "E": 0,
-    "V": 0
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_hirth_et_al_2001",
+   "name": "Wet Quartzite",
+   "ref": "Hirth et al. (2001)",
+   "status": "geoparams",
+   "note": "Dislocation: Hirth et al. (2001), abstract and p. 85: log A = -11.2 ± 0.6 MPa^-(n+r)/s (fH2O in MPa), n = 4, m = 1, Q = 135 ± 15 kJ/mol. A was derived (their eq. 2) from the Luan & Paterson (1992) data at fH2O ≈ 300 MPa, with the Gleason & Tullis (1995) data normalised by assuming fH2O ≈ 2500 MPa in those experiments; Q from the natural Ruby Gap constraints. Primary data: Luan & Paterson (1992), Table 4 (silicic-acid aggregates, predried, Pc = 300 MPa, 1100-1300 K): log10 misfit -0.02 ± 0.29 (N = 47, f = 300 MPa; -0.03 with Pitzer-Sterner fH2O); Gleason & Tullis (1995), Tables 1-2: -0.03 ± 0.34 (N = 18) with Hirth's fH2O = 2500 MPa. With Pitzer-Sterner fH2O at the Gleason & Tullis conditions (Pc ≈ 1.5 GPa) the law runs 2× fast vs those data (+0.34 ± 0.38). Pass f = fH2O in Pa.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 6.309573444801943e-12,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 1.0,
+    "E": 135.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_jaoul_et_al_1984",
+   "name": "Wet Quartzite",
+   "ref": "Jaoul et al. (1984)",
+   "status": "geoparams",
+   "note": "Dislocation: Jaoul et al. (1984), Table 1, row 2 (W-291, creep in CaCO3 assembly, 'as is' = not dried, no water added, 850-1050 °C, 1.5 GPa): A = 0.63 s^-1 kbar^-n, n = 2.4 ± 0.4, E = 39.0 ± 3.0 kcal/mol; σ = σ1 - σ3 in kbar (Griggs apparatus). A converted to 0.63 × 100^-2.4 = 9.98e-6 MPa^-n/s. Previously n = 2.8, A = 10^-5.045 (E matched, n was the dry value). Water-added row W-294: A = 3.32 kbar^-n/s, n = 1.4, E = 35 kcal/mol. The data give n = 2.28 (fit lines 2.25-2.63); the Fig. 5b caption's n = 2.8 is a caption error. Reproduces the paper's data: log10 misfit +0.04 ± 0.04 (N = 14, Fig. 5b).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 9.984827112505019e-06,
+    "n": 2.4,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 163.176,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_lu_and_jiang_2019",
+   "name": "Wet Quartzite",
+   "ref": "Lu and Jiang (2019)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: the printed A is 6× too fast vs the paper's own data: +0.82 ± 0.38 log10 units vs the Gleason & Tullis (1995, Tables 1-2) and Luan & Paterson (1992, Table 4) data it was fitted to (N = 65) and +0.69 vs the paper's Fig. 4; a data-consistent version is wet_quartzite_Lu_2019_refit. Lu & Jiang (2019), eq. (6): ε̇ = 6.0e-15 fw^2.7 exp(-(132000 + 35.3 P)/RT) σ^4, fw, P and σ (differential) in MPa; A = (6.0 ± 5.0)e-15 MPa^-(n+m)/s, V = 35.3 cm^3/mol. Pass f = fH2O in Pa.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 6e-15,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 2.7,
+    "E": 132.0,
+    "V": 35.3,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_lusk_et_al_2021",
+   "name": "Wet Quartzite",
+   "ref": "Lusk et al. (2021)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: matches Table 2, but is +2.16 ± 0.51 log10 units (about 150×) too fast vs the paper's own natural samples (N = 11, Fig. 1c; lab data +0.04 to +0.24); the authors recommend the lowP/highP pair (lowP_wet_quartzite_Lusk_2021, highP_wet_quartzite_Lusk_2021) instead. Lusk et al. (2021), Table 2, row 'Full': log A = -6.36 (+0.25/-0.69) MPa^-(n+r)/s, n = 2.1, r = 0.20, Q = 94, V = 1.44 cm^3/mol. σ is von Mises equivalent stress = differential stress for axial tests. Pass f = fH2O in Pa.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 4.3651583224016567e-07,
+    "n": 2.1,
+    "p": 0.0,
+    "r": 0.2,
+    "E": 94.0,
+    "V": 1.44,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_paterson_luan_1990",
+   "name": "Wet Quartzite",
+   "ref": "Paterson & Luan (1990)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: line (1) is the paper's upper-bound extrapolation, not a fit, and is -0.34 (silicic acid) to -0.95 (gel) log10 units slower than its specimens. Paterson & Luan (1990), line (1), p. 305: A = 6.5e-8 MPa^-3.1 s^-1, n = 3.1, Q = 135 kJ/mol; stress difference, gas apparatus, wet quartzite (P_H2O ≈ 300 MPa). Line (1) is an upper-bound extrapolation anchored at σ0 = 285 MPa (10^-5 s^-1, 1300 K), not a fit; the law reproduces that anchor (285 MPa) and Fig. 2 (≈ 2 MPa at 900 K, 10^-14 s^-1).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 6.5e-08,
+    "n": 3.1,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 135.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_rutter_brodie_2004",
+   "name": "Wet Quartzite",
+   "ref": "Rutter & Brodie (2004)",
+   "status": "geoparams",
+   "note": "Dislocation: Rutter & Brodie (2004a), abstract and section 4.1: ε̇ = 10^-4.93 σ^2.97 fH2O exp(-242 kJ/mol / RT), σ (differential) and fH2O in MPa, so A in MPa^-(n+r)/s with r = 1 (taken from Hirth et al. 2001; fH2O assumed 300 MPa in the fit). Argon gas-medium apparatus, 300 MPa, 1273-1473 K. Pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit +0.21 ± 0.31 (N = 18, Table 1); within ±0.08 of the Fig. 5 fit lines. Diffusion: NOTE: the printed law is about 2.5× too slow vs the paper's own data: -0.44 log10 units vs the Fig. 7 grain-size centroids (160 MPa, 1473 K) and median -0.36 vs Table 1 at σ ≤ 200 MPa (N = 10), which imply log A ≈ 0.0; this is within the stated log A = -0.4 ± 2.1. Rutter & Brodie (2004b), section 4.1 and abstract: ε̇ = A σ^n exp(-H/RT) / d^m with log A = -0.4 ± 2.1, n = 1 and m = 2 (fixed), H = 220 kJ/mol; σ (differential) in MPa, d in μm, no fH2O term (water fugacity about 20-100 MPa, not in the law). Gas-medium apparatus, 300 MPa confining pressure.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 1.1748975549395302e-05,
+    "n": 2.97,
+    "p": 0.0,
+    "r": 1.0,
+    "E": 242.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": true,
+    "A": 0.3981071705534972,
+    "n": 1.0,
+    "p": 2.0,
+    "r": 0.0,
+    "E": 220.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_tokle_et_al_2019",
+   "name": "Wet Quartzite",
+   "ref": "Tokle et al. (2019)",
+   "status": "geoparams",
+   "note": "Dislocation: Tokle et al. (2019), Table 1, 'Extrapolated fit', row n = 3 (low temperature/high stress, basal <a> fabrics): A = 1.1e-12, n = 3, r = 1.2, Q = 115 kJ/mol. The header gives A in MPa^-n/s, but fH2O is in MPa throughout the paper, so A is in MPa^-(n+r)/s. σ is differential (von Mises equivalent) stress. Other rows: laboratory fits n = 4 (8.0e-12, r = 1, Q = 140) and n = 2.7 (5.4e-12, r = 1.1, Q = 105). Pass f = fH2O in Pa. Reproduces the paper's data: log10 misfit -0.11 ± 0.27 (N = 51, supplement, n ≈ 3 regime).",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 1.1e-12,
+    "n": 3.0,
+    "p": 0.0,
+    "r": 1.2,
+    "E": 115.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_ueda_et_al_2008",
+   "name": "Wet Quartzite",
+   "ref": "Ueda et al. (2008)",
+   "status": "geoparams",
+   "note": "Dislocation: Ueda et al. (2008), Table 1, 'Wet quartzite': A_D = 10^-3.5 MPa^-n s^-1, n = 2.3, E = 154 kJ/mol, from Ranalli (1995) (Gerya 2010, Table 17.1: 3.2e-4, 2.3, 154). Ranalli (1995) was not checked; the values equal the arithmetic mean of the three wet-quartzite rows of Kirby & Kronenberg (1987), Table 3 (log A in MPa^-n s^-1 = tabulated value - 6n): Koch et al. (1983 manuscript, published 1989) -4.0/2.4/160, Kronenberg & Tullis (1984, 0.4 wt% water added) -4.8/2.6/134 and Hansen & Carter (1982) -1.7/1.8/167, giving -3.50/2.27/153.7. It is an average of three materials, not a fit to one data set. Primary data: Koch et al. (1989), Table 3 (Simpson quartzite, water from talc, 750-900 °C, 0.9-1.3 GPa): log10 misfit +0.62 ± 0.27 (N = 39, 4× too fast); Kronenberg & Tullis (1984), Table 1, 0.4 wt% water added, Pc ≥ 1200 MPa: -0.35 ± 0.40 (N = 9; grain-size dependent, -0.96 at 1.2 μm to -0.03 at 211 μm; +2.20 vs the as-is samples); Hansen & Carter (1982) data not available. Ranalli & Murphy (1987), Table 1, wet quartzite: A = 2.0e3 GPa^-n s^-1 (= 10^-3.6 MPa^-n s^-1), n = 2.3, Q = 154 kJ/mol; n and Q are unchanged along the chain, A drifted by a factor 1.26 to the 10^-3.5 printed by Ueda et al. (2008).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.00031622776601683794,
+    "n": 2.3,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 154.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_refit_to_data_lu_and_jiang_2019",
+   "name": "Wet Quartzite (refit to data)",
+   "ref": "Lu and Jiang (2019)",
+   "status": "geoparams",
+   "note": "Dislocation: NOTE: refit of wet_quartzite_Lu_2019 with A = 1.0e-15 MPa^-(n+m)/s (not a printed value) so that the law reproduces the data the paper fitted. The printed A = 6.0e-15 is +0.82 ± 0.38 log10 units (6× too fast) vs the Gleason & Tullis (1995, Tables 1-2) and Luan & Paterson (1992, Table 4) data (N = 65; with Lu's own treatment: G&T stresses × 0.73, P = Pc + σ/3, Pitzer-Sterner fH2O) and +0.69 vs the reduced data of Lu & Jiang's Fig. 4. This refit gives +0.04 ± 0.38 (Gleason & Tullis +0.31, Luan & Paterson -0.06); the pooled best fit is 9.1e-16; 1.0e-15 lies within the paper's stated A = (6.0 ± 5.0)e-15. n = 4, r = 2.7, E = 132 and V = 35.3 cm^3/mol as in wet_quartzite_Lu_2019, which holds the printed law (eq. 6). Pass f = fH2O in Pa.",
+   "water_label": "fH₂O (MPa)",
+   "water_default": 100,
+   "disl": {
+    "enabled": true,
+    "A": 1e-15,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 2.7,
+    "E": 132.0,
+    "V": 35.3,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quartzite_stress_corrected_gleason_tullis_1995_holyoke_kronenberg_2010",
+   "name": "Wet Quartzite (stress-corrected)",
+   "ref": "Gleason & Tullis (1995), Holyoke & Kronenberg (2010)",
+   "status": "geoparams",
+   "note": "Dislocation: Holyoke & Kronenberg (2010), p. 29: Gleason & Tullis (1995) law with σ_true = 0.73 σ_MSC: A = 5.1e-4 MPa^-4 s^-1, n = 4, Q = 223 kJ/mol; melt-free Black Hills quartzite, differential stress. The exact 0.73 rescaling of 1.1e-4 would give A = 3.9e-4 (-0.12 dex); the published value is kept. Reproduces the paper's data: log10 misfit +0.08 ± 0.27 (N = 10, Gleason & Tullis 1995 Tables 1-2 with stresses × 0.73).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.00051,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 223.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_quarzite_kirby_1983",
+   "name": "Wet Quarzite",
+   "ref": "Kirby (1983)",
+   "status": "geoparams",
+   "note": "Dislocation: Kirby (1983), Table 2, row 'quartzite (wet), α-quartz, water from talc' (Koch et al. 1983): log10 A = 3.2 GPa^-n/s (column unit GPa^-n s^-1, differential stress), n = 2.4, E = 160 kJ/mol; A converted to 10^(3.2 - 3n) = 1.0e-4 MPa^-n/s. Same law in Kirby & Kronenberg (1987), Table 3. Primary data: Koch et al. (1989), Table 3 (Simpson quartzite, water from talc, 750-900 °C, 0.9-1.3 GPa): log10 misfit +0.10 ± 0.26 (N = 39). The published Koch et al. (1989) regression, Table 4a, is A = 1.20e-4 MPa^-n/s, n = 2.48, H = 168 kJ/mol (their abstract quotes the nonlinear fit of Table 4b: 5.05e-6, 2.61, 145).",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 0.0001,
+    "n": 2.4,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 160.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
+   }
+  },
+  {
+   "id": "wet_upper_mantle_olivine_afonso_and_ranalli_2004",
+   "name": "Wet Upper Mantle Olivine",
+   "ref": "Afonso and Ranalli (2004)",
+   "status": "geoparams",
+   "note": "Dislocation: Afonso & Ranalli (2004), Table 1, row 'Peridotite (wet)': A = 2.0e3 MPa^-n s^-1, n = 4.0, E = 471 kJ/mol, used with σ1 - σ3 (their eq. 2); same values in Gerya (2010), Table 17.1 (from Ranalli 1995; Ueda et al. 2008, Table 1: 10^3.3, 4, 470). Afonso & Ranalli cite Chopra & Paterson (1981, 1984), but neither paper prints this law: Chopra & Paterson (1984), Table 3, only repeats the two 1981 wet laws and adds a dry law. The values equal the arithmetic mean of the Chopra & Paterson (1981), Table IV, wet laws for Anita Bay (log A = 3.98, n = 3.35, Q = 444) and Åheim dunite (2.62, 4.48, 498), as rounded in Kirby & Kronenberg (1987), Table 1 (4.0/3.4/444 and 2.6/4.5/498 give 3.30/3.95/471); Ranalli (1995) not checked. Primary data: Chopra & Paterson (1981), Table II (Anita Bay): log10 misfit -0.19 ± 0.22 (N = 22); Table III (Åheim): +0.46 ± 0.18 (N = 20, 2.9× too fast); both together +0.12 ± 0.38 (N = 42). It fits neither rock alone; high_stress_wet_dunite_Chopra_1981 is the Anita Bay law. Ranalli & Murphy (1987) has no wet-olivine law, so the Ranalli (1995) source of these values remains unchecked.",
+   "water_label": "",
+   "water_default": 1,
+   "disl": {
+    "enabled": true,
+    "A": 2000.0,
+    "n": 4.0,
+    "p": 0.0,
+    "r": 0.0,
+    "E": 471.0,
+    "V": 0.0,
+    "apparatus": "axial"
+   },
+   "diff": {
+    "enabled": false,
+    "A": 1,
+    "n": 1,
+    "p": 0,
+    "r": 0,
+    "E": 0,
+    "V": 0,
+    "apparatus": "axial"
+   },
+   "peierls": {
+    "enabled": false,
+    "A": 1,
+    "n": 0,
+    "E": 0,
+    "sp": 1000,
+    "pp": 1,
+    "q": 1,
+    "apparatus": "axial"
    }
   }
  ]

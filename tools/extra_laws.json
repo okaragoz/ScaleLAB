@@ -1,0 +1,80 @@
+[
+ {
+  "id": "eclogite_jin_et_al_2001",
+  "name": "Eclogite",
+  "ref": "Jin et al. (2001)",
+  "status": "memory",
+  "note": "Entered from memory of standard compilations; not in GeoParams.jl. Check against the source.",
+  "water_label": "",
+  "water_default": 1,
+  "disl": {
+   "enabled": true,
+   "A": 1995.2623149688789,
+   "n": 3.4,
+   "p": 0,
+   "r": 0,
+   "E": 480,
+   "V": 0,
+   "apparatus": "axial"
+  },
+  "diff": {
+   "enabled": false,
+   "A": 1,
+   "n": 1,
+   "p": 0,
+   "r": 0,
+   "E": 0,
+   "V": 0,
+   "apparatus": "axial"
+  },
+  "peierls": {
+   "enabled": false,
+   "A": 1,
+   "n": 0,
+   "E": 0,
+   "sp": 1000,
+   "pp": 1,
+   "q": 1,
+   "apparatus": "axial"
+  }
+ },
+ {
+  "id": "diabase_as_received_shelton_tullis_1981",
+  "name": "Diabase, as-received (wet)",
+  "ref": "Shelton & Tullis (1981)",
+  "status": "memory",
+  "note": "Entered from memory of standard compilations; not in GeoParams.jl. Check against the source.",
+  "water_label": "",
+  "water_default": 1,
+  "disl": {
+   "enabled": true,
+   "A": 0.0002,
+   "n": 3.4,
+   "p": 0,
+   "r": 0,
+   "E": 260,
+   "V": 0,
+   "apparatus": "axial"
+  },
+  "diff": {
+   "enabled": false,
+   "A": 1,
+   "n": 1,
+   "p": 0,
+   "r": 0,
+   "E": 0,
+   "V": 0,
+   "apparatus": "axial"
+  },
+  "peierls": {
+   "enabled": false,
+   "A": 1,
+   "n": 0,
+   "E": 0,
+   "sp": 1000,
+   "pp": 1,
+   "q": 1,
+   "apparatus": "axial"
+  }
+ }
+]
