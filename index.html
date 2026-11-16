@@ -186,7 +186,7 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
         <label id="gCyl">Diameter (cm)<input class="n" data-k="box.d"></label>
         <label>Height z (cm)<input class="n" data-k="box.z"></label>
       </div>
-      <p class="hint">Coordinates are in cm from the centre of the floor, z upward. Layers are stacked from the floor with the model thicknesses from the scaling. Bodies are saved with the setup.</p>
+      <p class="hint">Coordinates are in cm from the centre of the floor, z upward. Layers are stacked from the floor with the model thicknesses from the scaling. A body placed by depth below the surface keeps its place in the upper layers when a deeper layer changes thickness; one placed by height above the floor stays fixed in the box. Bodies are saved with the setup.</p>
       <div id="bodies" class="col" style="gap:10px"></div>
     </section>
   </div>
@@ -199,12 +199,12 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
       <div class="checks" id="checks"></div>
     </section>
     <section class="panel">
-      <div class="head"><h2>Model geometry</h2></div>
+      <div class="head"><h2>Model geometry</h2><label style="flex-direction:row;align-items:center;gap:6px">Draw with<select data-k="ui.geo" id="uiGeo" style="width:auto"><option value="h">reference thicknesses</option><option value="hMin">minimum thicknesses</option><option value="hMax">maximum thicknesses</option></select></label></div>
       <div class="views"><canvas id="cv3" aria-label="3D view of the model"></canvas><canvas id="cvS" aria-label="Vertical section of the model"></canvas></div>
       <div class="checks" id="gChecks"></div>
       <h3>Material recipe</h3>
       <div class="scroll"><table id="tRecipe"></table></div>
-      <p class="hint">Volumes use the reference thicknesses and the container footprint, minus the parts of bodies inside each layer. Add your own margin for losses.</p>
+      <p class="hint">Volumes use the thicknesses selected above and the container footprint, minus the parts of bodies inside each layer. Add your own margin for losses.</p>
     </section>
     <section class="panel">
       <div class="head"><h2>Bodies and behaviour over time</h2></div>
@@ -390,12 +390,12 @@ const EXAMPLE={
   {name:'Asthenosphere',rock:'ol_dry',hMin:100,h:150,hMax:200,rho:3250,d:3,mat:'custom',rhoM:1080,etaM:0}],
  model:{kmPerCm:20,g:9.81,mode:'anchor',anchor:1,myrPerHour:1,Tlab:20},
  box:{shape:'rect',x:40,y:40,z:16,d:40},
- bodies:[{name:'Drip',shape:'sphere',x:0,y:0,z:9.2,r:1.5,h:3,lx:3,ly:3,lz:3,rhoM:1250,etaM:1e4}],
- userLaws:[],ui:{cases:false}
+ bodies:[{name:'Drip',shape:'sphere',zref:'top',x:0,y:0,z:3.3,r:1.5,h:3,lx:3,ly:3,lz:3,rhoM:1250,etaM:1e4}],
+ userLaws:[],ui:{cases:false,geo:'h'}
 };
-function hydrate(S){S=JSON.parse(JSON.stringify(S));if(!S.ui)S.ui={cases:false};if(!S.box)S.box={shape:'rect',x:40,y:40,z:16,d:40};if(!S.bodies)S.bodies=[];if(!S.userLaws)S.userLaws=[];if(S.model.Tlab==null)S.model.Tlab=20;
+function hydrate(S){S=JSON.parse(JSON.stringify(S));if(!S.ui)S.ui={cases:false};if(!S.ui.geo)S.ui.geo='h';if(!S.box)S.box={shape:'rect',x:40,y:40,z:16,d:40};if(!S.bodies)S.bodies=[];if(!S.userLaws)S.userLaws=[];if(S.model.Tlab==null)S.model.Tlab=20;
   EXTRA=S.userLaws;
-  S.bodies.forEach(b=>{for(const[k,v]of Object.entries({shape:'sphere',x:0,y:0,z:5,r:1,h:2,lx:2,ly:2,lz:2,rhoM:1200,etaM:1e4}))if(b[k]==null)b[k]=v;});
+  S.bodies.forEach(b=>{for(const[k,v]of Object.entries({zref:'floor',shape:'sphere',x:0,y:0,z:5,r:1,h:2,lx:2,ly:2,lz:2,rhoM:1200,etaM:1e4}))if(b[k]==null)b[k]=v;});
   S.layers.forEach(L=>{if(!L.mat)L.mat='custom';if(L.nM==null)L.nM=1;if(L.e0M==null)L.e0M=1e-3;if(L.EaM==null)L.EaM=0;if(L.T0M==null)L.T0M=20;
     if(!L.laws){const r=rockById(L.rock);L.laws={disl:r.disl?{on:true,...r.disl}:null,diff:r.diff?{on:true,...r.diff}:null};if(L.w==null)L.w=r.w?r.w.val:1;}});return S;}
 // ---------- lab materials, geometry, drip, exports ----------
@@ -426,7 +426,7 @@ function bodyVolBetween(b,z0,z1){const a=Math.max(z0,b.z-bodyHalf(b)),c=Math.min
   if(b.shape==='sphere'){const F=u=>Math.PI*(b.r*b.r*u-u*u*u/3);return F(c-b.z)-F(a-b.z);}
   return(b.shape==='cyl'?Math.PI*b.r*b.r:b.lx*b.ly)*(c-a);}
 const bodyVol=b=>bodyVolBetween(b,-1e9,1e9);
-function layout(S,sc){let top=sc.Hm*100;return sc.layers.map(l=>{const z1=top;top-=l.h*100;return{z0:Math.abs(top)<1e-9?0:top,z1};});}
+function layout(S,sc,key){key=key||'h';let top=sc.layers.reduce((a,l)=>a+l[key],0)*100;return sc.layers.map(l=>{const z1=top;top-=l[key]*100;return{z0:Math.abs(top)<1e-9?0:top,z1};});}
 function recipe(S,sc,lay){const A=boxArea(S.box),rows=S.layers.map((L,i)=>{const v=A*(lay[i].z1-lay[i].z0)-S.bodies.reduce((s,b)=>s+bodyVolBetween(b,lay[i].z0,lay[i].z1),0);return{name:L.name,vol:v,mass:v*L.rhoM/1e6,kind:'layer',i};});
   S.bodies.forEach(b=>{const v=bodyVol(b);rows.push({name:b.name,vol:v,mass:v*b.rhoM/1e6,kind:'body'});});return rows;}
 // viscosity used for lab-side estimates: the chosen material if there is one, else the required value
@@ -447,6 +447,8 @@ function dripPath(b,S,sc,lay,eta){
 function rtTimes(S,lay,eta){const out=[];for(let i=0;i<S.layers.length-1;i++){const dr=S.layers[i].rhoM-S.layers[i+1].rhoM;if(dr<=0||!(eta[i]>0)||!(eta[i+1]>0))continue;
   const b=Math.min(lay[i].z1-lay[i].z0,lay[i+1].z1-lay[i+1].z0)/100;out.push({i,dr,tau:13.04*Math.max(eta[i],eta[i+1])/(dr*S.model.g*b)});}return out;}
 const num=x=>(+x.toPrecision(6)).toString();
+// bodies with z as height above the floor, whatever reference the user chose
+const resolveBodies=(S,lay)=>S.bodies.map(b=>({...b,z:b.zref==='top'?lay[0].z1-b.z:b.z}));
 function genLaMEM(S,sc,lay,eta){
   const B=S.box,hx=(B.shape==='rect'?B.x:B.d)/200,hy=(B.shape==='rect'?B.y:B.d)/200,H=sc.Hm,L=[];
   L.push('# ScaleLAB export: lab-scale model in SI units (m, kg, s, Pa s).','# Template written without running LaMEM: compare the keyword names with a script of yours that works.',
@@ -556,7 +558,7 @@ function load(){try{const t=localStorage.getItem('scalelab.v1');if(t)return hydr
 function persist(){try{localStorage.setItem('scalelab.v1',JSON.stringify(S));}catch(e){}}
 function getPath(k){return k.split('.').reduce((o,p)=>o==null?o:o[p],S);}
 function setPath(k,v){const p=k.split('.'),last=p.pop();const o=p.reduce((o,q)=>o[q],S);o[last]=v;}
-const TEXTKEYS=/(\.name|\.rock|\.mat|\.shape|nat\.regime|nat\.avg|nat\.geom|nat\.planet|model\.mode)$/;
+const TEXTKEYS=/(\.name|\.rock|\.mat|\.shape|\.zref|ui\.geo|nat\.regime|nat\.avg|nat\.geom|nat\.planet|model\.mode)$/;
 
 // ---------- inputs ----------
 function mechRow(i,key,title,m){
@@ -592,7 +594,7 @@ function renderLayers(){
 function fillStatic(){
   $('planet').innerHTML=Object.keys(PLANETS).map(p=>`<option>${p}</option>`).join('');$('planet').value=S.nat.planet||'Custom';
   document.querySelectorAll('#inputs>section [data-k]').forEach(el=>{if(el.closest('#layers')||el.closest('#bodies'))return;if(el.type==='checkbox')return;const v=getPath(el.dataset.k);if(v!=null)el.value=v;});
-  $('uiCases').checked=!!(S.ui&&S.ui.cases);$('lAnchor').style.display=S.model.mode==='anchor'?'':'none';$('lTime').style.display=S.model.mode==='time'?'':'none';
+  $('uiCases').checked=!!(S.ui&&S.ui.cases);$('uiGeo').value=S.ui.geo;$('lAnchor').style.display=S.model.mode==='anchor'?'':'none';$('lTime').style.display=S.model.mode==='time'?'':'none';
 }
 function onInput(ev){
   const el=ev.target,k=el.dataset&&el.dataset.k;if(!k)return;
@@ -770,12 +772,13 @@ function renderBodies(){
   $('bodies').innerHTML=S.bodies.map((b,i)=>`<div class="layer" style="--c:var(--ink2)">
     <div class="top"><label>Body name<input data-k="bodies.${i}.name" value="${esc(b.name)}"></label><div class="tools"><button class="ghost" data-bdel="${i}">Remove</button></div></div>
     <div class="grid"><label>Shape<select data-k="bodies.${i}.shape" data-bshape="1"><option value="sphere" ${b.shape==='sphere'?'selected':''}>Sphere</option><option value="cyl" ${b.shape==='cyl'?'selected':''}>Vertical cylinder</option><option value="box" ${b.shape==='box'?'selected':''}>Box</option></select></label>
-      ${f(i,'x','Centre x (cm)')}${f(i,'y','Centre y (cm)')}${f(i,'z','Centre z (cm)')}</div>
+      ${f(i,'x','Centre x (cm)')}${f(i,'y','Centre y (cm)')}</div>
+    <div class="grid"><label>Vertical position measured as<select data-k="bodies.${i}.zref" data-bshape="1"><option value="top" ${b.zref==='top'?'selected':''}>Depth below the model surface</option><option value="floor" ${b.zref!=='top'?'selected':''}>Height above the floor</option></select></label>${f(i,'z',b.zref==='top'?'Centre depth (cm)':'Centre height (cm)')}</div>
     <div class="grid">${b.shape==='sphere'?f(i,'r','Radius (cm)'):b.shape==='cyl'?f(i,'r','Radius (cm)')+f(i,'h','Height (cm)'):f(i,'lx','Size x (cm)')+f(i,'ly','Size y (cm)')+f(i,'lz','Size z (cm)')}
       ${f(i,'rhoM','Density (kg/m³)')}${f(i,'etaM','Viscosity (Pa s)')}</div></div>`).join('')||'<p class="hint">No bodies. Add one for a drip, a plume source or an inclusion.</p>';
 }
 $('bodies').addEventListener('click',e=>{const b=e.target.closest('button[data-bdel]');if(!b)return;S.bodies.splice(+b.dataset.bdel,1);renderBodies();update();});
-$('bAddBody').onclick=()=>{if(S.bodies.length>=6){toast('Six bodies is the limit');return;}S.bodies.push({name:'Body '+(S.bodies.length+1),shape:'sphere',x:0,y:0,z:5,r:1,h:2,lx:2,ly:2,lz:2,rhoM:1200,etaM:1e4});renderBodies();update();};
+$('bAddBody').onclick=()=>{if(S.bodies.length>=6){toast('Six bodies is the limit');return;}S.bodies.push({name:'Body '+(S.bodies.length+1),shape:'sphere',zref:'top',x:0,y:0,z:3,r:1,h:2,lx:2,ly:2,lz:2,rhoM:1200,etaM:1e4});renderBodies();update();};
 
 // ---------- 3D view and section ----------
 const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
@@ -797,7 +800,7 @@ function draw3D(){
   // tank outline
   c.setLineDash([4,3]);if(rect)prism(0,0,hx,hy,0,B.z,null,0,true,ink);else cyl(0,0,hx,0,B.z,'transparent',0,true,ink);c.setLineDash([]);
   // bodies, far to near
-  const bcol=cssv('--ink2');[...S.bodies].sort((p,q)=>(p.x*sa+p.y*ca)-(q.x*sa+q.y*ca)).forEach(b=>{
+  const bcol=cssv('--ink2');[...GEO.bodies].sort((p,q)=>(p.x*sa+p.y*ca)-(q.x*sa+q.y*ca)).forEach(b=>{
     if(b.shape==='sphere'){const p=P(b.x,b.y,b.z),g=c.createRadialGradient(p[0]-k*b.r*.3,p[1]-k*b.r*.3,k*b.r*.1,p[0],p[1],k*b.r);g.addColorStop(0,cssv('--muted'));g.addColorStop(1,ink);c.beginPath();c.arc(p[0],p[1],k*b.r,0,2*Math.PI);c.globalAlpha=.9;c.fillStyle=g;c.fill();c.globalAlpha=1;}
     else if(b.shape==='cyl')cyl(b.x,b.y,b.r,b.z-b.h/2,b.z+b.h/2,bcol,.9,true,ink);else prism(b.x,b.y,b.lx/2,b.ly/2,b.z-b.lz/2,b.z+b.lz/2,bcol,.9,true,ink);
     const p=P(b.x,b.y,b.z+bodyHalf(b));c.fillStyle=ink;c.textAlign='center';c.fillText(b.name,p[0],p[1]-5);});
@@ -806,10 +809,10 @@ function draw3D(){
   c.fillStyle=cssv('--ink2');c.textAlign='center';c.fillText(rect?`${B.x} × ${B.y} × ${B.z} cm (x × y × z) · drag to rotate`:`⌀ ${B.d} × ${B.z} cm · drag to rotate`,cx,h-8);
 }
 function drawSection(){
-  if(!GEO)return;const lay=GEO.lay,B=S.box,W=B.shape==='rect'?B.x:B.d,{c,w,h}=prep($('cvS'),360),ys=S.bodies.length?S.bodies[0].y:0,ztop=Math.max(B.z,lay[0].z1);
+  if(!GEO)return;const lay=GEO.lay,B=S.box,W=B.shape==='rect'?B.x:B.d,{c,w,h}=prep($('cvS'),360),ys=GEO.bodies.length?GEO.bodies[0].y:0,ztop=Math.max(B.z,lay[0].z1);
   const m={l:40,r:14,t:14,b:34},k=Math.min((w-m.l-m.r)/W,(h-m.t-m.b)/ztop),x0=m.l+((w-m.l-m.r)-k*W)/2+k*W/2,y0=h-m.b,X=x=>x0+k*x,Y=z=>y0-k*z,ink=cssv('--ink'),line=cssv('--muted');
   lay.forEach((l,i)=>{c.globalAlpha=.5;c.fillStyle=cssv('--s'+(i%6+1));c.fillRect(X(-W/2),Y(l.z1),k*W,k*(l.z1-l.z0));c.globalAlpha=1;c.strokeStyle=line;c.lineWidth=.6;c.strokeRect(X(-W/2),Y(l.z1),k*W,k*(l.z1-l.z0));});
-  c.fillStyle=cssv('--ink2');S.bodies.forEach(b=>{const dy=Math.abs(ys-b.y);c.globalAlpha=.92;
+  c.fillStyle=cssv('--ink2');GEO.bodies.forEach(b=>{const dy=Math.abs(ys-b.y);c.globalAlpha=.92;
     if(b.shape==='sphere'){if(dy<b.r){c.beginPath();c.arc(X(b.x),Y(b.z),k*Math.sqrt(b.r*b.r-dy*dy),0,2*Math.PI);c.fill();}}
     else if(b.shape==='cyl'){if(dy<b.r){const hw=Math.sqrt(b.r*b.r-dy*dy);c.fillRect(X(b.x-hw),Y(b.z+b.h/2),2*k*hw,k*b.h);}}
     else if(dy<b.ly/2)c.fillRect(X(b.x-b.lx/2),Y(b.z+b.lz/2),k*b.lx,k*b.lz);c.globalAlpha=1;});
@@ -826,10 +829,13 @@ function drawSection(){
 const vol=v=>v>=1000?fx(v/1000,2)+' L':fx(v,0)+' cm³',mass=m=>m>=1?fx(m,2)+' kg':fx(m*1000,0)+' g';
 let EXP={};
 function extras(res,sc,ok){
-  const lay=layout(S,sc),eta=labEta(S,sc,res),B=S.box,W=B.shape==='rect'?B.x:B.d,D=B.shape==='rect'?B.y:B.d;GEO={lay};
+  const lay=layout(S,sc,S.ui.geo),eta=labEta(S,sc,res),B=S.box,W=B.shape==='rect'?B.x:B.d,D=B.shape==='rect'?B.y:B.d,S0=S;GEO={lay,bodies:resolveBodies(S0,lay)};
+  {const S=Object.assign({},S0,{bodies:GEO.bodies});extras2(S,res,sc,ok,lay,eta,B,W,D);}
+}
+function extras2(S,res,sc,ok,lay,eta,B,W,D){
   $('gRect').style.display=B.shape==='rect'?'contents':'none';$('gCyl').style.display=B.shape==='rect'?'none':'';
   draw3D();drawSection();
-  const ck=[],Hs=lay[0].z1;ck.push([Hs<=B.z+1e-9?'good':'crit',`The layer stack is ${fx(Hs,1)} cm high in a ${fx(B.z,1)} cm deep ${B.shape==='rect'?'box':'tank'}${Hs<=B.z?'':': it does not fit. Raise the box or increase km per cm.'}`]);
+  const ck=[],Hs=lay[0].z1;ck.push([Hs<=B.z+1e-9?'good':'crit',`The layer stack (${S.ui.geo==='h'?'reference':S.ui.geo==='hMin'?'minimum':'maximum'} thicknesses) is ${fx(Hs,1)} cm high in a ${fx(B.z,1)} cm deep ${B.shape==='rect'?'box':'tank'}${Hs<=B.z?'':': it does not fit. Raise the box or increase km per cm.'}`]);
   ck.push([W/Hs>=2?'good':'warn',`Width to stack height is ${fx(Math.min(W,D)/Hs,1)}. ${Math.min(W,D)/Hs>=2?'Side walls are far enough for a central structure.':'Side-wall drag will affect most of the model.'}`]);
   S.bodies.forEach(b=>{const hw=b.shape==='box'?Math.max(b.lx,b.ly)/2:b.r,out=b.z-bodyHalf(b)<-1e-9||b.z+bodyHalf(b)>Hs+1e-9||(B.shape==='rect'?Math.abs(b.x)+hw>B.x/2||Math.abs(b.y)+hw>B.y/2:Math.hypot(b.x,b.y)+hw>B.d/2);
     if(out)ck.push(['crit',`${esc(b.name)} reaches outside the layer stack or the walls.`]);});
