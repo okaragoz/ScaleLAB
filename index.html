@@ -162,7 +162,7 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
     </section>
     <section class="panel">
       <div class="head"><h2>2 · Layers, top to bottom</h2><button id="bAdd">Add layer</button></div>
-      <p class="hint">Thickness takes the literature range: min / reference / max. The reference value has the highlighted border.</p>
+      <p class="hint">Thickness takes the literature range: min / reference / max. The reference value has the highlighted border. Each layer also has a model thickness in cm under "In the lab": it is the reference thickness seen through the length scale, and you can type in either one.</p>
       <div id="layers" class="col" style="gap:10px"></div>
     </section>
     <section class="panel">
@@ -578,7 +578,7 @@ function renderLayers(){
       ${r.w?`<label>${r.w.label}<input class="n" data-k="layers.${i}.w" value="${L.w}"></label>`:''}</div>
     <span class="sub">In the lab</span>
     <label>Material<select data-k="layers.${i}.mat" data-mat="1"><option value="custom">Custom values</option>${MATERIALS.map(m=>`<option value="${m.id}" ${m.id===L.mat?'selected':''}>${esc(m.name)}</option>`).join('')}</select></label>
-    <div class="grid"><label>Model density (kg/m³)<input class="n" data-k="layers.${i}.rhoM" value="${L.rhoM}"></label>
+    <div class="grid"><label>Model thickness (cm)<input class="n" data-hm="${i}" value="${num(L.h/S.model.kmPerCm)}"></label><label>Model density (kg/m³)<input class="n" data-k="layers.${i}.rhoM" value="${L.rhoM}"></label>
       <label>Viscosity η₀ (Pa s) · 0 = not chosen<input class="n" data-k="layers.${i}.etaM" value="${L.etaM}"></label></div>
     <details><summary>Material rheology</summary><div class="body"><div class="grid">
       <label>Stress exponent n<input class="n" data-k="layers.${i}.nM" value="${L.nM}"></label><label>η₀ measured at (1/s)<input class="n" data-k="layers.${i}.e0M" value="${L.e0M}"></label>
@@ -597,7 +597,11 @@ function fillStatic(){
   $('uiCases').checked=!!(S.ui&&S.ui.cases);$('uiGeo').value=S.ui.geo;$('lAnchor').style.display=S.model.mode==='anchor'?'':'none';$('lTime').style.display=S.model.mode==='time'?'':'none';
 }
 function onInput(ev){
-  const el=ev.target,k=el.dataset&&el.dataset.k;if(!k)return;
+  const el=ev.target;
+  if(el.dataset&&el.dataset.hm!=null){const i=+el.dataset.hm,L=S.layers[i],v=parseFloat(String(el.value).replace(',','.'));if(!(v>0))return;
+    L.h=+(v*S.model.kmPerCm).toPrecision(8);if(L.h<L.hMin)L.hMin=L.h;if(L.h>L.hMax)L.hMax=L.h;
+    for(const f of['hMin','h','hMax']){const t=document.querySelector(`[data-k="layers.${i}.${f}"]`);if(t)t.value=L[f];}update();return;}
+  const k=el.dataset&&el.dataset.k;if(!k)return;
   let v;if(el.type==='checkbox')v=el.checked;else if(TEXTKEYS.test(k))v=el.value;else{v=parseFloat(String(el.value).replace(',','.'));if(!isFinite(v))return;}
   setPath(k,v);
   if(el.dataset.rock){const L=S.layers[+k.split('.')[1]],r=rockById(v);L.laws={disl:r.disl?{on:true,...r.disl}:null,diff:r.diff?{on:true,...r.diff}:null};L.w=r.w?r.w.val:1;renderLayers();}
@@ -705,6 +709,7 @@ function drawCharts(res,sc,ok){
 let LAST=null;
 function update(){
   persist();
+  document.querySelectorAll('[data-hm]').forEach(el=>{if(el!==document.activeElement&&S.model.kmPerCm>0)el.value=num(S.layers[+el.dataset.hm].h/S.model.kmPerCm);});
   const badBox=!(S.box.z>0&&(S.box.shape==='rect'?S.box.x>0&&S.box.y>0:S.box.d>0))||S.bodies.some(b=>!(b.rhoM>0&&(b.shape==='box'?b.lx>0&&b.ly>0&&b.lz>0:b.r>0&&(b.shape!=='cyl'||b.h>0))));
   const bad=badBox||S.layers.some(L=>!(L.hMin>0&&L.h>0&&L.hMax>0&&L.rho>0&&L.d>0&&L.rhoM>0))||!(S.nat.e>0&&S.nat.emin>0&&S.nat.emax>0&&S.nat.g>0&&S.nat.Ts>0&&S.model.kmPerCm>0&&S.model.g>0&&S.nat.cap>0);
   if(bad){$('tiles').innerHTML='<div class="tile"><span>Input needed</span><b>Check the values</b><small>Thickness, density, grain size, gravity, strain rate, box size and body size must all be positive numbers.</small></div>';return;}
