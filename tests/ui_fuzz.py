@@ -19,7 +19,7 @@ const items=[...document.querySelectorAll('input,select')].filter(e=>!e.closest(
 let n=0;const t0=performance.now();
 for(const it of items.slice(A,B)){
   let vals;
-  if(it.opts)vals=it.opts.length>12?it.opts.filter((o,i)=>i%Math.ceil(it.opts.length/6)===0):it.opts;
+  if(it.opts)it.opts=it.opts.filter(o=>o!=='__more');if(it.opts)vals=it.opts.length>12?it.opts.filter((o,i)=>i%Math.ceil(it.opts.length/6)===0):it.opts;
   else if(it.type==='checkbox')vals=[true,false];
   else if(it.type==='range')vals=[it.min,it.max,(+it.min+ +it.max)/2];
   else if(/\.name$/.test(it.k))vals=['<b>x</b> & "q"',''];

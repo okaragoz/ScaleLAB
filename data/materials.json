@@ -1,6 +1,40 @@
 {
  "materials": [
   {
+   "id": "korasilon_m_20000000_r",
+   "name": "KORASILON M 20 000 000 R (silicone oil, transparent)",
+   "kind": "viscous",
+   "rho": 970,
+   "eta0": 20000,
+   "n": 1,
+   "e0": 0.001,
+   "Ea": 15.5,
+   "T0": 25,
+   "ecrit": 0,
+   "phi": 0,
+   "C": 0,
+   "status": "lab value",
+   "source": "Viscosity as used in the Freiburg analogue lab (2×10⁴ Pa s); drum label KORASILON Öl M 20.000.000 R",
+   "note": "Nominal 20 000 000 mm²/s × 0.97 g/cm³ = 1.94×10⁴ Pa s. Density, activation energy and Newtonian behaviour are assumed equal to the KORASILON M series datasheet and are not verified for this grade: measure them."
+  },
+  {
+   "id": "silicone_oil_1200",
+   "name": "Silicone oil 1.2×10³ Pa s (lab stock)",
+   "kind": "viscous",
+   "rho": 970,
+   "eta0": 1200,
+   "n": 1,
+   "e0": 0.001,
+   "Ea": 15.5,
+   "T0": 25,
+   "ecrit": 0,
+   "phi": 0,
+   "C": 0,
+   "status": "lab value",
+   "source": "Viscosity as used in the Freiburg analogue lab",
+   "note": "Product grade not recorded. Density and activation energy assumed as for KORASILON M oils: measure them."
+  },
+  {
    "id": "korasilon_m_100",
    "name": "KORASILON M 100 (silicone oil)",
    "kind": "viscous",
